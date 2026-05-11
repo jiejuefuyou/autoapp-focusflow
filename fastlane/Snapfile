@@ -1,0 +1,31 @@
+# App Store Connect screenshot devices (one per required size class):
+#   - 6.9" iPhone (iPhone 17 Pro Max)              — required for iPhone
+#   - 6.5" iPhone (iPhone 16 Plus)                 — fallback display class
+#   - 12.9" iPad (iPad Pro (12.9-inch) (3rd gen))  — required when app supports iPad
+devices([
+  "iPhone 17 Pro Max",
+  "iPhone 16 Plus",
+  "iPad Pro (12.9-inch) (3rd generation)"
+])
+
+# 8 languages — one folder per locale under fastlane/screenshots/
+# Locale codes match App Store Connect localization slugs.
+languages([
+  "en-US",
+  "ja",
+  "zh-Hans",
+  "zh-Hant",
+  "ko",
+  "es-ES",
+  "fr-FR",
+  "de-DE"
+])
+
+scheme("FocusFlow")
+
+output_directory("./fastlane/screenshots")
+clear_previous_screenshots(true)
+skip_open_summary(true)
+stop_after_first_error(true)
+concurrent_simulators(true)
+reinstall_app(false)

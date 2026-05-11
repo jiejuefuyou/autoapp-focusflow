@@ -1,0 +1,60 @@
+name: Screenshots
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: "Commit the generated screenshots back to the repo"
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: screenshots
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  shots:
+    name: Capture App Store screenshots
+    runs-on: macos-15
+    timeout-minutes: 60
+    env:
+      LC_ALL: en_US.UTF-8
+      LANG: en_US.UTF-8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - name: Install xcodegen + imagemagick
+        run: brew install xcodegen imagemagick
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+      - name: Capture screenshots
+        run: bundle exec fastlane screenshots
+      - name: Upload screenshots as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: fastlane/screenshots/**/*.png
+          if-no-files-found: error
+      - name: Commit screenshots + app icon back to repo
+        if: ${{ github.event.inputs.commit == 'true' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add fastlane/screenshots
+          git add FocusFlow/Resources/Assets.xcassets/AppIcon.appiconset/icon.png
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(ci): refresh App Store screenshots + icon"
+            git push
+          else
+            echo "No screenshot/icon changes to commit."
+          fi

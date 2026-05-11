@@ -1,0 +1,98 @@
+name: Init Signing
+
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        description: "Certificate type to (re)create"
+        required: true
+        default: "appstore"
+        type: choice
+        options: [appstore, development]
+      force:
+        description: "Pass --force to recreate certs even if existing ones are valid (use with care)"
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: init-signing
+  cancel-in-progress: false
+
+jobs:
+  init:
+    name: fastlane match (${{ inputs.type }})
+    runs-on: macos-15
+    timeout-minutes: 30
+    environment: testflight
+    env:
+      LC_ALL: en_US.UTF-8
+      LANG: en_US.UTF-8
+      APP_BUNDLE_ID: com.jiejuefuyou.focusflow
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Install xcodegen + imagemagick
+        run: brew install xcodegen imagemagick
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Setup SSH deploy key for autoapp-certs
+        env:
+          MATCH_SSH_KEY: ${{ secrets.MATCH_SSH_KEY }}
+        run: |
+          set -eux
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo "$MATCH_SSH_KEY" | base64 -d > ~/.ssh/autoapp_match_deploy
+          chmod 600 ~/.ssh/autoapp_match_deploy
+          ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts 2>/dev/null
+          chmod 644 ~/.ssh/known_hosts
+          # Configure SSH to use this key for github.com
+          cat > ~/.ssh/config <<EOF
+          Host github.com
+            HostName github.com
+            User git
+            IdentityFile ~/.ssh/autoapp_match_deploy
+            IdentitiesOnly yes
+            StrictHostKeyChecking yes
+          EOF
+          chmod 600 ~/.ssh/config
+          # Verify SSH connection works
+          ssh -T git@github.com 2>&1 | grep -i "successfully authenticated" || echo "(SSH auth check non-fatal, continuing)"
+
+      - name: DEBUG — verify SSH clone of autoapp-certs works
+        run: |
+          set -eux
+          rm -rf /tmp/dbg-clone
+          if git clone git@github.com:jiejuefuyou/autoapp-certs.git /tmp/dbg-clone; then
+            echo "✅ SSH clone WORKED — deploy key is functional"
+            ls /tmp/dbg-clone
+            rm -rf /tmp/dbg-clone
+          else
+            echo "❌ SSH clone FAILED — deploy key issue"
+            exit 1
+          fi
+
+      - name: Run fastlane match (writes encrypted certs to autoapp-certs via SSH)
+        env:
+          ASC_KEY_ID:                     ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID:                  ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_CONTENT:                ${{ secrets.ASC_KEY_CONTENT }}
+          MATCH_PASSWORD:                 ${{ secrets.MATCH_PASSWORD }}
+          FASTLANE_USER:                  ${{ secrets.FASTLANE_USER }}
+          TEAM_ID:                        ${{ secrets.TEAM_ID }}
+          MATCH_GIT_URL:                  git@github.com:jiejuefuyou/autoapp-certs.git
+          MATCH_GIT_BRANCH:               main
+          MATCH_TYPE:                     ${{ inputs.type }}
+          MATCH_FORCE:                    ${{ inputs.force }}
+        run: |
+          set -euxo pipefail
+          bundle exec fastlane init_signing

@@ -1,0 +1,43 @@
+name: App Store Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "submit-for-review" to confirm submission to Apple review'
+        required: true
+        default: ""
+
+concurrency:
+  group: app-store-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Submit to App Store Review
+    runs-on: macos-15
+    timeout-minutes: 30
+    environment: testflight
+    if: ${{ github.event.inputs.confirm == 'submit-for-review' }}
+    env:
+      LC_ALL: en_US.UTF-8
+      LANG: en_US.UTF-8
+      APP_BUNDLE_ID: com.jiejuefuyou.focusflow
+    steps:
+      - uses: actions/checkout@v4
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+      - name: Submit metadata + latest TestFlight build for App Store review
+        env:
+          ASC_KEY_ID:                     ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID:                  ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_CONTENT:                ${{ secrets.ASC_KEY_CONTENT }}
+          FASTLANE_USER:                  ${{ secrets.FASTLANE_USER }}
+          TEAM_ID:                        ${{ secrets.TEAM_ID }}
+          ITC_TEAM_ID:                    ${{ secrets.ITC_TEAM_ID }}
+        run: bundle exec fastlane release

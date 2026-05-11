@@ -1,0 +1,205 @@
+default_platform(:ios)
+
+PROJECT       = "FocusFlow.xcodeproj"
+SCHEME        = "FocusFlow"
+BUNDLE_ID     = ENV["APP_BUNDLE_ID"] || "com.jiejuefuyou.focusflow"
+TEST_DEVICE   = ENV["FASTLANE_TEST_DEVICE"] || "iPhone 15"
+
+platform :ios do
+  before_all do
+    if is_ci
+      setup_ci
+    end
+  end
+
+  desc "Generate AutoChoice.xcodeproj from project.yml via xcodegen + (re)build the App Icon"
+  lane :generate do
+    sh("cd .. && bash scripts/generate_icons.sh || true")
+    sh("cd .. && xcodegen generate")
+  end
+
+  desc "Run unit tests on a simulator (UI tests live in the screenshots lane)"
+  lane :test do
+    generate
+    run_tests(
+      project:       PROJECT,
+      scheme:        SCHEME,
+      devices:       [TEST_DEVICE],
+      clean:         true,
+      code_coverage: true,
+      only_testing:  ["#{SCHEME}Tests"]
+    )
+  end
+
+  desc "Build, sign, and upload a TestFlight build"
+  lane :beta do
+    generate
+
+    api_key = app_store_connect_api_key(
+      key_id:                ENV.fetch("ASC_KEY_ID"),
+      issuer_id:             ENV.fetch("ASC_ISSUER_ID"),
+      key_content:           ENV.fetch("ASC_KEY_CONTENT"),
+      is_key_content_base64: true,
+      duration:              1200,
+      in_house:              false
+    )
+
+    sync_code_signing(
+      type:          "appstore",
+      readonly:      is_ci,
+      api_key:       api_key,
+      app_identifier: [BUNDLE_ID]
+    )
+
+    increment_build_number(
+      build_number: ENV["BUILD_NUMBER"] || Time.now.strftime("%Y%m%d%H%M"),
+      xcodeproj:    PROJECT
+    )
+
+    real_profile_name = ENV.fetch("sigh_#{BUNDLE_ID}_appstore_profile-name") { "match AppStore #{BUNDLE_ID}" }
+    UI.message("Resolved profile name from match: #{real_profile_name}")
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path:                  PROJECT,
+      team_id:               ENV.fetch("TEAM_ID"),
+      bundle_identifier:     BUNDLE_ID,
+      profile_name:          real_profile_name,
+      code_sign_identity:    "Apple Distribution"
+    )
+
+    build_app(
+      project:        PROJECT,
+      scheme:         SCHEME,
+      configuration:  "Release",
+      export_method:  "app-store",
+      clean:          true,
+      include_bitcode: false,
+      include_symbols: true,
+      export_options: {
+        method: "app-store",
+        provisioningProfiles: {
+          BUNDLE_ID => real_profile_name
+        },
+        signingStyle: "manual",
+        teamID: ENV.fetch("TEAM_ID")
+      }
+    )
+
+    upload_to_testflight(
+      api_key:                            api_key,
+      skip_waiting_for_build_processing:  true,
+      skip_submission:                    true,
+      changelog:                          ENV["BETA_CHANGELOG"] || "Automated build from CI."
+    )
+  end
+
+  desc "Capture App Store screenshots via UI tests on multiple simulators"
+  lane :screenshots do
+    generate
+    capture_ios_screenshots(
+      derived_data_path: "./fastlane/derived_data_screenshots"
+    )
+  end
+
+  desc "Push App Store metadata + the latest TestFlight build into App Store review (no auto-release)"
+  lane :release do
+    api_key = app_store_connect_api_key(
+      key_id:                ENV.fetch("ASC_KEY_ID"),
+      issuer_id:             ENV.fetch("ASC_ISSUER_ID"),
+      key_content:           ENV.fetch("ASC_KEY_CONTENT"),
+      is_key_content_base64: true,
+      duration:              1200,
+      in_house:              false
+    )
+
+    upload_to_app_store(
+      api_key:                          api_key,
+      app_identifier:                   BUNDLE_ID,
+      submit_for_review:                true,
+      automatic_release:                false,                         # user manually releases when approved
+      submission_information: {
+        add_id_info_uses_idfa:          false,
+        export_compliance_uses_encryption: false,
+        export_compliance_encryption_updated: false
+      },
+      precheck_include_in_app_purchases: true,
+      force:                            true,                          # don't pause on metadata diff prompt
+      skip_screenshots:                 true,                          # screenshots are managed manually for v1; switch to fastlane snapshot in Phase 2
+      skip_binary_upload:               true,                           # binary already uploaded by `beta` lane
+      run_precheck_before_submit:       true
+    )
+  end
+
+  desc "Print App Store / TestFlight status to console + GITHUB_STEP_SUMMARY"
+  lane :status_report do
+    require "spaceship"
+    require "base64"
+
+    Spaceship::ConnectAPI.token = Spaceship::ConnectAPI::Token.create(
+      key_id:        ENV.fetch("ASC_KEY_ID"),
+      issuer_id:     ENV.fetch("ASC_ISSUER_ID"),
+      key:           Base64.decode64(ENV.fetch("ASC_KEY_CONTENT"))
+    )
+
+    out = []
+    out << "# Status — #{Time.now.utc.strftime('%Y-%m-%d %H:%M UTC')}"
+    out << ""
+    out << "App: `#{BUNDLE_ID}`"
+    out << ""
+
+    app = Spaceship::ConnectAPI::App.find(BUNDLE_ID)
+    if app.nil?
+      out << "_Not yet registered in App Store Connect._"
+    else
+      out << "## App Store versions"
+      versions = app.get_app_store_versions
+      if versions.empty?
+        out << "_No App Store versions yet._"
+      else
+        versions.each do |v|
+          out << "- v#{v.version_string} — **#{v.app_store_state}**"
+        end
+      end
+      out << ""
+
+      out << "## Recent TestFlight builds"
+      builds = Spaceship::ConnectAPI::Build.all(
+        filter:        { app: app.id },
+        sort:          "-uploadedDate",
+        includes:      "buildBetaDetail",
+        limit:         5
+      )
+      if builds.empty?
+        out << "_No builds uploaded yet._"
+      else
+        builds.each do |b|
+          out << "- build `#{b.version}` — processing=#{b.processing_state}, uploaded=#{b.uploaded_date}"
+        end
+      end
+    end
+
+    text = out.join("\n")
+    puts text
+
+    summary = ENV["GITHUB_STEP_SUMMARY"]
+    File.open(summary, "a") { |f| f.puts(text) } if summary && !summary.empty?
+  end
+
+  desc "Initialize signing assets in autoapp-certs (run once, manually, with admin Apple ID)"
+  lane :init_signing do
+    api_key = app_store_connect_api_key(
+      key_id:                ENV.fetch("ASC_KEY_ID"),
+      issuer_id:             ENV.fetch("ASC_ISSUER_ID"),
+      key_content:           ENV.fetch("ASC_KEY_CONTENT"),
+      is_key_content_base64: true
+    )
+    match_type = ENV.fetch("MATCH_TYPE", "appstore")
+    UI.message("init_signing: syncing match for type=#{match_type}")
+    sync_code_signing(
+      type:           match_type,
+      readonly:       false,
+      api_key:        api_key,
+      app_identifier: [BUNDLE_ID]
+    )
+  end
+end
