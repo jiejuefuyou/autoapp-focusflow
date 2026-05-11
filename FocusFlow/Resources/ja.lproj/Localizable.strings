@@ -1,0 +1,61 @@
+/* FocusFlow — 日本語 (ja) */
+
+/* Common */
+"Skip" = "スキップ";
+"Continue" = "続ける";
+"Get Started" = "始める";
+"Done" = "完了";
+"Cancel" = "キャンセル";
+"Save" = "保存";
+"Close" = "閉じる";
+
+/* Navigation */
+"FocusFlow" = "FocusFlow";
+"Settings" = "設定";
+"Start Focus" = "集中を始める";
+
+/* Onboarding */
+"Deep focus, unblocked." = "深い集中を、邪魔されずに。";
+"Pomodoro 25, deep 45, marathon 90. Pick your length and start." = "ポモドーロ 25 分、ディープ 45 分、マラソン 90 分。お好みの長さを選んで開始。";
+"Auto Do Not Disturb." = "おやすみモードを自動で。";
+"Pro: app auto-toggles iOS Focus filter when session starts. No more dings." = "Pro 版:セッション開始時に iOS の集中モードフィルターを自動でオン。通知音はもう鳴りません。";
+"$3.99 once. No sub." = "買い切り $3.99。サブスクなし。";
+"Pro: unlimited sessions, full history, project tags, Apple Watch, widget." = "Pro 版:無制限セッション、完全な履歴、プロジェクトタグ、Apple Watch、ウィジェット。";
+
+/* Main screen */
+"Ready to focus" = "集中する準備はいい?";
+"Start Session" = "セッションを開始";
+"Today" = "今日";
+
+/* Sessions */
+"Preset" = "プリセット";
+"Length" = "長さ";
+"Label" = "ラベル";
+"e.g. Coding, Writing" = "例:コーディング、ライティング";
+"Tag (optional, e.g. project-x)" = "タグ(任意、例:project-x)";
+"Start" = "開始";
+"Focus" = "集中";
+
+/* Settings */
+"Language" = "言語";
+"System default" = "システム標準";
+"About" = "このアプリについて";
+"Version" = "バージョン";
+"Build" = "ビルド";
+"Privacy Policy" = "プライバシーポリシー";
+"Terms of Use" = "利用規約";
+"No data collected. Ever." = "データ収集は一切なし。これからもずっと。";
+"Total stats" = "累計統計";
+"Total sessions" = "総セッション数";
+"Total time" = "合計時間";
+
+/* Premium */
+"Premium" = "プレミアム";
+"Pro unlocked" = "Pro 解放済み";
+"Free tier" = "無料プラン";
+"Unlock Pro" = "Pro を解放";
+"Restore Purchases" = "購入を復元";
+"Restore Purchase" = "購入を復元";
+"FocusFlow Pro" = "FocusFlow Pro";
+"One-time purchase. No subscription. Unlock everything forever." = "買い切り。サブスクなし。すべての機能を永久に解放。";
+"Processing…" = "処理中…";

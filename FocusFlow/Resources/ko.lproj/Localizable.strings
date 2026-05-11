@@ -1,0 +1,61 @@
+/* FocusFlow — 한국어 (ko) */
+
+/* Common */
+"Skip" = "건너뛰기";
+"Continue" = "계속";
+"Get Started" = "시작하기";
+"Done" = "완료";
+"Cancel" = "취소";
+"Save" = "저장";
+"Close" = "닫기";
+
+/* Navigation */
+"FocusFlow" = "FocusFlow";
+"Settings" = "설정";
+"Start Focus" = "집중 시작";
+
+/* Onboarding */
+"Deep focus, unblocked." = "방해 없는 깊은 몰입.";
+"Pomodoro 25, deep 45, marathon 90. Pick your length and start." = "뽀모도로 25분, 딥 45분, 마라톤 90분. 원하는 길이를 선택하고 시작하세요.";
+"Auto Do Not Disturb." = "방해 금지 모드 자동 설정.";
+"Pro: app auto-toggles iOS Focus filter when session starts. No more dings." = "Pro: 세션 시작 시 iOS 집중 모드 필터를 자동 전환합니다. 더 이상의 알림음은 없습니다.";
+"$3.99 once. No sub." = "한 번에 $3.99. 구독 없음.";
+"Pro: unlimited sessions, full history, project tags, Apple Watch, widget." = "Pro: 무제한 세션, 전체 기록, 프로젝트 태그, Apple Watch, 위젯.";
+
+/* Main screen */
+"Ready to focus" = "집중할 준비 되셨나요";
+"Start Session" = "세션 시작";
+"Today" = "오늘";
+
+/* Sessions */
+"Preset" = "프리셋";
+"Length" = "길이";
+"Label" = "라벨";
+"e.g. Coding, Writing" = "예: 코딩, 글쓰기";
+"Tag (optional, e.g. project-x)" = "태그 (선택, 예: project-x)";
+"Start" = "시작";
+"Focus" = "집중";
+
+/* Settings */
+"Language" = "언어";
+"System default" = "시스템 기본값";
+"About" = "정보";
+"Version" = "버전";
+"Build" = "빌드";
+"Privacy Policy" = "개인정보 처리방침";
+"Terms of Use" = "이용 약관";
+"No data collected. Ever." = "데이터를 수집하지 않습니다. 절대로.";
+"Total stats" = "전체 통계";
+"Total sessions" = "총 세션 수";
+"Total time" = "총 시간";
+
+/* Premium */
+"Premium" = "프리미엄";
+"Pro unlocked" = "Pro 잠금 해제됨";
+"Free tier" = "무료 플랜";
+"Unlock Pro" = "Pro 잠금 해제";
+"Restore Purchases" = "구매 복원";
+"Restore Purchase" = "구매 복원";
+"FocusFlow Pro" = "FocusFlow Pro";
+"One-time purchase. No subscription. Unlock everything forever." = "일회성 구매. 구독 없음. 모든 기능을 영구적으로 잠금 해제.";
+"Processing…" = "처리 중…";

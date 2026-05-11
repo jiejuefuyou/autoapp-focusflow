@@ -1,0 +1,61 @@
+/* FocusFlow — Deutsch (de) */
+
+/* Common */
+"Skip" = "Überspringen";
+"Continue" = "Weiter";
+"Get Started" = "Loslegen";
+"Done" = "Fertig";
+"Cancel" = "Abbrechen";
+"Save" = "Sichern";
+"Close" = "Schließen";
+
+/* Navigation */
+"FocusFlow" = "FocusFlow";
+"Settings" = "Einstellungen";
+"Start Focus" = "Fokus starten";
+
+/* Onboarding */
+"Deep focus, unblocked." = "Tiefe Konzentration, ungestört.";
+"Pomodoro 25, deep 45, marathon 90. Pick your length and start." = "Pomodoro 25, Deep 45, Marathon 90. Wähle deine Dauer und starte.";
+"Auto Do Not Disturb." = "Nicht stören automatisch.";
+"Pro: app auto-toggles iOS Focus filter when session starts. No more dings." = "Pro: Die App schaltet beim Sessionstart automatisch den iOS-Fokusfilter ein. Keine Pings mehr.";
+"$3.99 once. No sub." = "3,99 $ einmalig. Kein Abo.";
+"Pro: unlimited sessions, full history, project tags, Apple Watch, widget." = "Pro: unbegrenzte Sessions, vollständiger Verlauf, Projekt-Tags, Apple Watch, Widget.";
+
+/* Main screen */
+"Ready to focus" = "Bereit, dich zu konzentrieren?";
+"Start Session" = "Session starten";
+"Today" = "Heute";
+
+/* Sessions */
+"Preset" = "Voreinstellung";
+"Length" = "Dauer";
+"Label" = "Bezeichnung";
+"e.g. Coding, Writing" = "z. B. Coding, Schreiben";
+"Tag (optional, e.g. project-x)" = "Tag (optional, z. B. project-x)";
+"Start" = "Starten";
+"Focus" = "Fokus";
+
+/* Settings */
+"Language" = "Sprache";
+"System default" = "Systemstandard";
+"About" = "Info";
+"Version" = "Version";
+"Build" = "Build";
+"Privacy Policy" = "Datenschutzrichtlinie";
+"Terms of Use" = "Nutzungsbedingungen";
+"No data collected. Ever." = "Keinerlei Datenerhebung. Niemals.";
+"Total stats" = "Gesamtstatistik";
+"Total sessions" = "Sessions insgesamt";
+"Total time" = "Gesamtzeit";
+
+/* Premium */
+"Premium" = "Premium";
+"Pro unlocked" = "Pro freigeschaltet";
+"Free tier" = "Kostenlose Version";
+"Unlock Pro" = "Pro freischalten";
+"Restore Purchases" = "Käufe wiederherstellen";
+"Restore Purchase" = "Kauf wiederherstellen";
+"FocusFlow Pro" = "FocusFlow Pro";
+"One-time purchase. No subscription. Unlock everything forever." = "Einmaliger Kauf. Kein Abo. Alle Funktionen für immer freigeschaltet.";
+"Processing…" = "Wird verarbeitet…";

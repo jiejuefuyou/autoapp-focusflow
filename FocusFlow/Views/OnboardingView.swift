@@ -1,49 +1,68 @@
 import SwiftUI
+import UIKit
 
 struct OnboardingView: View {
-    @Binding var hasSeenOnboarding: Bool
+    @Environment(\.dismiss) private var dismiss
+    @Binding var hasCompletedOnboarding: Bool
     @State private var currentScreen = 0
 
     var body: some View {
-        TabView(selection: $currentScreen) {
-            screen(
-                index: 0,
-                icon: "brain.head.profile",
-                title: "Deep focus, unblocked.",
-                subtitle: "Pomodoro 25, deep 45, marathon 90. Pick your length and start.",
-                color: .accentColor
-            )
-            .tag(0)
+        VStack(spacing: 0) {
+            // Always-visible Skip in top-right so users can exit onboarding from any page.
+            HStack {
+                Spacer()
+                Button(action: dismissOnboarding) {
+                    Text(LocalizedStringKey("Skip"))
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundStyle(Color.accentColor)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+                        .contentShape(Rectangle())
+                }
+                .accessibilityLabel(Text(LocalizedStringKey("Skip")))
+            }
+            .padding(.top, 8)
+            .padding(.horizontal, 8)
 
-            screen(
-                index: 1,
-                icon: "moon.fill",
-                title: "Auto Do Not Disturb.",
-                subtitle: "Pro: app auto-toggles iOS Focus filter when session starts. No more dings.",
-                color: .indigo
-            )
-            .tag(1)
+            TabView(selection: $currentScreen) {
+                screen(
+                    index: 0,
+                    icon: "brain.head.profile",
+                    titleKey: "Deep focus, unblocked.",
+                    subtitleKey: "Pomodoro 25, deep 45, marathon 90. Pick your length and start.",
+                    color: .accentColor
+                )
+                .tag(0)
 
-            screen(
-                index: 2,
-                icon: "chart.bar.fill",
-                title: "$3.99 once. No sub.",
-                subtitle: "Pro: unlimited sessions, full history, project tags, Apple Watch, widget.",
-                color: .green,
-                showCTA: true
-            )
-            .tag(2)
+                screen(
+                    index: 1,
+                    icon: "moon.fill",
+                    titleKey: "Auto Do Not Disturb.",
+                    subtitleKey: "Pro: app auto-toggles iOS Focus filter when session starts. No more dings.",
+                    color: .indigo
+                )
+                .tag(1)
+
+                screen(
+                    index: 2,
+                    icon: "chart.bar.fill",
+                    titleKey: "$3.99 once. No sub.",
+                    subtitleKey: "Pro: unlimited sessions, full history, project tags, Apple Watch, widget.",
+                    color: .green,
+                    showCTA: true
+                )
+                .tag(2)
+            }
+            .tabViewStyle(.page)
+            .indexViewStyle(.page(backgroundDisplayMode: .always))
         }
-        .tabViewStyle(.page)
-        .indexViewStyle(.page(backgroundDisplayMode: .always))
-        .ignoresSafeArea()
     }
 
     private func screen(
         index: Int,
         icon: String,
-        title: String,
-        subtitle: String,
+        titleKey: LocalizedStringKey,
+        subtitleKey: LocalizedStringKey,
         color: Color,
         showCTA: Bool = false
     ) -> some View {
@@ -52,32 +71,37 @@ struct OnboardingView: View {
             Image(systemName: icon)
                 .font(.system(size: 80))
                 .foregroundStyle(color)
-            Text(title)
+            Text(titleKey)
                 .font(.largeTitle.bold())
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
-            Text(subtitle)
+            Text(subtitleKey)
                 .font(.body)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 32)
             Spacer()
             if showCTA {
-                Button {
-                    hasSeenOnboarding = true
-                } label: {
-                    Text("Get Started")
+                Button(action: dismissOnboarding) {
+                    Text(LocalizedStringKey("Get Started"))
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(color, in: RoundedRectangle(cornerRadius: 16))
                         .foregroundStyle(.white)
                 }
+                .buttonStyle(ScaleButtonStyle())
                 .padding(.horizontal)
                 .padding(.bottom, 32)
             } else {
                 Spacer().frame(height: 80)
             }
         }
+    }
+
+    private func dismissOnboarding() {
+        hasCompletedOnboarding = true
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        dismiss()
     }
 }

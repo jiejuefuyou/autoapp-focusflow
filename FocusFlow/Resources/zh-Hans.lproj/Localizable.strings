@@ -1,0 +1,61 @@
+/* FocusFlow — 简体中文 (zh-Hans) */
+
+/* Common */
+"Skip" = "跳过";
+"Continue" = "继续";
+"Get Started" = "开始";
+"Done" = "完成";
+"Cancel" = "取消";
+"Save" = "保存";
+"Close" = "关闭";
+
+/* Navigation */
+"FocusFlow" = "FocusFlow";
+"Settings" = "设置";
+"Start Focus" = "开始专注";
+
+/* Onboarding */
+"Deep focus, unblocked." = "心无旁骛,深度专注。";
+"Pomodoro 25, deep 45, marathon 90. Pick your length and start." = "番茄 25 分钟、深度 45 分钟、马拉松 90 分钟。选好时长就开始。";
+"Auto Do Not Disturb." = "自动开启专注模式。";
+"Pro: app auto-toggles iOS Focus filter when session starts. No more dings." = "Pro 版:会话开始时自动切换 iOS 专注过滤器,告别消息提示音。";
+"$3.99 once. No sub." = "一次性 $3.99,无订阅。";
+"Pro: unlimited sessions, full history, project tags, Apple Watch, widget." = "Pro 版:无限会话、完整历史、项目标签、Apple Watch、小组件。";
+
+/* Main screen */
+"Ready to focus" = "准备好专注了吗";
+"Start Session" = "开始会话";
+"Today" = "今天";
+
+/* Sessions */
+"Preset" = "预设";
+"Length" = "时长";
+"Label" = "标签";
+"e.g. Coding, Writing" = "例如:编程、写作";
+"Tag (optional, e.g. project-x)" = "标签(可选,例如:project-x)";
+"Start" = "开始";
+"Focus" = "专注";
+
+/* Settings */
+"Language" = "语言";
+"System default" = "系统默认";
+"About" = "关于";
+"Version" = "版本";
+"Build" = "构建";
+"Privacy Policy" = "隐私政策";
+"Terms of Use" = "使用条款";
+"No data collected. Ever." = "永不收集任何数据。";
+"Total stats" = "累计统计";
+"Total sessions" = "总会话数";
+"Total time" = "总时长";
+
+/* Premium */
+"Premium" = "高级版";
+"Pro unlocked" = "已解锁 Pro";
+"Free tier" = "免费版";
+"Unlock Pro" = "解锁 Pro";
+"Restore Purchases" = "恢复购买";
+"Restore Purchase" = "恢复购买";
+"FocusFlow Pro" = "FocusFlow Pro";
+"One-time purchase. No subscription. Unlock everything forever." = "一次购买,无需订阅。永久解锁所有功能。";
+"Processing…" = "处理中…";

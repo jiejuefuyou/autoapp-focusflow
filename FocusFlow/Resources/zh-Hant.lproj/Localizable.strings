@@ -1,0 +1,61 @@
+/* FocusFlow — 繁體中文 (zh-Hant) */
+
+/* Common */
+"Skip" = "略過";
+"Continue" = "繼續";
+"Get Started" = "開始";
+"Done" = "完成";
+"Cancel" = "取消";
+"Save" = "儲存";
+"Close" = "關閉";
+
+/* Navigation */
+"FocusFlow" = "FocusFlow";
+"Settings" = "設定";
+"Start Focus" = "開始專注";
+
+/* Onboarding */
+"Deep focus, unblocked." = "心無旁騖,深度專注。";
+"Pomodoro 25, deep 45, marathon 90. Pick your length and start." = "番茄 25 分鐘、深度 45 分鐘、馬拉松 90 分鐘。選好時長就開始。";
+"Auto Do Not Disturb." = "自動開啟專注模式。";
+"Pro: app auto-toggles iOS Focus filter when session starts. No more dings." = "Pro 版:工作階段開始時自動切換 iOS 專注過濾器,擺脫通知聲。";
+"$3.99 once. No sub." = "一次性 $3.99,無訂閱。";
+"Pro: unlimited sessions, full history, project tags, Apple Watch, widget." = "Pro 版:無限制工作階段、完整歷史記錄、專案標籤、Apple Watch、小工具。";
+
+/* Main screen */
+"Ready to focus" = "準備好專注了嗎";
+"Start Session" = "開始工作階段";
+"Today" = "今天";
+
+/* Sessions */
+"Preset" = "預設";
+"Length" = "時長";
+"Label" = "標籤";
+"e.g. Coding, Writing" = "例如:程式設計、寫作";
+"Tag (optional, e.g. project-x)" = "標籤(選填,例如:project-x)";
+"Start" = "開始";
+"Focus" = "專注";
+
+/* Settings */
+"Language" = "語言";
+"System default" = "系統預設";
+"About" = "關於";
+"Version" = "版本";
+"Build" = "建置";
+"Privacy Policy" = "隱私權政策";
+"Terms of Use" = "使用條款";
+"No data collected. Ever." = "永不收集任何資料。";
+"Total stats" = "累計統計";
+"Total sessions" = "總工作階段數";
+"Total time" = "總時長";
+
+/* Premium */
+"Premium" = "高級版";
+"Pro unlocked" = "已解鎖 Pro";
+"Free tier" = "免費版";
+"Unlock Pro" = "解鎖 Pro";
+"Restore Purchases" = "回復購買";
+"Restore Purchase" = "回復購買";
+"FocusFlow Pro" = "FocusFlow Pro";
+"One-time purchase. No subscription. Unlock everything forever." = "一次購買,無需訂閱。永久解鎖所有功能。";
+"Processing…" = "處理中…";

@@ -1,0 +1,61 @@
+/* FocusFlow — English (en) */
+
+/* Common */
+"Skip" = "Skip";
+"Continue" = "Continue";
+"Get Started" = "Get Started";
+"Done" = "Done";
+"Cancel" = "Cancel";
+"Save" = "Save";
+"Close" = "Close";
+
+/* Navigation */
+"FocusFlow" = "FocusFlow";
+"Settings" = "Settings";
+"Start Focus" = "Start Focus";
+
+/* Onboarding */
+"Deep focus, unblocked." = "Deep focus, unblocked.";
+"Pomodoro 25, deep 45, marathon 90. Pick your length and start." = "Pomodoro 25, deep 45, marathon 90. Pick your length and start.";
+"Auto Do Not Disturb." = "Auto Do Not Disturb.";
+"Pro: app auto-toggles iOS Focus filter when session starts. No more dings." = "Pro: app auto-toggles iOS Focus filter when session starts. No more dings.";
+"$3.99 once. No sub." = "$3.99 once. No sub.";
+"Pro: unlimited sessions, full history, project tags, Apple Watch, widget." = "Pro: unlimited sessions, full history, project tags, Apple Watch, widget.";
+
+/* Main screen */
+"Ready to focus" = "Ready to focus";
+"Start Session" = "Start Session";
+"Today" = "Today";
+
+/* Sessions */
+"Preset" = "Preset";
+"Length" = "Length";
+"Label" = "Label";
+"e.g. Coding, Writing" = "e.g. Coding, Writing";
+"Tag (optional, e.g. project-x)" = "Tag (optional, e.g. project-x)";
+"Start" = "Start";
+"Focus" = "Focus";
+
+/* Settings */
+"Language" = "Language";
+"System default" = "System default";
+"About" = "About";
+"Version" = "Version";
+"Build" = "Build";
+"Privacy Policy" = "Privacy Policy";
+"Terms of Use" = "Terms of Use";
+"No data collected. Ever." = "No data collected. Ever.";
+"Total stats" = "Total stats";
+"Total sessions" = "Total sessions";
+"Total time" = "Total time";
+
+/* Premium */
+"Premium" = "Premium";
+"Pro unlocked" = "Pro unlocked";
+"Free tier" = "Free tier";
+"Unlock Pro" = "Unlock Pro";
+"Restore Purchases" = "Restore Purchases";
+"Restore Purchase" = "Restore Purchase";
+"FocusFlow Pro" = "FocusFlow Pro";
+"One-time purchase. No subscription. Unlock everything forever." = "One-time purchase. No subscription. Unlock everything forever.";
+"Processing…" = "Processing…";

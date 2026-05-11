@@ -1,0 +1,61 @@
+/* FocusFlow — Español (es) */
+
+/* Common */
+"Skip" = "Omitir";
+"Continue" = "Continuar";
+"Get Started" = "Comenzar";
+"Done" = "Hecho";
+"Cancel" = "Cancelar";
+"Save" = "Guardar";
+"Close" = "Cerrar";
+
+/* Navigation */
+"FocusFlow" = "FocusFlow";
+"Settings" = "Ajustes";
+"Start Focus" = "Iniciar enfoque";
+
+/* Onboarding */
+"Deep focus, unblocked." = "Concentración profunda, sin bloqueos.";
+"Pomodoro 25, deep 45, marathon 90. Pick your length and start." = "Pomodoro 25, profundo 45, maratón 90. Elige la duración y empieza.";
+"Auto Do Not Disturb." = "No molestar automático.";
+"Pro: app auto-toggles iOS Focus filter when session starts. No more dings." = "Pro: la app activa el filtro de Concentración de iOS al iniciar la sesión. Adiós a las notificaciones.";
+"$3.99 once. No sub." = "$3,99 una vez. Sin suscripción.";
+"Pro: unlimited sessions, full history, project tags, Apple Watch, widget." = "Pro: sesiones ilimitadas, historial completo, etiquetas de proyecto, Apple Watch, widget.";
+
+/* Main screen */
+"Ready to focus" = "¿Listo para concentrarte?";
+"Start Session" = "Iniciar sesión";
+"Today" = "Hoy";
+
+/* Sessions */
+"Preset" = "Ajuste";
+"Length" = "Duración";
+"Label" = "Etiqueta";
+"e.g. Coding, Writing" = "Ej.: Programar, Escribir";
+"Tag (optional, e.g. project-x)" = "Etiqueta (opcional, ej.: project-x)";
+"Start" = "Empezar";
+"Focus" = "Enfoque";
+
+/* Settings */
+"Language" = "Idioma";
+"System default" = "Predeterminado del sistema";
+"About" = "Acerca de";
+"Version" = "Versión";
+"Build" = "Compilación";
+"Privacy Policy" = "Política de privacidad";
+"Terms of Use" = "Términos de uso";
+"No data collected. Ever." = "Cero recopilación de datos. Siempre.";
+"Total stats" = "Estadísticas totales";
+"Total sessions" = "Sesiones totales";
+"Total time" = "Tiempo total";
+
+/* Premium */
+"Premium" = "Premium";
+"Pro unlocked" = "Pro desbloqueado";
+"Free tier" = "Plan gratuito";
+"Unlock Pro" = "Desbloquear Pro";
+"Restore Purchases" = "Restaurar compras";
+"Restore Purchase" = "Restaurar compra";
+"FocusFlow Pro" = "FocusFlow Pro";
+"One-time purchase. No subscription. Unlock everything forever." = "Compra única. Sin suscripción. Desbloquea todo para siempre.";
+"Processing…" = "Procesando…";
