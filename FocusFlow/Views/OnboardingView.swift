@@ -9,17 +9,19 @@ struct OnboardingView: View {
     var body: some View {
         VStack(spacing: 0) {
             // Always-visible Skip in top-right so users can exit onboarding from any page.
+            // Hit area ≥ 44×44pt per Apple HIG (feedback_app_ux_standards P0).
             HStack {
                 Spacer()
                 Button(action: dismissOnboarding) {
                     Text(LocalizedStringKey("Skip"))
                         .font(.system(size: 16, weight: .medium))
                         .foregroundStyle(Color.accentColor)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 10)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 14)
+                        .frame(minWidth: 60, minHeight: 44)
                         .contentShape(Rectangle())
                 }
-                .accessibilityLabel(Text(LocalizedStringKey("Skip")))
+                .accessibilityLabel(Text(LocalizedStringKey("Skip onboarding")))
             }
             .padding(.top, 8)
             .padding(.horizontal, 8)
