@@ -13,6 +13,8 @@
 "FocusFlow" = "FocusFlow";
 "Settings" = "Ajustes";
 "Start Focus" = "Iniciar enfoque";
+"Analytics" = "Estadísticas";
+"Pro" = "Pro";
 
 /* Onboarding */
 "Deep focus, unblocked." = "Concentración profunda, sin bloqueos.";
@@ -26,15 +28,57 @@
 "Ready to focus" = "¿Listo para concentrarte?";
 "Start Session" = "Iniciar sesión";
 "Today" = "Hoy";
+"Duration" = "Duración";
+"Start" = "Empezar";
+"Pause" = "Pausar";
+"Resume" = "Reanudar";
+"Stop" = "Detener";
+"Focusing" = "Concentrado";
+"Paused" = "En pausa";
+"Recent Sessions" = "Sesiones recientes";
+"sessions today" = "sesiones hoy";
 
-/* Sessions */
+/* Presets */
+"25 min" = "25 min";
+"50 min" = "50 min";
+"90 min" = "90 min";
+"Custom" = "Personalizado";
+"Custom Duration" = "Duración personalizada";
+"minutes" = "minutos";
+"Adjust duration" = "Ajustar duración";
+
+/* Sessions (legacy + new) */
 "Preset" = "Ajuste";
 "Length" = "Duración";
 "Label" = "Etiqueta";
 "e.g. Coding, Writing" = "Ej.: Programar, Escribir";
 "Tag (optional, e.g. project-x)" = "Etiqueta (opcional, ej.: project-x)";
-"Start" = "Empezar";
 "Focus" = "Enfoque";
+
+/* Tag picker */
+"Pick a tag" = "Elige una etiqueta";
+"No tag" = "Sin etiqueta";
+"Focus complete!" = "¡Sesión completada!";
+"Tag this session so you can see where your time went." = "Etiqueta esta sesión para ver en qué inviertes tu tiempo.";
+"Add tag" = "Añadir etiqueta";
+"Tag name" = "Nombre de la etiqueta";
+"Name" = "Nombre";
+"Emoji" = "Emoji";
+"Color" = "Color";
+"More tags with Pro" = "Más etiquetas con Pro";
+
+/* Default tag names */
+"Work" = "Trabajo";
+"Writing" = "Escritura";
+"Learning" = "Aprendizaje";
+"Personal" = "Personal";
+
+/* Analytics */
+"This Week" = "Esta semana";
+"Total focus this week" = "Tiempo total esta semana";
+"Focus minutes per day" = "Minutos de enfoque por día";
+"Minutes by tag" = "Minutos por etiqueta";
+"No focus sessions yet this week." = "Aún no hay sesiones esta semana.";
 
 /* Settings */
 "Language" = "Idioma";

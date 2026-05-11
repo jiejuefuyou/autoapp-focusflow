@@ -13,6 +13,8 @@
 "FocusFlow" = "FocusFlow";
 "Settings" = "設定";
 "Start Focus" = "開始專注";
+"Analytics" = "分析";
+"Pro" = "Pro";
 
 /* Onboarding */
 "Deep focus, unblocked." = "心無旁騖,深度專注。";
@@ -26,15 +28,57 @@
 "Ready to focus" = "準備好專注了嗎";
 "Start Session" = "開始工作階段";
 "Today" = "今天";
+"Duration" = "時長";
+"Start" = "開始";
+"Pause" = "暫停";
+"Resume" = "繼續";
+"Stop" = "停止";
+"Focusing" = "專注中";
+"Paused" = "已暫停";
+"Recent Sessions" = "最近的工作階段";
+"sessions today" = "次(今天)";
 
-/* Sessions */
+/* Presets */
+"25 min" = "25 分鐘";
+"50 min" = "50 分鐘";
+"90 min" = "90 分鐘";
+"Custom" = "自訂";
+"Custom Duration" = "自訂時長";
+"minutes" = "分鐘";
+"Adjust duration" = "調整時長";
+
+/* Sessions (legacy + new) */
 "Preset" = "預設";
 "Length" = "時長";
 "Label" = "標籤";
 "e.g. Coding, Writing" = "例如:程式設計、寫作";
 "Tag (optional, e.g. project-x)" = "標籤(選填,例如:project-x)";
-"Start" = "開始";
 "Focus" = "專注";
+
+/* Tag picker */
+"Pick a tag" = "選擇標籤";
+"No tag" = "無標籤";
+"Focus complete!" = "專注完成!";
+"Tag this session so you can see where your time went." = "為此次工作階段加上標籤,清楚看見時間花在哪裡。";
+"Add tag" = "新增標籤";
+"Tag name" = "標籤名稱";
+"Name" = "名稱";
+"Emoji" = "表情符號";
+"Color" = "顏色";
+"More tags with Pro" = "升級 Pro 解鎖更多標籤";
+
+/* Default tag names */
+"Work" = "工作";
+"Writing" = "寫作";
+"Learning" = "學習";
+"Personal" = "個人";
+
+/* Analytics */
+"This Week" = "本週";
+"Total focus this week" = "本週專注總時長";
+"Focus minutes per day" = "每日專注時長(分鐘)";
+"Minutes by tag" = "依標籤分類的時長(分鐘)";
+"No focus sessions yet this week." = "本週尚無專注紀錄。";
 
 /* Settings */
 "Language" = "語言";

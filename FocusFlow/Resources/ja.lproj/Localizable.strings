@@ -13,6 +13,8 @@
 "FocusFlow" = "FocusFlow";
 "Settings" = "設定";
 "Start Focus" = "集中を始める";
+"Analytics" = "分析";
+"Pro" = "Pro";
 
 /* Onboarding */
 "Deep focus, unblocked." = "深い集中を、邪魔されずに。";
@@ -26,15 +28,57 @@
 "Ready to focus" = "集中する準備はいい?";
 "Start Session" = "セッションを開始";
 "Today" = "今日";
+"Duration" = "時間";
+"Start" = "開始";
+"Pause" = "一時停止";
+"Resume" = "再開";
+"Stop" = "停止";
+"Focusing" = "集中中";
+"Paused" = "一時停止中";
+"Recent Sessions" = "最近のセッション";
+"sessions today" = "セッション(今日)";
 
-/* Sessions */
+/* Presets */
+"25 min" = "25 分";
+"50 min" = "50 分";
+"90 min" = "90 分";
+"Custom" = "カスタム";
+"Custom Duration" = "カスタム時間";
+"minutes" = "分";
+"Adjust duration" = "時間を調整";
+
+/* Sessions (legacy + new) */
 "Preset" = "プリセット";
 "Length" = "長さ";
 "Label" = "ラベル";
 "e.g. Coding, Writing" = "例:コーディング、ライティング";
 "Tag (optional, e.g. project-x)" = "タグ(任意、例:project-x)";
-"Start" = "開始";
 "Focus" = "集中";
+
+/* Tag picker */
+"Pick a tag" = "タグを選択";
+"No tag" = "タグなし";
+"Focus complete!" = "集中完了!";
+"Tag this session so you can see where your time went." = "このセッションにタグを付けて、時間の使い道を可視化しましょう。";
+"Add tag" = "タグを追加";
+"Tag name" = "タグ名";
+"Name" = "名前";
+"Emoji" = "絵文字";
+"Color" = "色";
+"More tags with Pro" = "Pro でタグを増やす";
+
+/* Default tag names */
+"Work" = "仕事";
+"Writing" = "執筆";
+"Learning" = "学習";
+"Personal" = "プライベート";
+
+/* Analytics */
+"This Week" = "今週";
+"Total focus this week" = "今週の集中時間";
+"Focus minutes per day" = "日別の集中時間(分)";
+"Minutes by tag" = "タグ別の集中時間(分)";
+"No focus sessions yet this week." = "今週はまだセッションがありません。";
 
 /* Settings */
 "Language" = "言語";

@@ -1,22 +1,52 @@
 import Foundation
 import Observation
+import SwiftUI
 
+/// Single source of truth for the focus timer state + persisted history + tags.
+///
+/// v1 persists to `UserDefaults` as JSON. SwiftData was considered and rejected
+/// for this scope — schema migration risk outweighs the ergonomic gain at the
+/// session counts we expect (≤ a few thousand entries before the user upgrades
+/// to Premium which surfaces full history). When history outgrows
+/// UserDefaults' ~4 MB practical ceiling we revisit.
 @MainActor
 @Observable
 final class SessionStore {
+    /// Free-tier per-day session cap. Premium = unlimited.
     static let freeDailySessionLimit = 5
 
-    var history: [FocusSession] = []
+    /// Free tier sees only the first N default tags.
+    static let freeTagLimit = 3
+
+    // MARK: - Persisted state
+
+    private(set) var history: [FocusSession] = []
+    private(set) var tags: [ProjectTag] = []
+
+    // MARK: - Transient timer state
+
     var currentSession: FocusSession?
     var timeRemaining: TimeInterval = 0
     var isRunning: Bool = false
 
+    /// True after `complete()` fires; ContentView watches this to present the
+    /// ProjectTagPicker sheet. Caller is expected to clear it via `assignTag`
+    /// or `dismissPendingTag`.
+    var pendingTagAssignmentSessionId: UUID?
+
     private var timer: Timer?
-    private let storageKey = "focusflow.history.v1"
+
+    // MARK: - Storage keys
+
+    private let historyKey = "focusflow.history.v2"
+    private let tagsKey = "focusflow.tags.v1"
 
     init() {
-        load()
+        loadTags()
+        loadHistory()
     }
+
+    // MARK: - Free tier helpers
 
     /// Sessions started today (used for free tier limit).
     func sessionsToday() -> Int {
@@ -25,74 +55,200 @@ final class SessionStore {
         return history.filter { cal.startOfDay(for: $0.startedAt) == today }.count
     }
 
-    func startSession(preset: FocusPreset, label: String, tag: String? = nil) {
-        let session = FocusSession(duration: preset.seconds, label: label, tag: tag)
+    /// Tags the user is allowed to pick on the current tier.
+    func availableTags(isPremium: Bool) -> [ProjectTag] {
+        if isPremium { return tags }
+        return Array(tags.prefix(Self.freeTagLimit))
+    }
+
+    // MARK: - Timer control
+
+    /// Starts a session with an arbitrary duration in seconds. Caller is
+    /// responsible for Premium gating on `.custom` durations.
+    func startSession(duration: TimeInterval, tagId: UUID? = nil) {
+        guard duration > 0 else { return }
+        cancelTimer()
+        let session = FocusSession(
+            duration: duration,
+            actualDuration: 0,
+            tagId: tagId
+        )
         currentSession = session
-        timeRemaining = preset.seconds
+        timeRemaining = duration
         isRunning = true
-        timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            Task { @MainActor [weak self] in
-                guard let self else { return }
-                self.timeRemaining -= 1
-                if self.timeRemaining <= 0 {
-                    self.complete()
-                }
-            }
-        }
+        scheduleTick()
+    }
+
+    /// Convenience wrapper for preset taps. `.custom` is a no-op here —
+    /// PresetPicker must route the user to `startSession(duration:...)` with
+    /// the explicit value from the custom-duration sheet.
+    func startSession(preset: FocusPreset, tagId: UUID? = nil) {
+        guard preset != .custom else { return }
+        startSession(duration: preset.seconds, tagId: tagId)
     }
 
     func pause() {
-        timer?.invalidate()
-        timer = nil
+        guard isRunning else { return }
+        cancelTimer()
         isRunning = false
     }
 
     func resume() {
-        guard !isRunning, currentSession != nil else { return }
+        guard !isRunning, currentSession != nil, timeRemaining > 0 else { return }
         isRunning = true
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            Task { @MainActor [weak self] in
-                guard let self else { return }
-                self.timeRemaining -= 1
-                if self.timeRemaining <= 0 {
-                    self.complete()
-                }
-            }
-        }
+        scheduleTick()
     }
 
     func cancel() {
-        timer?.invalidate()
-        timer = nil
-        isRunning = false
+        cancelTimer()
         currentSession = nil
         timeRemaining = 0
+        isRunning = false
     }
 
+    /// Called automatically when `timeRemaining` reaches 0.
     func complete() {
-        timer?.invalidate()
-        timer = nil
+        cancelTimer()
         isRunning = false
         guard var session = currentSession else { return }
         session.completed = true
+        session.completedAt = Date()
+        session.actualDuration = session.duration
         history.append(session)
+        pendingTagAssignmentSessionId = session.id
         currentSession = nil
         timeRemaining = 0
-        persist()
+        persistHistory()
     }
 
-    private func persist() {
-        if let data = try? JSONEncoder().encode(history) {
-            UserDefaults.standard.set(data, forKey: storageKey)
+    /// Assigns a tag to the just-completed session and clears the pending flag.
+    func assignTag(_ tagId: UUID?, toSessionId sessionId: UUID) {
+        guard let idx = history.firstIndex(where: { $0.id == sessionId }) else {
+            pendingTagAssignmentSessionId = nil
+            return
         }
+        history[idx].tagId = tagId
+        pendingTagAssignmentSessionId = nil
+        persistHistory()
     }
 
-    private func load() {
-        guard let data = UserDefaults.standard.data(forKey: storageKey),
+    /// Dismisses the tag-picker sheet without choosing a tag.
+    func dismissPendingTag() {
+        pendingTagAssignmentSessionId = nil
+    }
+
+    // MARK: - Tag CRUD
+
+    func addTag(_ tag: ProjectTag) {
+        guard !tags.contains(where: { $0.id == tag.id }) else { return }
+        tags.append(tag)
+        persistTags()
+    }
+
+    func deleteTag(_ tag: ProjectTag) {
+        tags.removeAll { $0.id == tag.id }
+        persistTags()
+    }
+
+    func tag(forId id: UUID) -> ProjectTag? {
+        tags.first { $0.id == id }
+    }
+
+    // MARK: - Analytics helpers
+
+    /// Returns total focus minutes per calendar day for the last 7 days
+    /// (oldest first, today last).
+    func dailyMinutesLast7Days() -> [DailyMinutes] {
+        let cal = Calendar.current
+        let today = cal.startOfDay(for: Date())
+        var out: [DailyMinutes] = []
+        for offset in stride(from: -6, through: 0, by: 1) {
+            guard let day = cal.date(byAdding: .day, value: offset, to: today) else { continue }
+            let nextDay = cal.date(byAdding: .day, value: 1, to: day) ?? day
+            let total = history
+                .filter { $0.completed && $0.startedAt >= day && $0.startedAt < nextDay }
+                .reduce(0.0) { $0 + $1.actualDuration }
+            out.append(DailyMinutes(date: day, minutes: total / 60.0))
+        }
+        return out
+    }
+
+    /// Returns focus minutes by tag for the last 7 days. Untagged sessions are
+    /// aggregated under `nil` tag id.
+    func minutesByTagLast7Days() -> [TagMinutes] {
+        let cal = Calendar.current
+        let today = cal.startOfDay(for: Date())
+        guard let weekStart = cal.date(byAdding: .day, value: -6, to: today) else { return [] }
+        var totals: [UUID?: TimeInterval] = [:]
+        for s in history where s.completed && s.startedAt >= weekStart {
+            totals[s.tagId, default: 0] += s.actualDuration
+        }
+        return totals.map { TagMinutes(tagId: $0.key, minutes: $0.value / 60.0) }
+            .sorted { $0.minutes > $1.minutes }
+    }
+
+    // MARK: - Persistence (UserDefaults Codable JSON)
+
+    private func persistHistory() {
+        guard let data = try? JSONEncoder().encode(history) else { return }
+        UserDefaults.standard.set(data, forKey: historyKey)
+    }
+
+    private func loadHistory() {
+        guard let data = UserDefaults.standard.data(forKey: historyKey),
               let decoded = try? JSONDecoder().decode([FocusSession].self, from: data) else {
             return
         }
         history = decoded
     }
+
+    private func persistTags() {
+        guard let data = try? JSONEncoder().encode(tags) else { return }
+        UserDefaults.standard.set(data, forKey: tagsKey)
+    }
+
+    private func loadTags() {
+        if let data = UserDefaults.standard.data(forKey: tagsKey),
+           let decoded = try? JSONDecoder().decode([ProjectTag].self, from: data),
+           !decoded.isEmpty {
+            tags = decoded
+            return
+        }
+        // First launch — seed defaults.
+        tags = ProjectTag.defaults
+        persistTags()
+    }
+
+    // MARK: - Timer plumbing
+
+    private func scheduleTick() {
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                self.timeRemaining = max(0, self.timeRemaining - 1)
+                if self.timeRemaining <= 0 {
+                    self.complete()
+                }
+            }
+        }
+    }
+
+    private func cancelTimer() {
+        timer?.invalidate()
+        timer = nil
+    }
+}
+
+// MARK: - Analytics row types
+
+struct DailyMinutes: Identifiable, Hashable {
+    var id: Date { date }
+    let date: Date
+    let minutes: Double
+}
+
+struct TagMinutes: Identifiable, Hashable {
+    var id: String { tagId?.uuidString ?? "untagged" }
+    let tagId: UUID?
+    let minutes: Double
 }

@@ -13,6 +13,8 @@
 "FocusFlow" = "FocusFlow";
 "Settings" = "설정";
 "Start Focus" = "집중 시작";
+"Analytics" = "분석";
+"Pro" = "Pro";
 
 /* Onboarding */
 "Deep focus, unblocked." = "방해 없는 깊은 몰입.";
@@ -26,15 +28,57 @@
 "Ready to focus" = "집중할 준비 되셨나요";
 "Start Session" = "세션 시작";
 "Today" = "오늘";
+"Duration" = "시간";
+"Start" = "시작";
+"Pause" = "일시정지";
+"Resume" = "재개";
+"Stop" = "정지";
+"Focusing" = "집중 중";
+"Paused" = "일시정지됨";
+"Recent Sessions" = "최근 세션";
+"sessions today" = "회 (오늘)";
 
-/* Sessions */
+/* Presets */
+"25 min" = "25분";
+"50 min" = "50분";
+"90 min" = "90분";
+"Custom" = "사용자 지정";
+"Custom Duration" = "사용자 지정 시간";
+"minutes" = "분";
+"Adjust duration" = "시간 조정";
+
+/* Sessions (legacy + new) */
 "Preset" = "프리셋";
 "Length" = "길이";
 "Label" = "라벨";
 "e.g. Coding, Writing" = "예: 코딩, 글쓰기";
 "Tag (optional, e.g. project-x)" = "태그 (선택, 예: project-x)";
-"Start" = "시작";
 "Focus" = "집중";
+
+/* Tag picker */
+"Pick a tag" = "태그 선택";
+"No tag" = "태그 없음";
+"Focus complete!" = "집중 완료!";
+"Tag this session so you can see where your time went." = "이 세션에 태그를 추가해 시간이 어디로 갔는지 확인해 보세요.";
+"Add tag" = "태그 추가";
+"Tag name" = "태그 이름";
+"Name" = "이름";
+"Emoji" = "이모지";
+"Color" = "색상";
+"More tags with Pro" = "Pro로 더 많은 태그 잠금 해제";
+
+/* Default tag names */
+"Work" = "업무";
+"Writing" = "글쓰기";
+"Learning" = "학습";
+"Personal" = "개인";
+
+/* Analytics */
+"This Week" = "이번 주";
+"Total focus this week" = "이번 주 총 집중 시간";
+"Focus minutes per day" = "요일별 집중 시간 (분)";
+"Minutes by tag" = "태그별 집중 시간 (분)";
+"No focus sessions yet this week." = "이번 주에는 아직 집중 세션이 없습니다.";
 
 /* Settings */
 "Language" = "언어";

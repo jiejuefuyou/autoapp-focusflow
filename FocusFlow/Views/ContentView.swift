@@ -1,208 +1,186 @@
 import SwiftUI
+import UIKit
+import AudioToolbox
 
 struct ContentView: View {
     @Environment(IAPManager.self) private var iap
     @Environment(SessionStore.self) private var store
 
-    @State private var showStartSheet = false
+    @State private var selectedPreset: FocusPreset = .short25
+    @State private var customDurationSeconds: TimeInterval = 30 * 60
+
     @State private var showSettings = false
     @State private var showPaywall = false
+    @State private var showAnalytics = false
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 24) {
-                if let session = store.currentSession {
-                    activeView(session: session)
-                } else {
-                    idleView
+            ScrollView {
+                VStack(spacing: 28) {
+                    presetSection
+                    TimerView(placeholderDuration: plannedDuration)
+                    startButton
+                    if !store.history.isEmpty {
+                        recentSessions
+                    }
                 }
+                .padding()
             }
-            .padding()
-            .navigationTitle("FocusFlow")
+            .navigationTitle(Text(LocalizedStringKey("FocusFlow")))
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button { showSettings = true } label: { Image(systemName: "gear") }
+                    Button { showSettings = true } label: {
+                        Image(systemName: "gear")
+                    }
+                    .accessibilityLabel(Text(LocalizedStringKey("Settings")))
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    Button { showAnalytics = true } label: {
+                        Image(systemName: "chart.bar.fill")
+                    }
+                    .accessibilityLabel(Text(LocalizedStringKey("Analytics")))
+
                     if !iap.isPremium {
                         Button { showPaywall = true } label: {
-                            Label("Pro", systemImage: "sparkles").font(.caption.bold())
+                            Label(LocalizedStringKey("Pro"), systemImage: "sparkles")
+                                .font(.caption.bold())
                         }
                     }
                 }
             }
-            .sheet(isPresented: $showStartSheet) {
-                StartSessionSheet { preset, label, tag in
-                    if !iap.isPremium && store.sessionsToday() >= SessionStore.freeDailySessionLimit {
-                        showPaywall = true
-                        return
-                    }
-                    store.startSession(preset: preset, label: label, tag: tag)
-                }
-            }
             .sheet(isPresented: $showSettings) { SettingsView() }
             .sheet(isPresented: $showPaywall) { PaywallView() }
+            .navigationDestination(isPresented: $showAnalytics) {
+                WeeklyAnalyticsView()
+            }
+            .sheet(item: tagPickerItemBinding) { pending in
+                ProjectTagPicker(sessionId: pending.id)
+                    .onAppear { triggerCompletionFeedback() }
+            }
         }
     }
 
-    private var idleView: some View {
-        VStack(spacing: 24) {
-            Image(systemName: "brain.head.profile")
-                .font(.system(size: 60))
-                .foregroundStyle(.tint)
+    // MARK: - Sections
 
-            Text("Ready to focus")
-                .font(.title2.bold())
+    private var presetSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(LocalizedStringKey("Duration"))
+                .font(.headline)
+            PresetPicker(
+                selection: $selectedPreset,
+                customDurationSeconds: $customDurationSeconds,
+                onPremiumGated: { showPaywall = true },
+                disabled: store.currentSession != nil
+            )
 
             if !iap.isPremium {
-                Text("Free: \(store.sessionsToday()) / \(SessionStore.freeDailySessionLimit) sessions today")
+                Text("\(store.sessionsToday()) / \(SessionStore.freeDailySessionLimit) \(String(localized: "sessions today"))")
                     .font(.caption)
                     .foregroundStyle(.secondary)
-            }
-
-            Button {
-                if !iap.isPremium && store.sessionsToday() >= SessionStore.freeDailySessionLimit {
-                    showPaywall = true
-                } else {
-                    showStartSheet = true
-                }
-            } label: {
-                Label("Start Session", systemImage: "play.circle.fill")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 16))
-                    .foregroundStyle(.white)
-            }
-            .padding(.horizontal)
-
-            if !store.history.isEmpty {
-                Spacer().frame(height: 16)
-                recentSessions
             }
         }
     }
 
     @ViewBuilder
-    private func activeView(session: FocusSession) -> some View {
-        VStack(spacing: 24) {
-            Text(session.label)
-                .font(.title.bold())
-            if let tag = session.tag {
-                Text("#\(tag)")
-                    .font(.caption)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(.tint.opacity(0.15), in: Capsule())
+    private var startButton: some View {
+        if store.currentSession == nil {
+            Button {
+                handleStart()
+            } label: {
+                Label(LocalizedStringKey("Start"), systemImage: "play.fill")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity, minHeight: 48)
             }
-
-            Text(formatTime(store.timeRemaining))
-                .font(.system(size: 64, weight: .heavy, design: .rounded).monospacedDigit())
-                .foregroundStyle(.tint)
-
-            HStack(spacing: 24) {
-                Button(role: .destructive) {
-                    store.cancel()
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: 44))
-                }
-
-                if store.isRunning {
-                    Button {
-                        store.pause()
-                    } label: {
-                        Image(systemName: "pause.circle.fill")
-                            .font(.system(size: 60))
-                    }
-                } else {
-                    Button {
-                        store.resume()
-                    } label: {
-                        Image(systemName: "play.circle.fill")
-                            .font(.system(size: 60))
-                    }
-                }
-            }
+            .buttonStyle(.borderedProminent)
+            .disabled(!canStart)
         }
-        .padding()
     }
 
     private var recentSessions: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Today")
+            Text(LocalizedStringKey("Recent Sessions"))
                 .font(.headline)
-            ForEach(todaysSessions) { session in
-                HStack {
-                    Image(systemName: session.completed ? "checkmark.circle.fill" : "clock")
-                        .foregroundStyle(session.completed ? .green : .orange)
-                    Text(session.label)
+
+            ForEach(recentSlice) { session in
+                HStack(spacing: 12) {
+                    Image(systemName: session.completed ? "checkmark.circle.fill" : "xmark.circle")
+                        .foregroundStyle(session.completed ? .green : .secondary)
+
+                    if let id = session.tagId, let tag = store.tag(forId: id) {
+                        Text(tag.emoji)
+                        Text(tag.displayName)
+                            .lineLimit(1)
+                    } else {
+                        Text(LocalizedStringKey("No tag"))
+                            .foregroundStyle(.secondary)
+                    }
+
                     Spacer()
-                    Text("\(Int(session.duration / 60)) min")
+
+                    Text(durationLabel(seconds: session.actualDuration > 0 ? session.actualDuration : session.duration))
                         .font(.caption.monospaced())
                         .foregroundStyle(.secondary)
                 }
+                .padding(.vertical, 8)
+                .padding(.horizontal, 12)
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 10))
             }
         }
-        .padding()
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
     }
 
-    private var todaysSessions: [FocusSession] {
-        let cal = Calendar.current
-        let today = cal.startOfDay(for: Date())
-        return store.history.filter { cal.startOfDay(for: $0.startedAt) == today }.reversed()
+    // MARK: - Helpers
+
+    private var plannedDuration: TimeInterval {
+        switch selectedPreset {
+        case .custom: return customDurationSeconds
+        default:      return selectedPreset.seconds
+        }
     }
 
-    private func formatTime(_ s: TimeInterval) -> String {
-        let mins = Int(s) / 60
-        let secs = Int(s) % 60
-        return String(format: "%d:%02d", mins, secs)
+    private var canStart: Bool {
+        plannedDuration > 0
+    }
+
+    private var recentSlice: [FocusSession] {
+        Array(store.history.suffix(5).reversed())
+    }
+
+    private var tagPickerItemBinding: Binding<PendingTagItem?> {
+        Binding(
+            get: {
+                store.pendingTagAssignmentSessionId.map(PendingTagItem.init)
+            },
+            set: { newValue in
+                if newValue == nil {
+                    store.dismissPendingTag()
+                }
+            }
+        )
+    }
+
+    private func handleStart() {
+        // Free tier daily limit check.
+        if !iap.isPremium && store.sessionsToday() >= SessionStore.freeDailySessionLimit {
+            showPaywall = true
+            return
+        }
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        store.startSession(duration: plannedDuration)
+    }
+
+    private func durationLabel(seconds: TimeInterval) -> String {
+        let m = Int(seconds / 60)
+        return "\(m) min"
+    }
+
+    /// Apple's stock "tri-tone" alert + haptic.
+    private func triggerCompletionFeedback() {
+        AudioServicesPlaySystemSound(1025)
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
     }
 }
 
-// MARK: - StartSessionSheet
-
-struct StartSessionSheet: View {
-    @Environment(\.dismiss) private var dismiss
-
-    @State private var label: String = ""
-    @State private var tag: String = ""
-    @State private var preset: FocusPreset = .pomodoro25
-
-    let onStart: (FocusPreset, String, String?) -> Void
-
-    var body: some View {
-        NavigationStack {
-            Form {
-                Section("Preset") {
-                    Picker("Length", selection: $preset) {
-                        ForEach(FocusPreset.allCases) { p in
-                            Label(p.rawValue, systemImage: p.symbol).tag(p)
-                        }
-                    }
-                }
-                Section("Label") {
-                    TextField("e.g. Coding, Writing", text: $label)
-                    TextField("Tag (optional, e.g. project-x)", text: $tag)
-                        .textInputAutocapitalization(.never)
-                }
-            }
-            .navigationTitle("Start Focus")
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") { dismiss() }
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Start") {
-                        let trimmedLabel = label.trimmingCharacters(in: .whitespaces).isEmpty ? "Focus" : label
-                        let trimmedTag = tag.trimmingCharacters(in: .whitespaces)
-                        onStart(preset, trimmedLabel, trimmedTag.isEmpty ? nil : trimmedTag)
-                        dismiss()
-                    }
-                }
-            }
-        }
-    }
+/// Wraps a pending session id so `.sheet(item:)` can drive the tag picker.
+private struct PendingTagItem: Identifiable, Hashable {
+    let id: UUID
 }

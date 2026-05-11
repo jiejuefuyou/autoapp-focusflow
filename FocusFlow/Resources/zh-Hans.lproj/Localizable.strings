@@ -13,6 +13,8 @@
 "FocusFlow" = "FocusFlow";
 "Settings" = "设置";
 "Start Focus" = "开始专注";
+"Analytics" = "数据";
+"Pro" = "Pro";
 
 /* Onboarding */
 "Deep focus, unblocked." = "心无旁骛,深度专注。";
@@ -26,15 +28,57 @@
 "Ready to focus" = "准备好专注了吗";
 "Start Session" = "开始会话";
 "Today" = "今天";
+"Duration" = "时长";
+"Start" = "开始";
+"Pause" = "暂停";
+"Resume" = "继续";
+"Stop" = "停止";
+"Focusing" = "专注中";
+"Paused" = "已暂停";
+"Recent Sessions" = "最近的会话";
+"sessions today" = "次(今天)";
 
-/* Sessions */
+/* Presets */
+"25 min" = "25 分钟";
+"50 min" = "50 分钟";
+"90 min" = "90 分钟";
+"Custom" = "自定义";
+"Custom Duration" = "自定义时长";
+"minutes" = "分钟";
+"Adjust duration" = "调整时长";
+
+/* Sessions (legacy + new) */
 "Preset" = "预设";
 "Length" = "时长";
 "Label" = "标签";
 "e.g. Coding, Writing" = "例如:编程、写作";
 "Tag (optional, e.g. project-x)" = "标签(可选,例如:project-x)";
-"Start" = "开始";
 "Focus" = "专注";
+
+/* Tag picker */
+"Pick a tag" = "选择标签";
+"No tag" = "无标签";
+"Focus complete!" = "专注完成!";
+"Tag this session so you can see where your time went." = "给这次会话加个标签,清楚地看到时间花在了哪里。";
+"Add tag" = "添加标签";
+"Tag name" = "标签名称";
+"Name" = "名称";
+"Emoji" = "表情";
+"Color" = "颜色";
+"More tags with Pro" = "升级 Pro 解锁更多标签";
+
+/* Default tag names */
+"Work" = "工作";
+"Writing" = "写作";
+"Learning" = "学习";
+"Personal" = "个人";
+
+/* Analytics */
+"This Week" = "本周";
+"Total focus this week" = "本周专注总时长";
+"Focus minutes per day" = "每日专注时长(分钟)";
+"Minutes by tag" = "按标签划分的时长(分钟)";
+"No focus sessions yet this week." = "本周还没有专注记录。";
 
 /* Settings */
 "Language" = "语言";
