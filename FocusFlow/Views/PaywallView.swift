@@ -44,6 +44,7 @@ struct PaywallView: View {
                         feature("tag.fill",               LocalizedStringKey("Unlimited project tags with emoji + color"))
                         feature("slider.horizontal.3",   LocalizedStringKey("Custom session durations (any length)"))
                         feature("square.and.arrow.up",   LocalizedStringKey("Export session data to CSV"))
+                        feature("moon.fill",              LocalizedStringKey("Focus Filter — auto-start sessions when iOS Focus turns on"))
                     }
                     .padding()
                     .frame(maxWidth: .infinity, alignment: .leading)

@@ -113,6 +113,21 @@
 "Custom session durations (any length)" = "自由な時間設定(任意の長さで OK)";
 "Export session data to CSV" = "セッションデータを CSV に書き出し";
 
+/* Focus Filter — Settings section */
+"Focus Filter" = "集中フィルタ";
+"Focus Filter (iOS 17+)" = "集中フィルタ（iOS 17 以降）";
+"Auto-start a Pomodoro session when you turn on a Focus mode in iOS Settings. Customize the session length and project tag per Focus." = "iOS 設定で集中モードをオンにするたびに、ポモドーロセッションを自動開始します。集中モードごとに時間とプロジェクトタグをカスタマイズできます。";
+"Configure in iOS Settings" = "iOS 設定で設定する";
+
+/* Focus Filter — Intent parameter titles */
+"Default session length" = "デフォルトのセッション時間";
+"Auto-start session" = "セッションを自動開始";
+"Project tag" = "プロジェクトタグ";
+"Hide notifications" = "通知を非表示";
+
+/* Focus Filter — Paywall feature row */
+"Focus Filter — auto-start sessions when iOS Focus turns on" = "集中フィルタ — 集中モード開始時にセッションを自動スタート";
+
 /* Paywall — purchase state UI */
 "Purchase Issue" = "購入の問題";
 "OK" = "OK";

@@ -1,6 +1,7 @@
 import Foundation
 import Observation
 import SwiftUI
+import UserNotifications
 
 /// Single source of truth for the focus timer state + persisted history + tags.
 ///
@@ -85,6 +86,22 @@ final class SessionStore {
     func startSession(preset: FocusPreset, tagId: UUID? = nil) {
         guard preset != .custom else { return }
         startSession(duration: preset.seconds, tagId: tagId)
+    }
+
+    /// Called by the Focus Filter activation path in `FocusFlowApp`.
+    ///
+    /// Starts a session with the user's per-Focus preferences.
+    /// If `clearNotifications` is true, any pending FocusFlow notifications
+    /// are removed so the Focus mode isn't interrupted by stale reminders.
+    func startFocusFilterSession(
+        durationSeconds: TimeInterval,
+        tagId: UUID? = nil,
+        clearNotifications: Bool = false
+    ) {
+        if clearNotifications {
+            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        }
+        startSession(duration: max(durationSeconds, 60), tagId: tagId)
     }
 
     func pause() {

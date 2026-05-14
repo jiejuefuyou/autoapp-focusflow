@@ -113,6 +113,21 @@
 "Custom session durations (any length)" = "Durées de session personnalisées (toute longueur)";
 "Export session data to CSV" = "Exporter les données de sessions en CSV";
 
+/* Focus Filter — Settings section */
+"Focus Filter" = "Filtre de Concentration";
+"Focus Filter (iOS 17+)" = "Filtre de Concentration (iOS 17+)";
+"Auto-start a Pomodoro session when you turn on a Focus mode in iOS Settings. Customize the session length and project tag per Focus." = "Démarrez automatiquement une session Pomodoro lorsque vous activez un mode Concentration dans les Réglages iOS. Personnalisez la durée et le tag de projet par mode.";
+"Configure in iOS Settings" = "Configurer dans les Réglages iOS";
+
+/* Focus Filter — Intent parameter titles */
+"Default session length" = "Durée de session par défaut";
+"Auto-start session" = "Démarrage automatique";
+"Project tag" = "Tag de projet";
+"Hide notifications" = "Masquer les notifications";
+
+/* Focus Filter — Paywall feature row */
+"Focus Filter — auto-start sessions when iOS Focus turns on" = "Filtre de Concentration — démarrage automatique à l'activation de Concentration";
+
 /* Paywall — purchase state UI */
 "Purchase Issue" = "Problème d'achat";
 "OK" = "OK";

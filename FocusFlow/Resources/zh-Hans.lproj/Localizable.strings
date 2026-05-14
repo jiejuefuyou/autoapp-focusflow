@@ -113,6 +113,21 @@
 "Custom session durations (any length)" = "自定义专注时长(随意设定)";
 "Export session data to CSV" = "导出专注数据为 CSV";
 
+/* Focus Filter — Settings section */
+"Focus Filter" = "专注滤镜";
+"Focus Filter (iOS 17+)" = "专注滤镜（iOS 17 及以上）";
+"Auto-start a Pomodoro session when you turn on a Focus mode in iOS Settings. Customize the session length and project tag per Focus." = "在 iOS 设置中开启专注模式时，自动开始番茄钟。可为每种专注模式自定义时长和项目标签。";
+"Configure in iOS Settings" = "前往 iOS 设置配置";
+
+/* Focus Filter — Intent parameter titles */
+"Default session length" = "默认专注时长";
+"Auto-start session" = "自动开始专注";
+"Project tag" = "项目标签";
+"Hide notifications" = "隐藏通知";
+
+/* Focus Filter — Paywall feature row */
+"Focus Filter — auto-start sessions when iOS Focus turns on" = "专注滤镜 — 开启专注模式时自动开始计时";
+
 /* Paywall — purchase state UI */
 "Purchase Issue" = "购买问题";
 "OK" = "好的";

@@ -13,7 +13,7 @@ settings:
   base:
     SWIFT_VERSION: "5.9"
     MARKETING_VERSION: "1.0.0"
-    CURRENT_PROJECT_VERSION: "1"
+    CURRENT_PROJECT_VERSION: "2"
     DEVELOPMENT_TEAM: ""
     CODE_SIGN_STYLE: Manual
     ENABLE_USER_SCRIPT_SANDBOXING: "YES"
@@ -38,6 +38,27 @@ targets:
         INFOPLIST_KEY_UISupportedInterfaceOrientations: "UIInterfaceOrientationPortrait"
         TARGETED_DEVICE_FAMILY: "1,2"
         SUPPORTS_MACCATALYST: "NO"
+    dependencies:
+      - sdk: AppIntents.framework
+    entitlements:
+      path: FocusFlow/Resources/FocusFlow.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.jiejuefuyou.focusflow
+        com.apple.developer.applesignin: []
+
+  FocusFlowTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: FocusFlowTests
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jiejuefuyou.focusflow.tests
+        PRODUCT_NAME: FocusFlowTests
+    dependencies:
+      - target: FocusFlow
+
 schemes:
   FocusFlow:
     build:
@@ -47,3 +68,7 @@ schemes:
       config: Debug
     archive:
       config: Release
+    test:
+      config: Debug
+      targets:
+        - FocusFlowTests

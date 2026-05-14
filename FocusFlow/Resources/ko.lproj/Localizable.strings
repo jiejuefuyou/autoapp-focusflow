@@ -113,6 +113,21 @@
 "Custom session durations (any length)" = "맞춤 세션 시간 (원하는 길이로 설정)";
 "Export session data to CSV" = "세션 데이터를 CSV로 내보내기";
 
+/* Focus Filter — Settings section */
+"Focus Filter" = "집중 필터";
+"Focus Filter (iOS 17+)" = "집중 필터 (iOS 17 이상)";
+"Auto-start a Pomodoro session when you turn on a Focus mode in iOS Settings. Customize the session length and project tag per Focus." = "iOS 설정에서 집중 모드를 켤 때 포모도로 세션이 자동으로 시작됩니다. 집중 모드별로 세션 길이와 프로젝트 태그를 설정할 수 있습니다.";
+"Configure in iOS Settings" = "iOS 설정에서 구성하기";
+
+/* Focus Filter — Intent parameter titles */
+"Default session length" = "기본 세션 길이";
+"Auto-start session" = "세션 자동 시작";
+"Project tag" = "프로젝트 태그";
+"Hide notifications" = "알림 숨기기";
+
+/* Focus Filter — Paywall feature row */
+"Focus Filter — auto-start sessions when iOS Focus turns on" = "집중 필터 — iOS 집중 모드 활성화 시 세션 자동 시작";
+
 /* Paywall — purchase state UI */
 "Purchase Issue" = "구매 문제";
 "OK" = "확인";

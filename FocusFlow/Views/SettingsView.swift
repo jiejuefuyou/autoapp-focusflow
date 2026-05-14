@@ -31,6 +31,32 @@ struct SettingsView: View {
                     LanguagePicker()
                 }
 
+                Section(LocalizedStringKey("Focus Filter (iOS 17+)")) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack(spacing: 8) {
+                            Image(systemName: "moon.fill")
+                                .foregroundStyle(.tint)
+                            Text(LocalizedStringKey("Focus Filter"))
+                                .font(.headline)
+                        }
+                        Text(LocalizedStringKey("Auto-start a Pomodoro session when you turn on a Focus mode in iOS Settings. Customize the session length and project tag per Focus."))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Link(destination: URL(string: "App-prefs:Focus")!) {
+                            HStack {
+                                Text(LocalizedStringKey("Configure in iOS Settings"))
+                                Spacer()
+                                Image(systemName: "arrow.up.right.square")
+                            }
+                            .font(.subheadline)
+                            .foregroundStyle(.tint)
+                        }
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
+                    }
+                    .padding(.vertical, 4)
+                }
+
                 Section(LocalizedStringKey("Total stats")) {
                     LabeledContent(LocalizedStringKey("Total sessions"), value: "\(store.history.count)")
                     LabeledContent(LocalizedStringKey("Total time"), value: totalTimeFormatted)

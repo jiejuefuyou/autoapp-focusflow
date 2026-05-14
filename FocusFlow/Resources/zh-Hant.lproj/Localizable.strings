@@ -113,6 +113,21 @@
 "Custom session durations (any length)" = "自訂工作階段時長(任意長度)";
 "Export session data to CSV" = "將工作階段資料匯出為 CSV";
 
+/* Focus Filter — Settings section */
+"Focus Filter" = "專注濾鏡";
+"Focus Filter (iOS 17+)" = "專注濾鏡（iOS 17 及以上）";
+"Auto-start a Pomodoro session when you turn on a Focus mode in iOS Settings. Customize the session length and project tag per Focus." = "在 iOS 設定中開啟專注模式時，自動開始番茄鐘。可為每種專注模式自訂時長與專案標籤。";
+"Configure in iOS Settings" = "前往 iOS 設定配置";
+
+/* Focus Filter — Intent parameter titles */
+"Default session length" = "預設專注時長";
+"Auto-start session" = "自動開始專注";
+"Project tag" = "專案標籤";
+"Hide notifications" = "隱藏通知";
+
+/* Focus Filter — Paywall feature row */
+"Focus Filter — auto-start sessions when iOS Focus turns on" = "專注濾鏡 — 開啟專注模式時自動開始計時";
+
 /* Paywall — purchase state UI */
 "Purchase Issue" = "購買問題";
 "OK" = "好";
