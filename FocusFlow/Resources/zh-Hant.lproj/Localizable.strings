@@ -19,10 +19,10 @@
 /* Onboarding */
 "Deep focus, unblocked." = "心無旁騖,深度專注。";
 "Pomodoro 25, deep 45, marathon 90. Pick your length and start." = "番茄 25 分鐘、深度 45 分鐘、馬拉松 90 分鐘。選好時長就開始。";
-"Auto Do Not Disturb." = "自動開啟專注模式。";
-"Pro: app auto-toggles iOS Focus filter when session starts. No more dings." = "Pro 版:工作階段開始時自動切換 iOS 專注過濾器,擺脫通知聲。";
+"Track by project." = "按專案追蹤時間。";
+"Tag each session — Writing, Coding, Study — and see where your week actually went." = "為每次工作階段加上標籤——寫作、程式、學習——清楚看見這週的時間花在哪裡。";
 "$3.99 once. No sub." = "一次性 $3.99,無訂閱。";
-"Pro: unlimited sessions, full history, project tags, Apple Watch, widget." = "Pro 版:無限制工作階段、完整歷史記錄、專案標籤、Apple Watch、小工具。";
+"Pro: unlimited sessions, full history, unlimited project tags, custom durations, CSV export." = "Pro 版:無限工作階段、完整歷史記錄、無限專案標籤、自訂時長、CSV 匯出。";
 
 /* Main screen */
 "Ready to focus" = "準備好專注了嗎";
@@ -103,3 +103,23 @@
 "FocusFlow Pro" = "FocusFlow Pro";
 "One-time purchase. No subscription. Unlock everything forever." = "一次購買,無需訂閱。永久解鎖所有功能。";
 "Processing…" = "處理中…";
+"Support" = "客服支援";
+
+/* Paywall — feature rows */
+"Unlimited daily sessions" = "每日工作階段不限次數";
+"Full history — 7, 30, and 90 days" = "完整歷史記錄——7 天、30 天、90 天視圖";
+"Detailed analytics by project tag" = "依專案標籤細分的詳細分析";
+"Unlimited project tags with emoji + color" = "無限專案標籤(支援 emoji 與自訂顏色)";
+"Custom session durations (any length)" = "自訂工作階段時長(任意長度)";
+"Export session data to CSV" = "將工作階段資料匯出為 CSV";
+
+/* Paywall — purchase state UI */
+"Purchase Issue" = "購買問題";
+"OK" = "好";
+"Try Again" = "再試一次";
+"Purchase pending approval" = "購買待審核";
+"Purchase could not be verified. Tap Restore." = "無法驗證購買。請點選回復購買。";
+"Purchase cancelled." = "購買已取消。";
+"Purchase successful! Welcome to Pro." = "購買成功！歡迎使用 Pro 版。";
+"Product unavailable. Tap Restore or try again." = "商品暫不可用。請回復購買或再試一次。";
+"No subscription. No data collected. Ever." = "無訂閱。永不收集任何資料。";

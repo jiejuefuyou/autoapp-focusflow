@@ -32,6 +32,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.jiejuefuyou.focusflow
         PRODUCT_NAME: FocusFlow
         INFOPLIST_KEY_CFBundleDisplayName: FocusFlow
+        STOREKIT_CONFIGURATION: FocusFlow/Resources/StoreKitConfiguration.storekit
         INFOPLIST_KEY_UILaunchScreen_Generation: "YES"
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: "YES"
         INFOPLIST_KEY_UISupportedInterfaceOrientations: "UIInterfaceOrientationPortrait"

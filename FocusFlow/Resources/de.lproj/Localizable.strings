@@ -19,10 +19,10 @@
 /* Onboarding */
 "Deep focus, unblocked." = "Tiefe Konzentration, ungestört.";
 "Pomodoro 25, deep 45, marathon 90. Pick your length and start." = "Pomodoro 25, Deep 45, Marathon 90. Wähle deine Dauer und starte.";
-"Auto Do Not Disturb." = "Nicht stören automatisch.";
-"Pro: app auto-toggles iOS Focus filter when session starts. No more dings." = "Pro: Die App schaltet beim Sessionstart automatisch den iOS-Fokusfilter ein. Keine Pings mehr.";
+"Track by project." = "Nach Projekt erfassen.";
+"Tag each session — Writing, Coding, Study — and see where your week actually went." = "Versehe jede Session mit einem Tag — Schreiben, Coding, Lernen — und sieh, wo deine Woche wirklich geblieben ist.";
 "$3.99 once. No sub." = "3,99 $ einmalig. Kein Abo.";
-"Pro: unlimited sessions, full history, project tags, Apple Watch, widget." = "Pro: unbegrenzte Sessions, vollständiger Verlauf, Projekt-Tags, Apple Watch, Widget.";
+"Pro: unlimited sessions, full history, unlimited project tags, custom durations, CSV export." = "Pro: unbegrenzte Sessions, vollständiger Verlauf, unbegrenzte Projekt-Tags, individuelle Dauer, CSV-Export.";
 
 /* Main screen */
 "Ready to focus" = "Bereit, dich zu konzentrieren?";
@@ -103,3 +103,23 @@
 "FocusFlow Pro" = "FocusFlow Pro";
 "One-time purchase. No subscription. Unlock everything forever." = "Einmaliger Kauf. Kein Abo. Alle Funktionen für immer freigeschaltet.";
 "Processing…" = "Wird verarbeitet…";
+"Support" = "Support";
+
+/* Paywall — feature rows */
+"Unlimited daily sessions" = "Unbegrenzte tägliche Sessions";
+"Full history — 7, 30, and 90 days" = "Vollständiger Verlauf — 7-, 30- und 90-Tage-Ansicht";
+"Detailed analytics by project tag" = "Detaillierte Statistiken nach Projekt-Tag";
+"Unlimited project tags with emoji + color" = "Unbegrenzte Projekt-Tags (Emoji + Farbe)";
+"Custom session durations (any length)" = "Individuelle Session-Dauer (beliebige Länge)";
+"Export session data to CSV" = "Session-Daten als CSV exportieren";
+
+/* Paywall — purchase state UI */
+"Purchase Issue" = "Kaufproblem";
+"OK" = "OK";
+"Try Again" = "Erneut versuchen";
+"Purchase pending approval" = "Kauf wartet auf Genehmigung";
+"Purchase could not be verified. Tap Restore." = "Kauf konnte nicht verifiziert werden. Tippe auf Wiederherstellen.";
+"Purchase cancelled." = "Kauf abgebrochen.";
+"Purchase successful! Welcome to Pro." = "Kauf erfolgreich! Willkommen bei Pro.";
+"Product unavailable. Tap Restore or try again." = "Produkt nicht verfügbar. Stelle den Kauf wieder her oder versuche es erneut.";
+"No subscription. No data collected. Ever." = "Kein Abo. Keinerlei Datenerhebung. Niemals.";

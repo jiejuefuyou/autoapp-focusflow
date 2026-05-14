@@ -8,7 +8,8 @@ revenue_jpy_month: "19600-39200"
 actions: [open-editor, run-script]
 tags: [ios, swiftui, pomodoro, project-tags, deep-work]
 ice_score: 5.8
-tier_price_jpy: 980
+tier_price_usd: "3.99"
+tier_price_jpy: 600
 command: "cd repos/autoapp-focusblock && xcodegen generate"
 created: 2026-05-06
 renamed: 2026-05-11 (FocusBlock → FocusFlow, repositioning per cluster A analysis)
@@ -17,7 +18,7 @@ renamed: 2026-05-11 (FocusBlock → FocusFlow, repositioning per cluster A analy
 
 Focus timer with project tags — track deep work by tag, see weekly analytics, single-tap to start.
 
-**Differentiation**: Forest 简洁 + Toggl 标签复盘 + iOS 17 Focus Filter 原生 + ¥980 永久解锁。
+**Differentiation**: Forest 简洁 + Toggl 标签复盘 + ¥600 ($3.99) 永久解锁。iOS 17 Focus Filter — planned v1.1.
 
 ## Status
 
@@ -45,13 +46,17 @@ Free tier:
   - Today's session record
   - System DND toggle (manual)
 
-Premium (¥980 one-shot, com.jiejuefuyou.focusflow.premium):
-  - Unlimited custom timer durations (17/33 min etc.)
-  - Unlimited project tags with emoji + color
-  - 7/30/90 day analytics + CSV export
+Premium ($3.99 one-time, com.jiejuefuyou.focusflow.premium):
+  - Unlimited daily sessions
+  - Full history — 7, 30, and 90-day views
+  - Detailed analytics by project tag
+  - Unlimited custom project tags (emoji + color)
+  - Custom session durations (any length)
+  - Export session data to CSV
+  --- v1.1 roadmap (not in v1.0) ---
   - Auto Focus Filter API integration (iOS 17+)
-  - Lock screen widget + Live Activity (ActivityKit)
-  - Apple Watch companion (Phase 2)
+  - Lock screen widget (WidgetKit)
+  - Apple Watch companion
 ```
 
 ## File structure (post-rename 2026-05-11)
@@ -82,7 +87,7 @@ FocusFlow/
    Reference Name: focusflow_premium_unlock
    Product ID: com.jiejuefuyou.focusflow.premium
    Type: Non-Consumable
-   Price: ¥980 (Tier 11 JP)
+   Price: $3.99 USD (Tier 5 — approx ¥600 JP at current Apple tier)
 
 3. Pricing: Free download
 4. Category: Productivity

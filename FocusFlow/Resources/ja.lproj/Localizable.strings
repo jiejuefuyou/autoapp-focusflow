@@ -19,10 +19,10 @@
 /* Onboarding */
 "Deep focus, unblocked." = "深い集中を、邪魔されずに。";
 "Pomodoro 25, deep 45, marathon 90. Pick your length and start." = "ポモドーロ 25 分、ディープ 45 分、マラソン 90 分。お好みの長さを選んで開始。";
-"Auto Do Not Disturb." = "おやすみモードを自動で。";
-"Pro: app auto-toggles iOS Focus filter when session starts. No more dings." = "Pro 版:セッション開始時に iOS の集中モードフィルターを自動でオン。通知音はもう鳴りません。";
+"Track by project." = "プロジェクト別に記録。";
+"Tag each session — Writing, Coding, Study — and see where your week actually went." = "各セッションにタグを付けて(執筆・開発・学習など)、1 週間の時間の使い道を可視化しましょう。";
 "$3.99 once. No sub." = "買い切り $3.99。サブスクなし。";
-"Pro: unlimited sessions, full history, project tags, Apple Watch, widget." = "Pro 版:無制限セッション、完全な履歴、プロジェクトタグ、Apple Watch、ウィジェット。";
+"Pro: unlimited sessions, full history, unlimited project tags, custom durations, CSV export." = "Pro 版:無制限セッション、完全な履歴、無制限プロジェクトタグ、カスタム時間、CSV 書き出し。";
 
 /* Main screen */
 "Ready to focus" = "集中する準備はいい?";
@@ -103,3 +103,23 @@
 "FocusFlow Pro" = "FocusFlow Pro";
 "One-time purchase. No subscription. Unlock everything forever." = "買い切り。サブスクなし。すべての機能を永久に解放。";
 "Processing…" = "処理中…";
+"Support" = "サポート";
+
+/* Paywall — feature rows */
+"Unlimited daily sessions" = "1 日のセッション数は無制限";
+"Full history — 7, 30, and 90 days" = "完全な履歴 — 7 日・30 日・90 日表示";
+"Detailed analytics by project tag" = "プロジェクトタグ別の詳細分析";
+"Unlimited project tags with emoji + color" = "無制限のプロジェクトタグ(絵文字・カラー付き)";
+"Custom session durations (any length)" = "自由な時間設定(任意の長さで OK)";
+"Export session data to CSV" = "セッションデータを CSV に書き出し";
+
+/* Paywall — purchase state UI */
+"Purchase Issue" = "購入の問題";
+"OK" = "OK";
+"Try Again" = "再試行";
+"Purchase pending approval" = "購入が承認待ちです";
+"Purchase could not be verified. Tap Restore." = "購入を確認できませんでした。復元をタップしてください。";
+"Purchase cancelled." = "購入がキャンセルされました。";
+"Purchase successful! Welcome to Pro." = "購入完了！Pro へようこそ。";
+"Product unavailable. Tap Restore or try again." = "商品が利用できません。復元するか、もう一度お試しください。";
+"No subscription. No data collected. Ever." = "サブスクなし。データ収集なし。これからもずっと。";

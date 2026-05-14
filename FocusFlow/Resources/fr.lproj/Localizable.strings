@@ -19,10 +19,10 @@
 /* Onboarding */
 "Deep focus, unblocked." = "Concentration profonde, sans interruption.";
 "Pomodoro 25, deep 45, marathon 90. Pick your length and start." = "Pomodoro 25, profond 45, marathon 90. Choisissez votre durée et lancez-vous.";
-"Auto Do Not Disturb." = "Ne pas déranger automatique.";
-"Pro: app auto-toggles iOS Focus filter when session starts. No more dings." = "Pro : l'app active automatiquement le filtre Concentration d'iOS au démarrage. Plus aucune notification.";
+"Track by project." = "Suivez par projet.";
+"Tag each session — Writing, Coding, Study — and see where your week actually went." = "Taguez chaque session — Écriture, Code, Étude — et voyez où est passée votre semaine.";
 "$3.99 once. No sub." = "3,99 $ une fois. Sans abonnement.";
-"Pro: unlimited sessions, full history, project tags, Apple Watch, widget." = "Pro : sessions illimitées, historique complet, étiquettes de projet, Apple Watch, widget.";
+"Pro: unlimited sessions, full history, unlimited project tags, custom durations, CSV export." = "Pro : sessions illimitées, historique complet, tags de projet illimités, durées personnalisées, export CSV.";
 
 /* Main screen */
 "Ready to focus" = "Prêt à vous concentrer ?";
@@ -103,3 +103,23 @@
 "FocusFlow Pro" = "FocusFlow Pro";
 "One-time purchase. No subscription. Unlock everything forever." = "Achat unique. Sans abonnement. Tout débloqué pour toujours.";
 "Processing…" = "Traitement en cours…";
+"Support" = "Assistance";
+
+/* Paywall — feature rows */
+"Unlimited daily sessions" = "Sessions quotidiennes illimitées";
+"Full history — 7, 30, and 90 days" = "Historique complet — vues 7, 30 et 90 jours";
+"Detailed analytics by project tag" = "Statistiques détaillées par tag de projet";
+"Unlimited project tags with emoji + color" = "Tags de projet illimités (emoji + couleur)";
+"Custom session durations (any length)" = "Durées de session personnalisées (toute longueur)";
+"Export session data to CSV" = "Exporter les données de sessions en CSV";
+
+/* Paywall — purchase state UI */
+"Purchase Issue" = "Problème d'achat";
+"OK" = "OK";
+"Try Again" = "Réessayer";
+"Purchase pending approval" = "Achat en attente d'approbation";
+"Purchase could not be verified. Tap Restore." = "L'achat n'a pas pu être vérifié. Appuyez sur Restaurer.";
+"Purchase cancelled." = "Achat annulé.";
+"Purchase successful! Welcome to Pro." = "Achat réussi ! Bienvenue dans Pro.";
+"Product unavailable. Tap Restore or try again." = "Produit indisponible. Restaurez vos achats ou réessayez.";
+"No subscription. No data collected. Ever." = "Sans abonnement. Aucune donnée collectée. Jamais.";

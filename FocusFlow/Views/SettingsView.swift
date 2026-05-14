@@ -39,7 +39,8 @@ struct SettingsView: View {
                 Section(LocalizedStringKey("About")) {
                     LabeledContent(LocalizedStringKey("Version"), value: appVersion)
                     LabeledContent(LocalizedStringKey("Build"),   value: buildNumber)
-                    Link(LocalizedStringKey("Privacy Policy"), destination: URL(string: "https://github.com/jiejuefuyou/autoapp-focusflow/blob/main/PRIVACY.md")!)
+                    Link(LocalizedStringKey("Support"), destination: URL(string: "https://jiejuefuyou.github.io/support-focusflow")!)
+                    Link(LocalizedStringKey("Privacy Policy"), destination: URL(string: "https://github.com/jiejuefuyou/autoapp-focusblock/blob/main/PRIVACY.md")!)
                     Link(LocalizedStringKey("Terms of Use"), destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
                     Label(LocalizedStringKey("No data collected. Ever."), systemImage: "lock.shield.fill")
                         .font(.caption)

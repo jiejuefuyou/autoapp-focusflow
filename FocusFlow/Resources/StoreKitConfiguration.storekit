@@ -1,0 +1,35 @@
+{
+  "identifier" : "FF00-FOCUSFLOW-2026-0514-PREM",
+  "nonRenewingSubscriptions" : [],
+  "products" : [
+    {
+      "displayPrice" : "3.99",
+      "familyShareable" : false,
+      "internalID" : "FF_PREMIUM_001",
+      "localizations" : [
+        {
+          "description" : "Unlock all features: unlimited sessions, full history, project tags, custom durations.",
+          "displayName" : "FocusFlow Premium",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.jiejuefuyou.focusflow.premium",
+      "referenceName" : "FocusFlow Premium Unlock",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "FOCUSFLOW_APP",
+    "_developerTeamID" : "",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 0,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : []
+  },
+  "subscriptionGroups" : [],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

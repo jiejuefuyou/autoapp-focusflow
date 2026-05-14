@@ -2,15 +2,33 @@ import Foundation
 import StoreKit
 import Observation
 
+// MARK: - PurchaseState
+
+/// Explicit state for every purchase outcome — never silent.
+/// Per CLAUDE.md round-4 lesson: each state must have visible UI surface.
+enum PurchaseState: Equatable {
+    case idle
+    case purchasing
+    case success
+    case failed(String)
+    case cancelled
+    case pending
+    case unverified
+}
+
+// MARK: - IAPManager
+
 @MainActor
 @Observable
 final class IAPManager {
     static let premiumProductID = "com.jiejuefuyou.focusflow.premium"
 
-    var isPremium: Bool = false
-    var products: [Product] = []
-    var purchaseInProgress: Bool = false
-    var lastError: String?
+    var isPremium:     Bool         = false
+    var products:      [Product]    = []
+    var purchaseState: PurchaseState = .idle
+
+    // Legacy accessor kept for backward compat — computed from state
+    var purchaseInProgress: Bool { purchaseState == .purchasing }
 
     private nonisolated(unsafe) var listenerTask: Task<Void, Never>?
 
@@ -35,42 +53,50 @@ final class IAPManager {
         do {
             products = try await Product.products(for: [Self.premiumProductID])
         } catch {
-            lastError = error.localizedDescription
+            purchaseState = .failed(error.localizedDescription)
         }
     }
 
     func purchase() async {
         guard let product = products.first(where: { $0.id == Self.premiumProductID }) else {
+            purchaseState = .failed(String(localized: "Product unavailable. Tap Restore or try again."))
             await loadProducts()
             return
         }
-        purchaseInProgress = true
-        defer { purchaseInProgress = false }
+        purchaseState = .purchasing
         do {
             let result = try await product.purchase()
             switch result {
             case .success(let verification):
-                if case .verified(let t) = verification {
+                switch verification {
+                case .verified(let t):
                     await t.finish()
+                    await refreshEntitlements()
+                    purchaseState = .success
+                case .unverified:
+                    purchaseState = .unverified
                 }
-                await refreshEntitlements()
-            case .userCancelled, .pending:
-                break
+            case .userCancelled:
+                purchaseState = .cancelled
+            case .pending:
+                purchaseState = .pending
             @unknown default:
-                break
+                purchaseState = .idle
             }
         } catch {
-            lastError = error.localizedDescription
+            purchaseState = .failed(error.localizedDescription)
         }
     }
 
     func restore() async {
+        purchaseState = .purchasing
         do {
             try await AppStore.sync()
+            await refreshEntitlements()
+            purchaseState = isPremium ? .success : .idle
         } catch {
-            lastError = error.localizedDescription
+            purchaseState = .failed(error.localizedDescription)
         }
-        await refreshEntitlements()
     }
 
     private func refreshEntitlements() async {

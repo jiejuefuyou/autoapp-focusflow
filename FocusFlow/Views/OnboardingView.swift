@@ -38,9 +38,9 @@ struct OnboardingView: View {
 
                 screen(
                     index: 1,
-                    icon: "moon.fill",
-                    titleKey: "Auto Do Not Disturb.",
-                    subtitleKey: "Pro: app auto-toggles iOS Focus filter when session starts. No more dings.",
+                    icon: "tag.fill",
+                    titleKey: "Track by project.",
+                    subtitleKey: "Tag each session — Writing, Coding, Study — and see where your week actually went.",
                     color: .indigo
                 )
                 .tag(1)
@@ -49,7 +49,7 @@ struct OnboardingView: View {
                     index: 2,
                     icon: "chart.bar.fill",
                     titleKey: "$3.99 once. No sub.",
-                    subtitleKey: "Pro: unlimited sessions, full history, project tags, Apple Watch, widget.",
+                    subtitleKey: "Pro: unlimited sessions, full history, unlimited project tags, custom durations, CSV export.",
                     color: .green,
                     showCTA: true
                 )

@@ -19,10 +19,10 @@
 /* Onboarding */
 "Deep focus, unblocked." = "Concentración profunda, sin bloqueos.";
 "Pomodoro 25, deep 45, marathon 90. Pick your length and start." = "Pomodoro 25, profundo 45, maratón 90. Elige la duración y empieza.";
-"Auto Do Not Disturb." = "No molestar automático.";
-"Pro: app auto-toggles iOS Focus filter when session starts. No more dings." = "Pro: la app activa el filtro de Concentración de iOS al iniciar la sesión. Adiós a las notificaciones.";
+"Track by project." = "Registra por proyecto.";
+"Tag each session — Writing, Coding, Study — and see where your week actually went." = "Etiqueta cada sesión—Escritura, Programación, Estudio—y comprueba dónde fue tu semana de verdad.";
 "$3.99 once. No sub." = "$3,99 una vez. Sin suscripción.";
-"Pro: unlimited sessions, full history, project tags, Apple Watch, widget." = "Pro: sesiones ilimitadas, historial completo, etiquetas de proyecto, Apple Watch, widget.";
+"Pro: unlimited sessions, full history, unlimited project tags, custom durations, CSV export." = "Pro: sesiones ilimitadas, historial completo, etiquetas de proyecto ilimitadas, duración personalizada, exportación CSV.";
 
 /* Main screen */
 "Ready to focus" = "¿Listo para concentrarte?";
@@ -103,3 +103,23 @@
 "FocusFlow Pro" = "FocusFlow Pro";
 "One-time purchase. No subscription. Unlock everything forever." = "Compra única. Sin suscripción. Desbloquea todo para siempre.";
 "Processing…" = "Procesando…";
+"Support" = "Soporte";
+
+/* Paywall — feature rows */
+"Unlimited daily sessions" = "Sesiones diarias ilimitadas";
+"Full history — 7, 30, and 90 days" = "Historial completo — vistas de 7, 30 y 90 días";
+"Detailed analytics by project tag" = "Estadísticas detalladas por etiqueta de proyecto";
+"Unlimited project tags with emoji + color" = "Etiquetas de proyecto ilimitadas (con emoji y color)";
+"Custom session durations (any length)" = "Duración de sesión personalizada (cualquier longitud)";
+"Export session data to CSV" = "Exportar datos de sesiones a CSV";
+
+/* Paywall — purchase state UI */
+"Purchase Issue" = "Problema con la compra";
+"OK" = "Aceptar";
+"Try Again" = "Reintentar";
+"Purchase pending approval" = "Compra pendiente de aprobación";
+"Purchase could not be verified. Tap Restore." = "No se pudo verificar la compra. Pulsa Restaurar.";
+"Purchase cancelled." = "Compra cancelada.";
+"Purchase successful! Welcome to Pro." = "¡Compra exitosa! Bienvenido a Pro.";
+"Product unavailable. Tap Restore or try again." = "Producto no disponible. Restaura la compra o vuelve a intentarlo.";
+"No subscription. No data collected. Ever." = "Sin suscripción. Sin recopilación de datos. Nunca.";

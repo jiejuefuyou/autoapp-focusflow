@@ -19,10 +19,10 @@
 /* Onboarding */
 "Deep focus, unblocked." = "방해 없는 깊은 몰입.";
 "Pomodoro 25, deep 45, marathon 90. Pick your length and start." = "뽀모도로 25분, 딥 45분, 마라톤 90분. 원하는 길이를 선택하고 시작하세요.";
-"Auto Do Not Disturb." = "방해 금지 모드 자동 설정.";
-"Pro: app auto-toggles iOS Focus filter when session starts. No more dings." = "Pro: 세션 시작 시 iOS 집중 모드 필터를 자동 전환합니다. 더 이상의 알림음은 없습니다.";
+"Track by project." = "프로젝트별로 기록하세요.";
+"Tag each session — Writing, Coding, Study — and see where your week actually went." = "세션마다 태그를 붙여보세요—글쓰기, 코딩, 공부—이번 주 시간이 어디에 쓰였는지 한눈에 확인하세요.";
 "$3.99 once. No sub." = "한 번에 $3.99. 구독 없음.";
-"Pro: unlimited sessions, full history, project tags, Apple Watch, widget." = "Pro: 무제한 세션, 전체 기록, 프로젝트 태그, Apple Watch, 위젯.";
+"Pro: unlimited sessions, full history, unlimited project tags, custom durations, CSV export." = "Pro: 무제한 세션, 전체 기록, 무제한 프로젝트 태그, 맞춤 시간, CSV 내보내기.";
 
 /* Main screen */
 "Ready to focus" = "집중할 준비 되셨나요";
@@ -103,3 +103,23 @@
 "FocusFlow Pro" = "FocusFlow Pro";
 "One-time purchase. No subscription. Unlock everything forever." = "일회성 구매. 구독 없음. 모든 기능을 영구적으로 잠금 해제.";
 "Processing…" = "처리 중…";
+"Support" = "고객 지원";
+
+/* Paywall — feature rows */
+"Unlimited daily sessions" = "하루 세션 횟수 무제한";
+"Full history — 7, 30, and 90 days" = "전체 기록 — 7일, 30일, 90일 보기";
+"Detailed analytics by project tag" = "프로젝트 태그별 상세 분석";
+"Unlimited project tags with emoji + color" = "무제한 프로젝트 태그 (이모지 + 색상 포함)";
+"Custom session durations (any length)" = "맞춤 세션 시간 (원하는 길이로 설정)";
+"Export session data to CSV" = "세션 데이터를 CSV로 내보내기";
+
+/* Paywall — purchase state UI */
+"Purchase Issue" = "구매 문제";
+"OK" = "확인";
+"Try Again" = "다시 시도";
+"Purchase pending approval" = "구매 승인 대기 중";
+"Purchase could not be verified. Tap Restore." = "구매를 확인할 수 없습니다. 구매 복원을 탭하세요.";
+"Purchase cancelled." = "구매가 취소되었습니다.";
+"Purchase successful! Welcome to Pro." = "구매 완료! Pro에 오신 것을 환영합니다.";
+"Product unavailable. Tap Restore or try again." = "상품을 사용할 수 없습니다. 구매 복원을 탭하거나 다시 시도하세요.";
+"No subscription. No data collected. Ever." = "구독 없음. 데이터를 수집하지 않습니다. 절대로.";

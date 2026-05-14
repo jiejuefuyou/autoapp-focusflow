@@ -19,10 +19,10 @@
 /* Onboarding */
 "Deep focus, unblocked." = "Deep focus, unblocked.";
 "Pomodoro 25, deep 45, marathon 90. Pick your length and start." = "Pomodoro 25, deep 45, marathon 90. Pick your length and start.";
-"Auto Do Not Disturb." = "Auto Do Not Disturb.";
-"Pro: app auto-toggles iOS Focus filter when session starts. No more dings." = "Pro: app auto-toggles iOS Focus filter when session starts. No more dings.";
+"Track by project." = "Track by project.";
+"Tag each session — Writing, Coding, Study — and see where your week actually went." = "Tag each session — Writing, Coding, Study — and see where your week actually went.";
 "$3.99 once. No sub." = "$3.99 once. No sub.";
-"Pro: unlimited sessions, full history, project tags, Apple Watch, widget." = "Pro: unlimited sessions, full history, project tags, Apple Watch, widget.";
+"Pro: unlimited sessions, full history, unlimited project tags, custom durations, CSV export." = "Pro: unlimited sessions, full history, unlimited project tags, custom durations, CSV export.";
 
 /* Main screen */
 "Ready to focus" = "Ready to focus";
@@ -103,3 +103,23 @@
 "FocusFlow Pro" = "FocusFlow Pro";
 "One-time purchase. No subscription. Unlock everything forever." = "One-time purchase. No subscription. Unlock everything forever.";
 "Processing…" = "Processing…";
+"Support" = "Support";
+
+/* Paywall — feature rows */
+"Unlimited daily sessions" = "Unlimited daily sessions";
+"Full history — 7, 30, and 90 days" = "Full history — 7, 30, and 90 days";
+"Detailed analytics by project tag" = "Detailed analytics by project tag";
+"Unlimited project tags with emoji + color" = "Unlimited project tags with emoji + color";
+"Custom session durations (any length)" = "Custom session durations (any length)";
+"Export session data to CSV" = "Export session data to CSV";
+
+/* Paywall — purchase state UI */
+"Purchase Issue" = "Purchase Issue";
+"OK" = "OK";
+"Try Again" = "Try Again";
+"Purchase pending approval" = "Purchase pending approval";
+"Purchase could not be verified. Tap Restore." = "Purchase could not be verified. Tap Restore.";
+"Purchase cancelled." = "Purchase cancelled.";
+"Purchase successful! Welcome to Pro." = "Purchase successful! Welcome to Pro.";
+"Product unavailable. Tap Restore or try again." = "Product unavailable. Tap Restore or try again.";
+"No subscription. No data collected. Ever." = "No subscription. No data collected. Ever.";
