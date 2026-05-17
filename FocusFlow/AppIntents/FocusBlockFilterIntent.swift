@@ -17,6 +17,15 @@ struct FocusBlockFilterIntent: SetFocusFilterIntent {
         "Auto-start a session and apply preferences when this Focus is active."
     )
 
+    // iOS 18+ requires SetFocusFilterIntent to conform to InstanceDisplayRepresentable.
+    // This property provides the per-instance display label shown in Settings → Focus.
+    var displayRepresentation: DisplayRepresentation {
+        DisplayRepresentation(
+            title: "FocusFlow — \(sessionMinutes) min",
+            subtitle: projectTag.map { LocalizedStringResource(stringLiteral: $0) }
+        )
+    }
+
     /// Session length the user wants when this Focus is active (1–180 min).
     @Parameter(title: "Default session length", default: 25, inclusiveRange: (1, 180))
     var sessionMinutes: Int
