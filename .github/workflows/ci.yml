@@ -30,7 +30,12 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Lint ASC metadata
-        run: bash scripts/lint-metadata.sh
+        run: |
+          if [ -f scripts/lint-metadata.sh ]; then
+            bash scripts/lint-metadata.sh
+          else
+            echo "scripts/lint-metadata.sh not present yet -- skipping (will be added when ASC metadata lands in fastlane/metadata/)."
+          fi
 
       - name: Select latest stable Xcode
         uses: maxim-lobanov/setup-xcode@v1
