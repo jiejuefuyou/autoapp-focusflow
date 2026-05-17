@@ -78,7 +78,7 @@ jobs:
           ASC_KEY_CONTENT:                ${{ secrets.ASC_KEY_CONTENT }}
           MATCH_PASSWORD:                 ${{ secrets.MATCH_PASSWORD }}
           MATCH_GIT_URL:                  git@github.com:jiejuefuyou/autoapp-certs.git
-          MATCH_GIT_BRANCH:               main
+          MATCH_GIT_BRANCH:               new-apps-2026-05-17
           FASTLANE_USER:                  ${{ secrets.FASTLANE_USER }}
           TEAM_ID:                        ${{ secrets.TEAM_ID }}
           ITC_TEAM_ID:                    ${{ secrets.ITC_TEAM_ID }}
