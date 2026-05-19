@@ -29,6 +29,10 @@ struct FocusFlowApp: App {
             .environment(store)
             .environment(l10n)
             .environment(\.locale, l10n.currentLocale)
+            .id(l10n.override)  // CRITICAL: force complete view tree rebuild on language change.
+                                // Without this SwiftUI caches Text(LocalizedStringKey(...))
+                                // resolutions and the new .lproj is never read.
+                                // Pairs with OverrideBundle swap in LocalizationManager.swift.
             .tint(.accentColor)
             .task { await iap.refresh() }
             .task { applyFocusFilterIfNeeded() }
