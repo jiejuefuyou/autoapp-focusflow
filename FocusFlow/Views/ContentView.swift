@@ -5,6 +5,7 @@ import AudioToolbox
 struct ContentView: View {
     @Environment(IAPManager.self) private var iap
     @Environment(SessionStore.self) private var store
+    @Environment(LocalizationManager.self) private var l10n
 
     @State private var selectedPreset: FocusPreset = .short25
     @State private var customDurationSeconds: TimeInterval = 30 * 60
@@ -48,13 +49,32 @@ struct ContentView: View {
                     }
                 }
             }
-            .sheet(isPresented: $showSettings) { SettingsView() }
-            .sheet(isPresented: $showPaywall) { PaywallView() }
+            // CRITICAL: modal sheets need own .id(l10n.override) for language
+            // switch to take effect; root-level .id on FocusFlowApp doesn't
+            // propagate to scene presentation host.
+            .sheet(isPresented: $showSettings) {
+                SettingsView()
+                    .environment(l10n)
+                    .environment(\.locale, l10n.currentLocale)
+                    .id(l10n.override)
+            }
+            .sheet(isPresented: $showPaywall) {
+                PaywallView()
+                    .environment(l10n)
+                    .environment(\.locale, l10n.currentLocale)
+                    .id(l10n.override)
+            }
             .navigationDestination(isPresented: $showAnalytics) {
                 WeeklyAnalyticsView()
+                    .environment(l10n)
+                    .environment(\.locale, l10n.currentLocale)
+                    .id(l10n.override)
             }
             .sheet(item: tagPickerItemBinding) { pending in
                 ProjectTagPicker(sessionId: pending.id)
+                    .environment(l10n)
+                    .environment(\.locale, l10n.currentLocale)
+                    .id(l10n.override)
                     .onAppear { triggerCompletionFeedback() }
             }
         }

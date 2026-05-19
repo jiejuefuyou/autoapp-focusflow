@@ -10,6 +10,10 @@ struct FocusFlowApp: App {
     @State private var l10n = LocalizationManager.shared
 
     init() {
+        // EAGER init: force LocalizationManager.shared (Bundle.main swizzle) to run
+        // before SwiftUI evaluates first Text(LocalizedStringKey) lookup.
+        _ = LocalizationManager.shared
+
         // Snapshot mode: skip onboarding so UI tests land on the main screen.
         if ProcessInfo.processInfo.arguments.contains("-FASTLANE_SNAPSHOT") {
             UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
