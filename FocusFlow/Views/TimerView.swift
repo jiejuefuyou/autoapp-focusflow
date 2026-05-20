@@ -35,6 +35,17 @@ struct TimerView: View {
             Circle()
                 .stroke(Color.secondary.opacity(0.18), lineWidth: 14)
 
+            // Segment markers — 5-min tick around the ring (one tick per 5 min
+            // of the *planned* duration, capped at 18 ticks to avoid clutter).
+            // Lightweight visual cue that timer is segmented, not a single blob.
+            ForEach(segmentTickAngles, id: \.self) { angle in
+                Rectangle()
+                    .fill(Color.secondary.opacity(0.30))
+                    .frame(width: 2, height: 8)
+                    .offset(y: -130 + 7)
+                    .rotationEffect(.degrees(angle))
+            }
+
             // Progress arc.
             Circle()
                 .trim(from: 0, to: progress)
@@ -129,6 +140,19 @@ struct TimerView: View {
     }
 
     // MARK: - Derived
+
+    /// Angles (degrees, 0 = top) for the 5-min segment ticks around the ring.
+    /// Uses the active session's planned duration; falls back to the
+    /// placeholder when idle. Capped at 18 ticks (90 min / 5 min) to keep the
+    /// ring legible.
+    private var segmentTickAngles: [Double] {
+        let totalSeconds = store.currentSession?.duration ?? placeholderDuration
+        guard totalSeconds >= 5 * 60 else { return [] }
+        let segmentCount = min(Int(totalSeconds / (5 * 60)), 18)
+        guard segmentCount > 1 else { return [] }
+        let step = 360.0 / Double(segmentCount)
+        return (0..<segmentCount).map { Double($0) * step }
+    }
 
     /// Stroke progress 0…1. Ring is *full* at start and drains as time elapses.
     private var progress: CGFloat {

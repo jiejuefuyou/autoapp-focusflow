@@ -14,10 +14,15 @@ struct ContentView: View {
     @State private var showPaywall = false
     @State private var showAnalytics = false
 
+    /// Drives the "Nice focus!" celebration overlay that fires when a session
+    /// completes. Auto-clears 1.6s after appearing.
+    @State private var showCompletionCelebration = false
+
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 28) {
+                VStack(spacing: 24) {
+                    todaySummary
                     presetSection
                     TimerView(placeholderDuration: plannedDuration)
                     startButton
@@ -26,6 +31,14 @@ struct ContentView: View {
                     }
                 }
                 .padding()
+            }
+            .overlay(alignment: .top) {
+                if showCompletionCelebration {
+                    celebrationToast
+                        .padding(.top, 8)
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                        .zIndex(1)
+                }
             }
             .navigationTitle(Text(LocalizedStringKey("FocusFlow")))
             .toolbar {
@@ -81,6 +94,45 @@ struct ContentView: View {
     }
 
     // MARK: - Sections
+
+    /// Compact "Today" card at the top: session count + total focused time.
+    /// Hidden when zero sessions today (avoid empty-state shame).
+    @ViewBuilder
+    private var todaySummary: some View {
+        if todaysSessions.count > 0 {
+            HStack(spacing: 14) {
+                Image(systemName: "flame.fill")
+                    .font(.title2)
+                    .foregroundStyle(.tint)
+                    .frame(width: 36, height: 36)
+                    .background(Color.accentColor.opacity(0.12), in: Circle())
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(LocalizedStringKey("Today"))
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                        .textCase(.uppercase)
+                    Text("\(todaysSessions.count) \(String(localized: "sessions today")) · \(todaysTotalFormatted)")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.primary)
+                }
+                Spacer()
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 12)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14))
+        }
+    }
+
+    private var celebrationToast: some View {
+        Label(LocalizedStringKey("Nice focus!"), systemImage: "checkmark.seal.fill")
+            .font(.headline)
+            .foregroundStyle(.white)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 10)
+            .background(Color.accentColor, in: Capsule())
+            .shadow(color: Color.accentColor.opacity(0.35), radius: 12, y: 4)
+    }
 
     private var presetSection: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -165,6 +217,27 @@ struct ContentView: View {
         Array(store.history.suffix(5).reversed())
     }
 
+    /// Sessions started in today's calendar day (any state — completed or
+    /// cancelled). Used by `todaySummary` for the "X sessions today" pill.
+    private var todaysSessions: [FocusSession] {
+        let cal = Calendar.current
+        let today = cal.startOfDay(for: Date())
+        return store.history.filter { cal.startOfDay(for: $0.startedAt) == today }
+    }
+
+    /// Total focused time today, formatted as "1h 35m" or "35m".
+    private var todaysTotalFormatted: String {
+        let totalSeconds = todaysSessions.reduce(0) {
+            $0 + ($1.actualDuration > 0 ? $1.actualDuration : $1.duration)
+        }
+        let hours = Int(totalSeconds) / 3600
+        let mins = (Int(totalSeconds) % 3600) / 60
+        if hours > 0 {
+            return "\(hours)h \(mins)m"
+        }
+        return "\(mins)m"
+    }
+
     private var tagPickerItemBinding: Binding<PendingTagItem?> {
         Binding(
             get: {
@@ -193,10 +266,24 @@ struct ContentView: View {
         return "\(m) min"
     }
 
-    /// Apple's stock "tri-tone" alert + haptic.
+    /// Apple's stock "tri-tone" alert + haptic + visible celebration toast.
+    ///
+    /// Fires once when the tag picker appears (i.e. immediately after a
+    /// session completes). The toast is purely cosmetic but matters for
+    /// closing the dopamine loop — without it the only signal is the modal
+    /// sheet, which feels like a chore rather than a reward.
     private func triggerCompletionFeedback() {
         AudioServicesPlaySystemSound(1025)
         UINotificationFeedbackGenerator().notificationOccurred(.success)
+        withAnimation(.spring(response: 0.45, dampingFraction: 0.7)) {
+            showCompletionCelebration = true
+        }
+        Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 1_600_000_000)
+            withAnimation(.easeOut(duration: 0.25)) {
+                showCompletionCelebration = false
+            }
+        }
     }
 }
 

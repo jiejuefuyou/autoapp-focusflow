@@ -12,8 +12,8 @@ configs:
 settings:
   base:
     SWIFT_VERSION: "5.9"
-    MARKETING_VERSION: "1.0.0"
-    CURRENT_PROJECT_VERSION: "2"
+    MARKETING_VERSION: "1.0.1"
+    CURRENT_PROJECT_VERSION: "3"
     DEVELOPMENT_TEAM: ""
     CODE_SIGN_STYLE: Manual
     ENABLE_USER_SCRIPT_SANDBOXING: "YES"
@@ -33,6 +33,7 @@ targets:
         PRODUCT_NAME: FocusFlow
         INFOPLIST_KEY_CFBundleDisplayName: FocusFlow Lite
         STOREKIT_CONFIGURATION: FocusFlow/Resources/StoreKitConfiguration.storekit
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         INFOPLIST_KEY_UILaunchScreen_Generation: "YES"
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: "YES"
         INFOPLIST_KEY_UISupportedInterfaceOrientations: "UIInterfaceOrientationPortrait"

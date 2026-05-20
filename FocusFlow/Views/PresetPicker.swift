@@ -23,9 +23,9 @@ struct PresetPicker: View {
 
     var body: some View {
         HStack(spacing: 10) {
-            chip(for: .short25, label: LocalizedStringKey("25 min"))
-            chip(for: .medium50, label: LocalizedStringKey("50 min"))
-            chip(for: .long90, label: LocalizedStringKey("90 min"))
+            chip(for: .short25, label: LocalizedStringKey("25 min"), icon: "bolt.fill")
+            chip(for: .medium50, label: LocalizedStringKey("50 min"), icon: "flame.fill")
+            chip(for: .long90, label: LocalizedStringKey("90 min"), icon: "mountain.2.fill")
             customChip
         }
         .opacity(disabled ? 0.45 : 1.0)
@@ -41,20 +41,29 @@ struct PresetPicker: View {
         }
     }
 
+    /// Renders one preset chip. The icon serves as a duration-intensity cue
+    /// (bolt = sprint, flame = standard, mountain = deep work) — it isn't
+    /// just decorative.
     @ViewBuilder
-    private func chip(for preset: FocusPreset, label: LocalizedStringKey) -> some View {
+    private func chip(for preset: FocusPreset, label: LocalizedStringKey, icon: String) -> some View {
         let isSelected = (selection == preset)
         Button {
             UISelectionFeedbackGenerator().selectionChanged()
             selection = preset
         } label: {
-            Text(label)
-                .font(.subheadline.weight(.semibold))
-                .frame(maxWidth: .infinity, minHeight: 44)
-                .background(
-                    Capsule().fill(isSelected ? Color.accentColor : Color.secondary.opacity(0.12))
-                )
-                .foregroundStyle(isSelected ? .white : .primary)
+            VStack(spacing: 2) {
+                Image(systemName: icon)
+                    .font(.caption.weight(.semibold))
+                Text(label)
+                    .font(.subheadline.weight(.semibold))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+            }
+            .frame(maxWidth: .infinity, minHeight: 52)
+            .background(
+                Capsule().fill(isSelected ? Color.accentColor : Color.secondary.opacity(0.12))
+            )
+            .foregroundStyle(isSelected ? .white : .primary)
         }
         .buttonStyle(ScaleButtonStyle())
         .accessibilityAddTraits(isSelected ? .isSelected : [])
@@ -71,16 +80,15 @@ struct PresetPicker: View {
                 onPremiumGated()
             }
         } label: {
-            HStack(spacing: 4) {
-                if !iap.isPremium {
-                    Image(systemName: "lock.fill").font(.caption2)
-                }
+            VStack(spacing: 2) {
+                Image(systemName: iap.isPremium ? "slider.horizontal.3" : "lock.fill")
+                    .font(.caption.weight(.semibold))
                 customLabelView
                     .font(.subheadline.weight(.semibold))
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
             }
-            .frame(maxWidth: .infinity, minHeight: 44)
+            .frame(maxWidth: .infinity, minHeight: 52)
             .background(
                 Capsule().fill(isSelected ? Color.accentColor : Color.secondary.opacity(0.12))
             )
