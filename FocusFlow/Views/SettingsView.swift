@@ -3,6 +3,7 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(IAPManager.self) private var iap
     @Environment(SessionStore.self) private var store
+    @Environment(LocalizationManager.self) private var l10n
     @Environment(\.dismiss) private var dismiss
 
     @State private var showPaywall = false
@@ -77,7 +78,13 @@ struct SettingsView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) { Button(LocalizedStringKey("Done")) { dismiss() } }
             }
-            .sheet(isPresented: $showPaywall) { PaywallView() }
+            // Per-modal env injection (lesson #34).
+            .sheet(isPresented: $showPaywall) {
+                PaywallView()
+                    .environment(l10n)
+                    .environment(\.locale, l10n.currentLocale)
+                    .id(l10n.override)
+            }
         }
     }
 
