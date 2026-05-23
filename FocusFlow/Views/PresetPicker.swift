@@ -22,7 +22,7 @@ struct PresetPicker: View {
     @State private var showCustomSheet = false
 
     var body: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: 10) {   // 10 = chip rhythm, between sm(8)/md(16)
             chip(for: .short25, label: LocalizedStringKey("25 min"), icon: "bolt.fill")
             chip(for: .medium50, label: LocalizedStringKey("50 min"), icon: "flame.fill")
             chip(for: .long90, label: LocalizedStringKey("90 min"), icon: "mountain.2.fill")
@@ -138,11 +138,12 @@ private struct CustomDurationSheet: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 32) {
+            VStack(spacing: Spacing.xl) {
                 Text(LocalizedStringKey("Custom Duration"))
                     .font(.title2.bold())
-                    .padding(.top, 24)
+                    .padding(.top, Spacing.lg)
 
+                // 80pt mono display — geometry-bound to sheet center; not Dynamic Type
                 Text("\(minutes)")
                     .font(.system(size: 80, weight: .heavy, design: .rounded).monospacedDigit())
                     .foregroundStyle(.tint)
@@ -155,7 +156,7 @@ private struct CustomDurationSheet: View {
                     Text(LocalizedStringKey("Adjust duration"))
                         .font(.subheadline)
                 }
-                .padding(.horizontal, 32)
+                .padding(.horizontal, Spacing.xl)
 
                 Spacer()
 
@@ -164,12 +165,12 @@ private struct CustomDurationSheet: View {
                     onConfirm()
                 } label: {
                     Text(LocalizedStringKey("Save"))
-                        .font(.headline)
+                        .font(Typography.bodyEmphasis)
                         .frame(maxWidth: .infinity, minHeight: 44)
                 }
                 .buttonStyle(.borderedProminent)
                 .padding(.horizontal)
-                .padding(.bottom, 24)
+                .padding(.bottom, Spacing.lg)
             }
             .navigationTitle(Text(LocalizedStringKey("Custom Duration")))
             .navigationBarTitleDisplayMode(.inline)

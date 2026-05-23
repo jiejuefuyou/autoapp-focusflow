@@ -8,7 +8,7 @@ struct WeeklyAnalyticsView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 28) {
+            VStack(alignment: .leading, spacing: 28) {   // 28 = analytics card rhythm, between lg(24)/xl(32)
                 summaryHeader
 
                 Section {
@@ -27,7 +27,7 @@ struct WeeklyAnalyticsView: View {
                     sectionHeader(LocalizedStringKey("Minutes by tag"))
                 }
             }
-            .padding()
+            .padding(Spacing.md)
         }
         .navigationTitle(Text(LocalizedStringKey("This Week")))
         .navigationBarTitleDisplayMode(.large)
@@ -36,17 +36,18 @@ struct WeeklyAnalyticsView: View {
     // MARK: - Header
 
     private var summaryHeader: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: Spacing.xs) {
             Text(LocalizedStringKey("Total focus this week"))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
+            // 40pt hero display — fixed font weight intentional (not Dynamic Type, but visually closer to .largeTitle)
             Text(totalFormatted)
                 .font(.system(size: 40, weight: .heavy, design: .rounded))
                 .foregroundStyle(.tint)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .padding(Spacing.md)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))   // 16 = analytics card; visual depends on this size
     }
 
     private func sectionHeader(_ key: LocalizedStringKey) -> some View {
@@ -94,8 +95,8 @@ struct WeeklyAnalyticsView: View {
             AxisMarks(position: .leading)
         }
         .frame(height: 220)
-        .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .padding(Spacing.md)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))   // 16 = analytics card matches summaryHeader
     }
 
     // MARK: - Bar chart
@@ -115,12 +116,12 @@ struct WeeklyAnalyticsView: View {
         }
         .chartXAxis(.hidden)
         .frame(height: CGFloat(max(120, tagBars.count * 40)))
-        .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .padding(Spacing.md)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))   // 16 = analytics card
     }
 
     private var emptyState: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: Spacing.sm) {
             Image(systemName: "chart.bar.xaxis")
                 .font(.title)
                 .foregroundStyle(.secondary)
@@ -130,8 +131,8 @@ struct WeeklyAnalyticsView: View {
                 .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity, minHeight: 100)
-        .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .padding(Spacing.md)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))   // 16 = analytics card
     }
 
     // MARK: - Derived

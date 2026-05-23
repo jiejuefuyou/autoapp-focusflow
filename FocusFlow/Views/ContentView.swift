@@ -21,7 +21,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 24) {
+                VStack(spacing: Spacing.lg) {
                     todaySummary
                     presetSection
                     TimerView(placeholderDuration: plannedDuration)
@@ -30,12 +30,12 @@ struct ContentView: View {
                         recentSessions
                     }
                 }
-                .padding()
+                .padding(Spacing.md)
             }
             .overlay(alignment: .top) {
                 if showCompletionCelebration {
                     celebrationToast
-                        .padding(.top, 8)
+                        .padding(.top, Spacing.sm)
                         .transition(.move(edge: .top).combined(with: .opacity))
                         .zIndex(1)
                 }
@@ -118,9 +118,9 @@ struct ContentView: View {
                 }
                 Spacer()
             }
-            .padding(.horizontal, 14)
-            .padding(.vertical, 12)
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14))
+            .padding(.horizontal, 14)   // 14 = data card horizontal; sits between sm(8)/md(16)
+            .padding(.vertical, 12)     // 12 = data card vertical (Radius.md = 12)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14))   // 14 = matches horizontal inset
         }
     }
 
@@ -128,8 +128,8 @@ struct ContentView: View {
         Label(LocalizedStringKey("Nice focus!"), systemImage: "checkmark.seal.fill")
             .font(.headline)
             .foregroundStyle(.white)
-            .padding(.horizontal, 16)
-            .padding(.vertical, 10)
+            .padding(.horizontal, Spacing.md)
+            .padding(.vertical, 10)   // 10 = pill vertical, between xs(4)/sm(8)
             .background(Color.accentColor, in: Capsule())
             .shadow(color: Color.accentColor.opacity(0.35), radius: 12, y: 4)
     }
@@ -160,7 +160,7 @@ struct ContentView: View {
                 handleStart()
             } label: {
                 Label(LocalizedStringKey("Start"), systemImage: "play.fill")
-                    .font(.headline)
+                    .font(Typography.bodyEmphasis)
                     .frame(maxWidth: .infinity, minHeight: 48)
             }
             .buttonStyle(.borderedProminent)
@@ -169,7 +169,7 @@ struct ContentView: View {
     }
 
     private var recentSessions: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
             Text(LocalizedStringKey("Recent Sessions"))
                 .font(.headline)
 
@@ -193,9 +193,9 @@ struct ContentView: View {
                         .font(.caption.monospaced())
                         .foregroundStyle(.secondary)
                 }
-                .padding(.vertical, 8)
-                .padding(.horizontal, 12)
-                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 10))
+                .padding(.vertical, Spacing.sm)
+                .padding(.horizontal, 12)   // 12 = row horizontal, matches Radius.md visual
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 10))   // 10 = row card, smaller than md(12) for compact list rhythm
             }
         }
     }

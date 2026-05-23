@@ -68,8 +68,9 @@ struct OnboardingView: View {
         color: Color,
         showCTA: Bool = false
     ) -> some View {
-        VStack(spacing: 32) {
+        VStack(spacing: Spacing.xl) {
             Spacer()
+            // Hero glyph — fixed 80pt weight intentional (not Dynamic Type).
             Image(systemName: icon)
                 .font(.system(size: 80))
                 .foregroundStyle(color)
@@ -81,20 +82,20 @@ struct OnboardingView: View {
                 .font(.body)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
-                .padding(.horizontal, 32)
+                .padding(.horizontal, Spacing.xl)
             Spacer()
             if showCTA {
                 Button(action: dismissOnboarding) {
                     Text(LocalizedStringKey("Get Started"))
-                        .font(.headline)
+                        .font(Typography.bodyEmphasis)
                         .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(color, in: RoundedRectangle(cornerRadius: 16))
+                        .padding(Spacing.md)
+                        .background(color, in: RoundedRectangle(cornerRadius: Radius.md))
                         .foregroundStyle(.white)
                 }
                 .buttonStyle(ScaleButtonStyle())
                 .padding(.horizontal)
-                .padding(.bottom, 32)
+                .padding(.bottom, Spacing.xl)
             } else {
                 Spacer().frame(height: 80)
             }

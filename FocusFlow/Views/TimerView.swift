@@ -20,11 +20,11 @@ struct TimerView: View {
     let placeholderDuration: TimeInterval
 
     var body: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: Spacing.lg) {
             ring
             controls
         }
-        .padding(.vertical, 16)
+        .padding(.vertical, Spacing.md)
     }
 
     // MARK: - Ring
@@ -58,6 +58,7 @@ struct TimerView: View {
 
             VStack(spacing: 6) {
                 Text(formattedRemaining)
+                    // 56pt fixed = ring center display, geometry-bound to 260×260 ring frame; monospacedDigit() preserves digit-width stability so countdown doesn't jitter
                     .font(.system(size: 56, weight: .heavy, design: .rounded).monospacedDigit())
                     .foregroundStyle(.primary)
                     .accessibilityLabel(formattedRemainingAccessibility)
@@ -122,7 +123,7 @@ struct TimerView: View {
             store.cancel()
         } label: {
             Label(LocalizedStringKey("Stop"), systemImage: "stop.fill")
-                .font(.headline)
+                .font(Typography.bodyEmphasis)
                 .frame(maxWidth: .infinity, minHeight: 44)
         }
         .buttonStyle(.bordered)
@@ -143,7 +144,7 @@ struct TimerView: View {
                 LocalizedStringKey(store.isRunning ? "Pause" : "Resume"),
                 systemImage: store.isRunning ? "pause.fill" : "play.fill"
             )
-            .font(.headline)
+            .font(Typography.bodyEmphasis)
             .frame(maxWidth: .infinity, minHeight: 44)
         }
         .buttonStyle(.borderedProminent)

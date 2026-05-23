@@ -20,10 +20,10 @@ struct ProjectTagPicker: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 24) {
+                VStack(spacing: Spacing.lg) {
                     header
 
-                    VStack(spacing: 12) {
+                    VStack(spacing: Radius.md) {   // 12pt — matches RoundedRectangle(cornerRadius:14) row visual rhythm
                         ForEach(visibleTags) { tag in
                             tagRow(tag)
                         }
@@ -60,7 +60,8 @@ struct ProjectTagPicker: View {
     }
 
     private var header: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: Spacing.sm) {
+            // Hero glyph — fixed 48pt weight intentional (not Dynamic Type).
             Image(systemName: "checkmark.circle.fill")
                 .font(.system(size: 48))
                 .foregroundStyle(.green)
@@ -84,7 +85,7 @@ struct ProjectTagPicker: View {
             store.assignTag(tag.id, toSessionId: sessionId)
             dismiss()
         } label: {
-            HStack(spacing: 14) {
+            HStack(spacing: 14) {   // 14 = row label horizontal rhythm, between sm(8)/md(16)
                 Text(tag.emoji).font(.title2)
                 Text(tag.displayName)
                     .font(.body.weight(.medium))
@@ -93,9 +94,9 @@ struct ProjectTagPicker: View {
                     .fill(tag.color)
                     .frame(width: 12, height: 12)
             }
-            .padding()
+            .padding(Spacing.md)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14))
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14))   // 14 = row card; visual depends on this size
             .contentShape(RoundedRectangle(cornerRadius: 14))
         }
         .buttonStyle(ScaleButtonStyle())
@@ -116,9 +117,9 @@ struct ProjectTagPicker: View {
                     .font(.body.weight(.medium))
                 Spacer()
             }
-            .padding()
+            .padding(Spacing.md)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.secondary.opacity(0.08), in: RoundedRectangle(cornerRadius: 14))
+            .background(Color.secondary.opacity(0.08), in: RoundedRectangle(cornerRadius: 14))   // 14 = row card matches tagRow
             .contentShape(RoundedRectangle(cornerRadius: 14))
         }
         .buttonStyle(ScaleButtonStyle())
@@ -137,9 +138,9 @@ struct ProjectTagPicker: View {
                     .font(.body.weight(.medium))
                 Spacer()
             }
-            .padding()
+            .padding(Spacing.md)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.accentColor.opacity(0.1), in: RoundedRectangle(cornerRadius: 14))
+            .background(Color.accentColor.opacity(0.1), in: RoundedRectangle(cornerRadius: 14))   // 14 = row card matches tagRow
             .contentShape(RoundedRectangle(cornerRadius: 14))
         }
         .buttonStyle(ScaleButtonStyle())
@@ -155,8 +156,8 @@ struct ProjectTagPicker: View {
                 .foregroundStyle(.secondary)
             Spacer()
         }
-        .padding(.horizontal, 8)
-        .padding(.top, 4)
+        .padding(.horizontal, Spacing.sm)
+        .padding(.top, Spacing.xs)
     }
 }
 
