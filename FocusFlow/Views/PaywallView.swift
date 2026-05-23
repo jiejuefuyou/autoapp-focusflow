@@ -175,10 +175,14 @@ struct PaywallView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding()
-                .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 16))
+                // PaywallView CTA upgrade — purchase moment "wow" (art-audit P1 2026-05-23)
+                .background(LinearGradient.brandHero, in: RoundedRectangle(cornerRadius: Radius.lg))
                 .foregroundStyle(.white)
+                .brandCardShadow(Elevation.floating)
+                .opacity(iap.purchaseInProgress ? 0.5 : 1.0)
             }
             .disabled(iap.purchaseInProgress)
+            .accessibilityIdentifier("paywall.cta.unlock")
         } else {
             ProgressView()
                 .frame(maxWidth: .infinity)
