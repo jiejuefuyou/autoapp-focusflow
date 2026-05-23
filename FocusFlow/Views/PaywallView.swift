@@ -189,8 +189,16 @@ struct PaywallView: View {
     // MARK: - Feature row
 
     private func feature(_ icon: String, _ label: LocalizedStringKey) -> some View {
-        HStack(spacing: 12) {
-            Image(systemName: icon).foregroundStyle(.tint).frame(width: 28)
+        HStack(spacing: 14) {
+            // Circular icon background gives each row a tactile chip + lifts the
+            // icon from flat-tint sea (art-audit 2026-05-23 P0-3). 7 feature rows
+            // previously rendered as a same-color soup; tinted circle bg adds
+            // visual layering without breaking the accent palette.
+            Image(systemName: icon)
+                .font(.body.weight(.semibold))
+                .foregroundStyle(Color.accentColor)
+                .frame(width: 32, height: 32)
+                .background(Color.accentColor.opacity(0.12), in: Circle())
             Text(label)
             Spacer()
         }

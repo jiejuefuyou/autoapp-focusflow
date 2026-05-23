@@ -68,10 +68,21 @@ struct TimerView: View {
                         .foregroundStyle(.secondary)
                         .textCase(.uppercase)
                 } else {
-                    Text(LocalizedStringKey("Ready to focus"))
-                        .font(.caption.weight(.medium))
-                        .foregroundStyle(.secondary)
-                        .textCase(.uppercase)
+                    // Idle state — without an entry hint, the ring looks tappable
+                    // but its onTapGesture is guarded (line 81) and noops. Users
+                    // tap the ring and nothing happens, breaking the model. Show
+                    // an explicit affordance pointing at the Start button below
+                    // (art-audit 2026-05-23 P0-2).
+                    VStack(spacing: 4) {
+                        Text(LocalizedStringKey("Ready to focus"))
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(.secondary)
+                            .textCase(.uppercase)
+                        Image(systemName: "arrow.down")
+                            .font(.caption2)
+                            .foregroundStyle(.tertiary)
+                            .accessibilityHidden(true)
+                    }
                 }
             }
         }
