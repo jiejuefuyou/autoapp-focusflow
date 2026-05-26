@@ -139,3 +139,10 @@
 "Product unavailable. Tap Restore or try again." = "商品暫不可用。請回復購買或再試一次。";
 "No subscription. No data collected. Ever." = "無訂閱。永不收集任何資料。";
 "Nice focus!" = "專注得真好!";
+
+/* v1.0.11 — Onboarding subtitle (replaces deprecated copy with CSV/full history claims) */
+"Pro: unlimited sessions, custom durations, unlimited project tags." = "Pro 版:無限工作階段、自訂時長、無限專案標籤。";
+
+/* v1.0.11 — Session-complete local notification */
+"notification.session_complete.title" = "專注完成";
+"notification.session_complete.body" = "做得好——這次工作階段已結束。";

@@ -36,15 +36,19 @@ struct PaywallView: View {
                     // ── State banners (visible, non-buried) ──
                     stateBanner
 
-                    // ── Feature list — ONLY shipped features ──
+                    // ── Feature list — ONLY shipped + actually-gated features ──
+                    // 2026-05-26 (v1.0.11) Sprint A P0-1: removed 3 fake promises
+                    // ("Full history 7/30/90", "Export CSV", "Focus Filter gate")
+                    // that were advertised but never implemented or never gated.
+                    // Apple 2.3.1 (Accurate Metadata) reject risk + user 1-star.
+                    // All 3 rows below correspond to real gates verified in code:
+                    //   * unlimited sessions  -> SessionStore.freeDailySessionLimit
+                    //   * custom durations    -> FocusPreset.custom.requiresPremium
+                    //   * unlimited tags      -> ProjectTagPicker addTagButton gate
                     VStack(alignment: .leading, spacing: 14) {
                         feature("infinity",               LocalizedStringKey("Unlimited daily sessions"))
-                        feature("calendar",               LocalizedStringKey("Full history — 7, 30, and 90 days"))
-                        feature("chart.bar.fill",         LocalizedStringKey("Detailed analytics by project tag"))
+                        feature("slider.horizontal.3",    LocalizedStringKey("Custom session durations (any length)"))
                         feature("tag.fill",               LocalizedStringKey("Unlimited project tags with emoji + color"))
-                        feature("slider.horizontal.3",   LocalizedStringKey("Custom session durations (any length)"))
-                        feature("square.and.arrow.up",   LocalizedStringKey("Export session data to CSV"))
-                        feature("moon.fill",              LocalizedStringKey("Focus Filter — auto-start sessions when iOS Focus turns on"))
                     }
                     .padding()
                     .frame(maxWidth: .infinity, alignment: .leading)

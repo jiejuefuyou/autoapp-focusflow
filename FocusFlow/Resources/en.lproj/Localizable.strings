@@ -139,3 +139,13 @@
 "Product unavailable. Tap Restore or try again." = "Product unavailable. Tap Restore or try again.";
 "No subscription. No data collected. Ever." = "No subscription. No data collected. Ever.";
 "Nice focus!" = "Nice focus!";
+
+/* v1.0.11 (Sprint A P0-1) — Onboarding subtitle for screen 3, replaces
+   the previous "full history / CSV export" copy that promised features
+   the app never shipped. */
+"Pro: unlimited sessions, custom durations, unlimited project tags." = "Pro: unlimited sessions, custom durations, unlimited project tags.";
+
+/* v1.0.11 (Sprint A P0-3) — Local notification fired when a focus
+   session completes. Visible even if the app is backgrounded. */
+"notification.session_complete.title" = "Focus complete";
+"notification.session_complete.body" = "Nice work — your focus session is done.";

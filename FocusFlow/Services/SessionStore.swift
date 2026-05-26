@@ -1,6 +1,7 @@
 import Foundation
 import Observation
 import SwiftUI
+import UIKit
 import UserNotifications
 
 /// Single source of truth for the focus timer state + persisted history + tags.
@@ -37,6 +38,19 @@ final class SessionStore {
 
     private var timer: Timer?
 
+    /// Observer token for `UIApplication.didBecomeActiveNotification` — used
+    /// to recompute `timeRemaining` from wall-clock when the app comes back
+    /// to the foreground (v1.0.11 Sprint A P0-2 timer-drift fix).
+    ///
+    /// Marked `nonisolated(unsafe)` so `deinit` can read it (which is nonisolated
+    /// on `@MainActor` classes). Mirrors the `listenerTask` pattern in IAPManager.
+    private nonisolated(unsafe) var foregroundObserver: NSObjectProtocol?
+
+    /// Identifier prefix used when scheduling the session-complete UNNotification.
+    /// We append the session UUID so we can cancel exactly the pending request
+    /// without disturbing other app-scheduled notifications.
+    private static let completionNotifIDPrefix = "focusflow.session.complete."
+
     // MARK: - Storage keys
 
     private let historyKey = "focusflow.history.v2"
@@ -45,6 +59,13 @@ final class SessionStore {
     init() {
         loadTags()
         loadHistory()
+        installForegroundObserver()
+    }
+
+    deinit {
+        if let token = foregroundObserver {
+            NotificationCenter.default.removeObserver(token)
+        }
     }
 
     // MARK: - Free tier helpers
@@ -66,10 +87,19 @@ final class SessionStore {
 
     /// Starts a session with an arbitrary duration in seconds. Caller is
     /// responsible for Premium gating on `.custom` durations.
+    ///
+    /// v1.0.11 Sprint A P0-2: `startedAt` is anchored to wall clock so
+    /// `recomputeTimeRemaining()` can re-derive `timeRemaining` after the
+    /// app backgrounds (where `Timer.scheduledTimer` is suspended by iOS).
+    ///
+    /// v1.0.11 Sprint A P0-3: schedules a `UNTimeIntervalNotificationTrigger`
+    /// so iOS fires "Focus complete!" even if the app is killed.
     func startSession(duration: TimeInterval, tagId: UUID? = nil) {
         guard duration > 0 else { return }
         cancelTimer()
+        let now = Date()
         let session = FocusSession(
+            startedAt: now,
             duration: duration,
             actualDuration: 0,
             tagId: tagId
@@ -78,6 +108,7 @@ final class SessionStore {
         timeRemaining = duration
         isRunning = true
         scheduleTick()
+        scheduleCompletionNotification(for: session, in: duration)
     }
 
     /// Convenience wrapper for preset taps. `.custom` is a no-op here —
@@ -108,16 +139,35 @@ final class SessionStore {
         guard isRunning else { return }
         cancelTimer()
         isRunning = false
+        // Pull the pending completion notification — wall-clock has stopped
+        // advancing for this session.
+        if let session = currentSession {
+            cancelCompletionNotification(for: session)
+        }
+        // Re-anchor `startedAt` so that on `resume()` the wall-clock recompute
+        // continues from where the user paused, not from the original start.
+        if var session = currentSession {
+            session.startedAt = Date().addingTimeInterval(-(session.duration - timeRemaining))
+            currentSession = session
+        }
     }
 
     func resume() {
-        guard !isRunning, currentSession != nil, timeRemaining > 0 else { return }
+        guard !isRunning, var session = currentSession, timeRemaining > 0 else { return }
+        // Re-anchor `startedAt` so wall-clock recompute reflects the
+        // post-pause start. Equivalent: now - (duration - timeRemaining).
+        session.startedAt = Date().addingTimeInterval(-(session.duration - timeRemaining))
+        currentSession = session
         isRunning = true
         scheduleTick()
+        scheduleCompletionNotification(for: session, in: timeRemaining)
     }
 
     func cancel() {
         cancelTimer()
+        if let session = currentSession {
+            cancelCompletionNotification(for: session)
+        }
         currentSession = nil
         timeRemaining = 0
         isRunning = false
@@ -128,6 +178,10 @@ final class SessionStore {
         cancelTimer()
         isRunning = false
         guard var session = currentSession else { return }
+        // If we are completing via the in-app recompute path before the system
+        // notification fires, pull the now-redundant pending notification.
+        // (Idempotent if the notification already delivered.)
+        cancelCompletionNotification(for: session)
         session.completed = true
         session.completedAt = Date()
         session.actualDuration = session.duration
@@ -238,21 +292,108 @@ final class SessionStore {
 
     // MARK: - Timer plumbing
 
+    /// 1-Hz tick used purely to drive UI refresh of `timeRemaining`. The actual
+    /// remaining-time math is anchored to wall clock (`Date()` vs
+    /// `session.startedAt`) so backgrounding the app does NOT drift the timer.
+    ///
+    /// v1.0.11 Sprint A P0-2: previous implementation decremented a counter
+    /// per tick. iOS suspends the timer on background, so the counter stalled
+    /// while wall clock advanced. On foreground the user saw stale remaining
+    /// time. New behavior: every tick re-derives `timeRemaining` from the
+    /// wall-clock delta, and `recomputeTimeRemaining()` is also invoked from
+    /// `UIApplication.didBecomeActiveNotification` for immediate accuracy on
+    /// foreground.
     private func scheduleTick() {
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             Task { @MainActor [weak self] in
-                guard let self else { return }
-                self.timeRemaining = max(0, self.timeRemaining - 1)
-                if self.timeRemaining <= 0 {
-                    self.complete()
-                }
+                self?.recomputeTimeRemaining()
             }
+        }
+    }
+
+    /// Re-derives `timeRemaining` from `Date()` and the session's
+    /// `startedAt`. Called from the 1-Hz tick and the foreground observer.
+    /// If the session has elapsed, drives `complete()`.
+    func recomputeTimeRemaining() {
+        guard isRunning, let session = currentSession else { return }
+        let elapsed = Date().timeIntervalSince(session.startedAt)
+        let remaining = max(0, session.duration - elapsed)
+        timeRemaining = remaining
+        if remaining <= 0 {
+            complete()
         }
     }
 
     private func cancelTimer() {
         timer?.invalidate()
         timer = nil
+    }
+
+    // MARK: - Foreground observer (v1.0.11 Sprint A P0-2)
+
+    private func installForegroundObserver() {
+        // Coalesce duplicates: never install more than one observer per instance.
+        guard foregroundObserver == nil else { return }
+        foregroundObserver = NotificationCenter.default.addObserver(
+            forName: UIApplication.didBecomeActiveNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            // `addObserver` queue `.main` means this block already executes on
+            // the main thread, but `recomputeTimeRemaining` is @MainActor —
+            // hop explicitly so the Swift concurrency checker is satisfied.
+            Task { @MainActor [weak self] in
+                self?.recomputeTimeRemaining()
+            }
+        }
+    }
+
+    // MARK: - Notifications (v1.0.11 Sprint A P0-3)
+
+    /// Requests user permission to post local notifications for the
+    /// session-complete signal. Idempotent — repeated calls are cheap
+    /// because the system tracks the prior authorization decision.
+    /// Errors are swallowed: notification authorization is best-effort,
+    /// not required for the timer to function.
+    private func requestNotifPermission() async {
+        do {
+            _ = try await UNUserNotificationCenter
+                .current()
+                .requestAuthorization(options: [.alert, .sound])
+        } catch {
+            // No-op — permission denial doesn't break the in-app flow.
+        }
+    }
+
+    /// Schedules a one-shot "Focus complete!" local notification `seconds`
+    /// from now. Identifier embeds the session UUID so we can cancel exactly
+    /// this pending request from `pause()` / `cancel()`.
+    private func scheduleCompletionNotification(for session: FocusSession, in seconds: TimeInterval) {
+        guard seconds > 0 else { return }
+        // Fire-and-forget permission request — never blocks the timer start.
+        Task { [weak self] in
+            await self?.requestNotifPermission()
+        }
+        let content = UNMutableNotificationContent()
+        content.title = String(localized: "notification.session_complete.title")
+        content.body = String(localized: "notification.session_complete.body")
+        content.sound = .default
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: seconds, repeats: false)
+        let request = UNNotificationRequest(
+            identifier: Self.completionNotifIDPrefix + session.id.uuidString,
+            content: content,
+            trigger: trigger
+        )
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+    }
+
+    /// Removes the pending completion notification for the given session, if any.
+    private func cancelCompletionNotification(for session: FocusSession) {
+        UNUserNotificationCenter
+            .current()
+            .removePendingNotificationRequests(
+                withIdentifiers: [Self.completionNotifIDPrefix + session.id.uuidString]
+            )
     }
 }
 

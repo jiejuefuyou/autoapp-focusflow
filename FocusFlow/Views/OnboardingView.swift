@@ -49,7 +49,7 @@ struct OnboardingView: View {
                     index: 2,
                     icon: "chart.bar.fill",
                     titleKey: "$3.99 once. No sub.",
-                    subtitleKey: "Pro: unlimited sessions, full history, unlimited project tags, custom durations, CSV export.",
+                    subtitleKey: "Pro: unlimited sessions, custom durations, unlimited project tags.",
                     color: .green,
                     showCTA: true
                 )

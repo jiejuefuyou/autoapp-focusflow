@@ -139,3 +139,10 @@
 "Product unavailable. Tap Restore or try again." = "商品が利用できません。復元するか、もう一度お試しください。";
 "No subscription. No data collected. Ever." = "サブスクなし。データ収集なし。これからもずっと。";
 "Nice focus!" = "ナイスフォーカス!";
+
+/* v1.0.11 — Onboarding subtitle (replaces deprecated copy with CSV/full history claims) */
+"Pro: unlimited sessions, custom durations, unlimited project tags." = "Pro 版:無制限セッション、カスタム時間、無制限プロジェクトタグ。";
+
+/* v1.0.11 — Session-complete local notification */
+"notification.session_complete.title" = "集中完了";
+"notification.session_complete.body" = "お疲れさま — 集中セッションが終わりました。";

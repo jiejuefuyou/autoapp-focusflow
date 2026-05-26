@@ -139,3 +139,10 @@
 "Product unavailable. Tap Restore or try again." = "Produkt nicht verfügbar. Stelle den Kauf wieder her oder versuche es erneut.";
 "No subscription. No data collected. Ever." = "Kein Abo. Keinerlei Datenerhebung. Niemals.";
 "Nice focus!" = "Toll fokussiert!";
+
+/* v1.0.11 — Onboarding subtitle (replaces deprecated copy with CSV/full history claims) */
+"Pro: unlimited sessions, custom durations, unlimited project tags." = "Pro: unbegrenzte Sessions, individuelle Dauer, unbegrenzte Projekt-Tags.";
+
+/* v1.0.11 — Session-complete local notification */
+"notification.session_complete.title" = "Session abgeschlossen";
+"notification.session_complete.body" = "Gut gemacht — deine Fokus-Session ist beendet.";
