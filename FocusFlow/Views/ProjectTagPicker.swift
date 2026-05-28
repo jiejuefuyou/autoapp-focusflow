@@ -9,6 +9,7 @@ import UIKit
 struct ProjectTagPicker: View {
     @Environment(SessionStore.self) private var store
     @Environment(IAPManager.self) private var iap
+    @Environment(LocalizationManager.self) private var l10n
     @Environment(\.dismiss) private var dismiss
 
     /// The session that just completed — picker writes the tag back via
@@ -54,6 +55,9 @@ struct ProjectTagPicker: View {
                 AddTagSheet { newTag in
                     store.addTag(newTag)
                 }
+                .environment(l10n)
+                .environment(\.locale, l10n.currentLocale)
+                .id(l10n.override)
             }
         }
         .presentationDetents([.medium, .large])

@@ -6,6 +6,7 @@ import UIKit
 /// the custom-duration sheet.
 struct PresetPicker: View {
     @Environment(IAPManager.self) private var iap
+    @Environment(LocalizationManager.self) private var l10n
 
     @Binding var selection: FocusPreset
     /// Custom duration in seconds; only meaningful when `selection == .custom`.
@@ -38,6 +39,9 @@ struct PresetPicker: View {
                     showCustomSheet = false
                 }
             )
+            .environment(l10n)
+            .environment(\.locale, l10n.currentLocale)
+            .id(l10n.override)
         }
     }
 
