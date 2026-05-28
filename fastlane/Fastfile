@@ -3,7 +3,7 @@ default_platform(:ios)
 PROJECT       = "FocusFlow.xcodeproj"
 SCHEME        = "FocusFlow"
 BUNDLE_ID     = ENV["APP_BUNDLE_ID"] || "com.jiejuefuyou.focusflow"
-TEST_DEVICE   = ENV["FASTLANE_TEST_DEVICE"] || "iPhone 15"
+TEST_DEVICE   = ENV["FASTLANE_TEST_DEVICE"] || "iPhone 16 Pro"
 
 platform :ios do
   before_all do
@@ -25,6 +25,7 @@ platform :ios do
       project:       PROJECT,
       scheme:        SCHEME,
       devices:       [TEST_DEVICE],
+      deployment_target_version: "17.0",
       clean:         true,
       code_coverage: true,
       only_testing:  ["#{SCHEME}Tests"]
