@@ -46,7 +46,6 @@ targets:
       properties:
         com.apple.security.application-groups:
           - group.com.jiejuefuyou.focusflow
-        com.apple.developer.applesignin: []
 
   FocusFlowTests:
     type: bundle.unit-test
