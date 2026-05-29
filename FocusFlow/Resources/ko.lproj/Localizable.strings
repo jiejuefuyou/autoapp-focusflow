@@ -146,3 +146,7 @@
 /* v1.0.11 — Session-complete local notification */
 "notification.session_complete.title" = "집중 완료";
 "notification.session_complete.body" = "수고하셨어요 — 집중 세션이 끝났습니다.";
+
+/* v1.0.12 — i18n fixes */
+"min" = "분";
+"paywall.legalese" = "결제는 Apple ID 계정에 청구됩니다. 이것은 일회성 구매이며 평생 모든 프리미엄 기능을 이용하실 수 있습니다.";

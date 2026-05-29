@@ -18,7 +18,7 @@ struct SettingsView: View {
                         HStack {
                             Text(LocalizedStringKey("Free tier"))
                             Spacer()
-                            Text("\(store.sessionsToday()) / \(SessionStore.freeDailySessionLimit) sessions today")
+                            Text("\(store.sessionsToday()) / \(SessionStore.freeDailySessionLimit) \(String(localized: "sessions today"))")
                                 .font(.caption).foregroundStyle(.secondary)
                         }
                         Button { showPaywall = true } label: {

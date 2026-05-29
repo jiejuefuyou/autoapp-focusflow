@@ -146,3 +146,7 @@
 /* v1.0.11 — Session-complete local notification */
 "notification.session_complete.title" = "Session abgeschlossen";
 "notification.session_complete.body" = "Gut gemacht — deine Fokus-Session ist beendet.";
+
+/* v1.0.12 — i18n fixes */
+"min" = "Min.";
+"paywall.legalese" = "Die Zahlung wird deiner Apple-ID belastet. Dies ist ein Einmalkauf, der alle Premium-Funktionen dauerhaft freischaltet.";

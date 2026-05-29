@@ -146,3 +146,7 @@
 /* v1.0.11 — Session-complete local notification */
 "notification.session_complete.title" = "Session terminée";
 "notification.session_complete.body" = "Bien joué — votre session de concentration est terminée.";
+
+/* v1.0.12 — i18n fixes */
+"min" = "min";
+"paywall.legalese" = "Le paiement sera débité de votre identifiant Apple. Il s'agit d'un achat unique débloquant toutes les fonctionnalités premium à vie.";

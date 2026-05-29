@@ -146,3 +146,7 @@
 /* v1.0.11 — Session-complete local notification */
 "notification.session_complete.title" = "集中完了";
 "notification.session_complete.body" = "お疲れさま — 集中セッションが終わりました。";
+
+/* v1.0.12 — i18n fixes */
+"min" = "分";
+"paywall.legalese" = "お支払いは Apple ID に請求されます。これは一度限りの購入で、Apple ID の有効期間中すべてのプレミアム機能が永久に使えます。";

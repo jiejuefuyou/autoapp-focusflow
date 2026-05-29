@@ -146,3 +146,7 @@
 /* v1.0.11 — Session-complete local notification */
 "notification.session_complete.title" = "专注完成";
 "notification.session_complete.body" = "做得好——本次专注已结束。";
+
+/* v1.0.12 — i18n fixes */
+"min" = "分钟";
+"paywall.legalese" = "付款将从您的 Apple ID 账户扣除。这是一次性购买，可永久解锁所有高级功能。";

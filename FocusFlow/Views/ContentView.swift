@@ -263,7 +263,7 @@ struct ContentView: View {
 
     private func durationLabel(seconds: TimeInterval) -> String {
         let m = Int(seconds / 60)
-        return "\(m) min"
+        return "\(m) \(String(localized: "min"))"
     }
 
     /// Apple's stock "tri-tone" alert + haptic + visible celebration toast.

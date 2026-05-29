@@ -215,6 +215,6 @@ struct PaywallView: View {
     // MARK: - Legalese
 
     private var legalese: String {
-        "Payment will be charged to your Apple ID. This is a one-time purchase that unlocks all premium features for the lifetime of your Apple ID."
+        String(localized: "paywall.legalese")
     }
 }

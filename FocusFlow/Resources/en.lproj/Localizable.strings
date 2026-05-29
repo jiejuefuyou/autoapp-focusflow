@@ -149,3 +149,7 @@
    session completes. Visible even if the app is backgrounded. */
 "notification.session_complete.title" = "Focus complete";
 "notification.session_complete.body" = "Nice work — your focus session is done.";
+
+/* v1.0.12 — i18n fixes: hardcoded "min" + paywall legalese */
+"min" = "min";
+"paywall.legalese" = "Payment will be charged to your Apple ID. This is a one-time purchase that unlocks all premium features for the lifetime of your Apple ID.";

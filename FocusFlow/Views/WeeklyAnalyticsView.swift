@@ -109,7 +109,7 @@ struct WeeklyAnalyticsView: View {
             )
             .foregroundStyle(row.color)
             .annotation(position: .trailing, alignment: .leading) {
-                Text("\(Int(row.minutes.rounded())) min")
+                Text("\(Int(row.minutes.rounded())) \(String(localized: "min"))")
                     .font(.caption2.weight(.medium))
                     .foregroundStyle(.secondary)
             }
