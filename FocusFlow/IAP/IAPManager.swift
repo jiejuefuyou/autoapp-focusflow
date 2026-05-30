@@ -23,7 +23,12 @@ enum PurchaseState: Equatable {
 final class IAPManager {
     static let premiumProductID = "com.jiejuefuyou.focusflow.premium"
 
-    var isPremium:     Bool         = false
+    /// UserDefaults key for cached premium state — avoids the "Unlock" CTA
+    /// flash on cold start while StoreKit refreshes the live entitlement
+    /// (parity with AutoChoice/WaterNow/DaysUntil IAPManager).
+    private static let cachedIsPremiumKey = "FocusFlow.iap.cachedIsPremium"
+
+    var isPremium:     Bool         = UserDefaults.standard.bool(forKey: IAPManager.cachedIsPremiumKey)
     var products:      [Product]    = []
     var purchaseState: PurchaseState = .idle
 
@@ -109,5 +114,6 @@ final class IAPManager {
             }
         }
         isPremium = entitled
+        UserDefaults.standard.set(entitled, forKey: Self.cachedIsPremiumKey)
     }
 }
