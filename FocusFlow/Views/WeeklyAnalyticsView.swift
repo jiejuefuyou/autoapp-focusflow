@@ -26,6 +26,16 @@ struct WeeklyAnalyticsView: View {
                 } header: {
                     sectionHeader(LocalizedStringKey("Minutes by tag"))
                 }
+
+                Section {
+                    if hasHeatmapData {
+                        heatmapChart
+                    } else {
+                        emptyState
+                    }
+                } header: {
+                    sectionHeader(LocalizedStringKey("Best time of day"))
+                }
             }
             .padding(Spacing.md)
         }
@@ -120,6 +130,49 @@ struct WeeklyAnalyticsView: View {
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))   // 16 = analytics card
     }
 
+    // MARK: - Best-time-of-day heatmap
+
+    /// Compact 24-hour bar chart of all-time completed focus minutes, surfacing
+    /// when the user focuses best. Bars are tinted by intensity (relative to the
+    /// busiest hour) so peak hours read instantly. Uses the already-imported
+    /// Swift Charts; no new dependency.
+    private var heatmapChart: some View {
+        Chart(hourly) { bucket in
+            BarMark(
+                x: .value("Hour", bucket.hour),
+                y: .value("Minutes", bucket.minutes),
+                width: .fixed(7)   // fixed px width: predictable on a 24-point continuous x-axis
+            )
+            .foregroundStyle(Color.accentColor.opacity(intensity(for: bucket.minutes)))
+            .cornerRadius(2)
+        }
+        .chartXScale(domain: 0...23)
+        .chartXAxis {
+            // Label every 6 hours (0 / 6 / 12 / 18) to keep the compact axis legible.
+            AxisMarks(values: [0, 6, 12, 18]) { value in
+                AxisValueLabel {
+                    if let hour = value.as(Int.self) {
+                        Text(hourAxisLabel(hour))
+                    }
+                }
+                AxisGridLine()
+            }
+        }
+        .chartYAxis(.hidden)
+        .frame(height: 140)
+        .padding(Spacing.md)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))   // 16 = analytics card
+        .overlay(alignment: .topTrailing) {
+            if let peak = peakHourLabel {
+                Text(peak)
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, Spacing.sm)
+                    .padding(.vertical, Spacing.xs)
+            }
+        }
+    }
+
     private var emptyState: some View {
         VStack(spacing: Spacing.sm) {
             Image(systemName: "chart.bar.xaxis")
@@ -170,6 +223,51 @@ struct WeeklyAnalyticsView: View {
             return "\(h)h \(m)m"
         }
         return "\(m)m"
+    }
+
+    // MARK: - Heatmap derived
+
+    private var hourly: [HourBucket] {
+        store.focusMinutesByHourOfDay()
+    }
+
+    private var hasHeatmapData: Bool {
+        hourly.contains { $0.minutes > 0 }
+    }
+
+    /// Busiest hour's minutes — the denominator for bar intensity.
+    private var peakMinutes: Double {
+        hourly.map(\.minutes).max() ?? 0
+    }
+
+    /// Opacity for a bar relative to the busiest hour: empty hours stay faint,
+    /// the peak hour reads full-strength. Range ≈ 0.18...1.0.
+    private func intensity(for minutes: Double) -> Double {
+        guard peakMinutes > 0, minutes > 0 else { return 0.18 }
+        return 0.35 + 0.65 * (minutes / peakMinutes)
+    }
+
+    /// Short hour-of-day axis label, e.g. "6 AM" / "18:00" — formatted in the
+    /// current locale via `DateComponents` so 12h/24h conventions are respected.
+    private func hourAxisLabel(_ hour: Int) -> String {
+        var comps = DateComponents()
+        comps.hour = hour
+        comps.minute = 0
+        let cal = Calendar.current
+        guard let date = cal.date(from: comps) ?? cal.date(bySettingHour: hour, minute: 0, second: 0, of: Date()) else {
+            return "\(hour)"
+        }
+        return date.formatted(.dateTime.hour())
+    }
+
+    /// "Peak: 9 AM" style annotation for the user's single busiest focus hour,
+    /// or `nil` when there's no data.
+    private var peakHourLabel: String? {
+        guard let top = hourly.filter({ $0.minutes > 0 }).max(by: { $0.minutes < $1.minutes }) else {
+            return nil
+        }
+        return String(format: NSLocalizedString("heatmap.peak", comment: "peak focus hour"),
+                      hourAxisLabel(top.hour))
     }
 
     /// Resolve a tag's display name to a runtime String for use inside `Chart`

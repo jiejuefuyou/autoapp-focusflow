@@ -95,8 +95,11 @@ struct ContentView: View {
 
     // MARK: - Sections
 
-    /// Compact "Today" card at the top: session count + total focused time.
-    /// Hidden when zero sessions today (avoid empty-state shame).
+    /// Compact "Today" card at the top: session count + total focused time,
+    /// plus two retention hooks — a daily focus-minutes goal ring (trailing)
+    /// and a "🔥 N-day streak" badge (shown once the streak reaches 2 so a
+    /// single day doesn't claim a "streak"). Hidden when zero sessions today
+    /// (avoid empty-state shame).
     @ViewBuilder
     private var todaySummary: some View {
         if todaysSessions.count > 0 {
@@ -107,7 +110,7 @@ struct ContentView: View {
                     .frame(width: 36, height: 36)
                     .background(Color.accentColor.opacity(0.12), in: Circle())
 
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .leading, spacing: 4) {
                     Text(LocalizedStringKey("Today"))
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(.secondary)
@@ -115,13 +118,51 @@ struct ContentView: View {
                     Text("\(todaysSessions.count) \(String(localized: "sessions today")) · \(todaysTotalFormatted)")
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(.primary)
+
+                    if store.currentStreak >= 2 {
+                        Text("🔥 \(streakLabel(store.currentStreak))")
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(.tint)
+                            .accessibilityLabel(Text(streakLabel(store.currentStreak)))
+                    }
                 }
                 Spacer()
+
+                goalRing
             }
             .padding(.horizontal, 14)   // 14 = data card horizontal; sits between sm(8)/md(16)
             .padding(.vertical, 12)     // 12 = data card vertical (Radius.md = 12)
             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14))   // 14 = matches horizontal inset
         }
+    }
+
+    /// Daily focus-minutes goal ring: today's minutes vs `dailyGoalMinutes`.
+    /// Fills as the user focuses; shows a check seal once the goal is met.
+    private var goalRing: some View {
+        let progress = store.todayGoalProgress()
+        let met = store.isTodayGoalMet()
+        return ZStack {
+            Circle()
+                .stroke(Color.accentColor.opacity(0.15), lineWidth: 5)
+            Circle()
+                .trim(from: 0, to: max(0.02, progress))   // 0.02 floor so a sliver always shows
+                .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 5, lineCap: .round))
+                .rotationEffect(.degrees(-90))
+                .animation(.easeInOut(duration: 0.4), value: progress)
+            if met {
+                Image(systemName: "checkmark")
+                    .font(.caption2.weight(.bold))
+                    .foregroundStyle(.tint)
+            } else {
+                Text("\(Int(progress * 100))%")
+                    .font(.caption2.weight(.bold).monospacedDigit())
+                    .foregroundStyle(.primary)
+            }
+        }
+        .frame(width: 40, height: 40)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(LocalizedStringKey("Daily goal")))
+        .accessibilityValue(Text(goalAccessibilityValue))
     }
 
     private var celebrationToast: some View {
@@ -264,6 +305,19 @@ struct ContentView: View {
     private func durationLabel(seconds: TimeInterval) -> String {
         let m = Int(seconds / 60)
         return "\(m) \(String(localized: "min"))"
+    }
+
+    /// "%lld-day streak" localized with the count substituted. Uses
+    /// `String(localized:defaultValue:)`-style interpolation via the format
+    /// string so plural-aware locales can adapt.
+    private func streakLabel(_ days: Int) -> String {
+        String(format: NSLocalizedString("streak.days", comment: "N-day focus streak"), days)
+    }
+
+    /// VoiceOver value for the goal ring, e.g. "45 of 90 min".
+    private var goalAccessibilityValue: String {
+        String(format: NSLocalizedString("goal.progress.value", comment: "today minutes of goal"),
+               store.todayFocusMinutes(), store.dailyGoalMinutes)
     }
 
     /// Apple's stock "tri-tone" alert + haptic + visible celebration toast.

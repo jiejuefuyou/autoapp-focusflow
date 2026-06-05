@@ -20,10 +20,36 @@ final class SessionStore {
     /// Free tier sees only the first N default tags.
     static let freeTagLimit = 3
 
+    /// Default daily focus-minutes goal for a fresh install (90 min ≈ one
+    /// "Deep Work" block, a deliberately attainable target that still nudges
+    /// toward a second session).
+    static let defaultDailyGoalMinutes = 90
+
+    /// Bounds for the daily-goal stepper. 15 min = one Quick Sprint floor;
+    /// 480 min = an 8-hour ceiling that keeps the ring meaningful.
+    static let dailyGoalRange: ClosedRange<Int> = 15...480
+
     // MARK: - Persisted state
 
     private(set) var history: [FocusSession] = []
     private(set) var tags: [ProjectTag] = []
+
+    /// User's daily focus-minutes goal, surfaced as a progress ring on the
+    /// Today card and editable from Settings. Persisted to `UserDefaults`
+    /// (additive — no migration of the history/tags blobs). Reads clamp to a
+    /// sane default so a missing/zero stored value never yields a divide-by-zero
+    /// or an unreachable goal.
+    var dailyGoalMinutes: Int {
+        didSet {
+            let clamped = min(max(dailyGoalMinutes, Self.dailyGoalRange.lowerBound),
+                              Self.dailyGoalRange.upperBound)
+            if clamped != dailyGoalMinutes {
+                dailyGoalMinutes = clamped   // re-enters didSet once, then settles
+                return
+            }
+            UserDefaults.standard.set(clamped, forKey: dailyGoalKey)
+        }
+    }
 
     // MARK: - Transient timer state
 
@@ -55,8 +81,15 @@ final class SessionStore {
 
     private let historyKey = "focusflow.history.v2"
     private let tagsKey = "focusflow.tags.v1"
+    private let dailyGoalKey = "focusflow.dailyGoalMinutes.v1"
 
     init() {
+        // Seed the daily goal before the didSet observer can fire on a real
+        // assignment: read the stored value (0 when never set) and clamp.
+        let storedGoal = UserDefaults.standard.integer(forKey: dailyGoalKey)
+        dailyGoalMinutes = storedGoal == 0
+            ? Self.defaultDailyGoalMinutes
+            : min(max(storedGoal, Self.dailyGoalRange.lowerBound), Self.dailyGoalRange.upperBound)
         loadTags()
         loadHistory()
         installForegroundObserver()
@@ -258,6 +291,117 @@ final class SessionStore {
             .sorted { $0.minutes > $1.minutes }
     }
 
+    // MARK: - Retention metrics (streak / goal / time-of-day)
+
+    /// Total focus minutes logged *today* (completed sessions only), used for
+    /// the daily-goal ring. Counts `actualDuration` so an early-stopped session
+    /// still contributes the minutes actually focused.
+    func todayFocusMinutes() -> Int {
+        let cal = Calendar.current
+        let today = cal.startOfDay(for: Date())
+        let seconds = history
+            .filter { $0.completed && cal.startOfDay(for: $0.startedAt) == today }
+            .reduce(0.0) { $0 + ($1.actualDuration > 0 ? $1.actualDuration : $1.duration) }
+        return Int(seconds / 60.0)
+    }
+
+    /// Progress toward today's goal, clamped to `0...1`. `0` when the goal is
+    /// somehow non-positive (defensive — `dailyGoalMinutes` is range-clamped).
+    func todayGoalProgress() -> Double {
+        guard dailyGoalMinutes > 0 else { return 0 }
+        return min(1.0, Double(todayFocusMinutes()) / Double(dailyGoalMinutes))
+    }
+
+    /// Whether today's goal has been met or exceeded.
+    func isTodayGoalMet() -> Bool {
+        todayFocusMinutes() >= dailyGoalMinutes
+    }
+
+    /// Set of calendar `startOfDay` dates that have ≥1 completed session.
+    /// Shared by `currentStreak` and `bestStreak` so the history is scanned once.
+    private func completedDayStarts(_ cal: Calendar) -> Set<Date> {
+        var days = Set<Date>()
+        for s in history where s.completed {
+            days.insert(cal.startOfDay(for: s.startedAt))
+        }
+        return days
+    }
+
+    /// Current consecutive-day focus streak: the run of calendar days, ending
+    /// today (or yesterday — a not-yet-active day shouldn't reset the streak),
+    /// each with ≥1 completed session.
+    ///
+    /// DST-safe: walks day-by-day with `Calendar.date(byAdding: .day,)`, never
+    /// raw `86400` arithmetic (a DST transition day is 23 or 25 hours).
+    var currentStreak: Int {
+        let cal = Calendar.current
+        let days = completedDayStarts(cal)
+        guard !days.isEmpty else { return 0 }
+
+        let today = cal.startOfDay(for: Date())
+        // Anchor on today if it has a session, else on yesterday (grace for a
+        // day still in progress). If neither qualifies, the streak is broken.
+        var cursor: Date
+        if days.contains(today) {
+            cursor = today
+        } else if let yesterday = cal.date(byAdding: .day, value: -1, to: today),
+                  days.contains(yesterday) {
+            cursor = yesterday
+        } else {
+            return 0
+        }
+
+        var streak = 0
+        while days.contains(cursor) {
+            streak += 1
+            guard let prev = cal.date(byAdding: .day, value: -1, to: cursor) else { break }
+            cursor = prev
+        }
+        return streak
+    }
+
+    /// Longest consecutive-day focus streak ever recorded in `history`.
+    /// DST-safe (same day-by-day walk as `currentStreak`).
+    var bestStreak: Int {
+        let cal = Calendar.current
+        let days = completedDayStarts(cal)
+        guard !days.isEmpty else { return 0 }
+
+        var best = 0
+        for day in days {
+            // Only start counting from a run's first day (no completed session
+            // the day before) so each run is measured exactly once.
+            if let prev = cal.date(byAdding: .day, value: -1, to: day), days.contains(prev) {
+                continue
+            }
+            var length = 0
+            var cursor = day
+            while days.contains(cursor) {
+                length += 1
+                guard let next = cal.date(byAdding: .day, value: 1, to: cursor) else { break }
+                cursor = next
+            }
+            best = max(best, length)
+        }
+        return best
+    }
+
+    /// Completed focus minutes bucketed by hour-of-day (0...23), aggregated over
+    /// all history. Always returns 24 rows (zero-filled) so the heatmap renders
+    /// a stable axis. Buckets on `completedAt` (when the focus actually landed),
+    /// falling back to `startedAt` for any legacy row missing `completedAt`.
+    func focusMinutesByHourOfDay() -> [HourBucket] {
+        let cal = Calendar.current
+        var totals = [Double](repeating: 0, count: 24)
+        for s in history where s.completed {
+            let when = s.completedAt ?? s.startedAt
+            let hour = cal.component(.hour, from: when)
+            guard hour >= 0 && hour < 24 else { continue }
+            totals[hour] += (s.actualDuration > 0 ? s.actualDuration : s.duration)
+        }
+        return (0..<24).map { HourBucket(hour: $0, minutes: totals[$0] / 60.0) }
+    }
+
     // MARK: - Persistence (UserDefaults Codable JSON)
 
     private func persistHistory() {
@@ -408,5 +552,13 @@ struct DailyMinutes: Identifiable, Hashable {
 struct TagMinutes: Identifiable, Hashable {
     var id: String { tagId?.uuidString ?? "untagged" }
     let tagId: UUID?
+    let minutes: Double
+}
+
+/// One hour-of-day slot (0...23) and the total focus minutes logged in it,
+/// summed across all completed sessions. Backs the best-time-of-day heatmap.
+struct HourBucket: Identifiable, Hashable {
+    var id: Int { hour }
+    let hour: Int
     let minutes: Double
 }

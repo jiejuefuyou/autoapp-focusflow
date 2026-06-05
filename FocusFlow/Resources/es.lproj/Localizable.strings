@@ -175,3 +175,13 @@
 
 /* Paywall — premium-technique feature row */
 "paywall.techniques.feature" = "8 técnicas de enfoque (52/17, ultradiano, examen intensivo y más)";
+
+/* Retention hooks — focus streak, daily goal ring, best-time-of-day heatmap (all free) */
+"streak.days" = "Racha de %lld días";
+"Daily goal" = "Meta diaria";
+"Daily focus goal" = "Meta de enfoque diaria";
+"Your target focus time each day. Track it on the home screen ring." = "Tu tiempo de enfoque objetivo cada día. Síguelo en el anillo de la pantalla de inicio.";
+"minutes.count" = "%lld min";
+"goal.progress.value" = "%1$lld de %2$lld min";
+"Best time of day" = "Mejor hora del día";
+"heatmap.peak" = "Pico %@";

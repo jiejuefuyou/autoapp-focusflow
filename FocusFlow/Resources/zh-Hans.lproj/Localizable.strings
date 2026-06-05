@@ -175,3 +175,13 @@
 
 /* Paywall — premium-technique feature row */
 "paywall.techniques.feature" = "8 种专注法(52/17、超日节律、考前冲刺等)";
+
+/* Retention hooks — focus streak, daily goal ring, best-time-of-day heatmap (all free) */
+"streak.days" = "连续专注 %lld 天";
+"Daily goal" = "每日目标";
+"Daily focus goal" = "每日专注目标";
+"Your target focus time each day. Track it on the home screen ring." = "你每天的目标专注时长。在主屏幕的圆环上查看进度。";
+"minutes.count" = "%lld 分钟";
+"goal.progress.value" = "%2$lld 分钟中已完成 %1$lld 分钟";
+"Best time of day" = "高效时段";
+"heatmap.peak" = "高峰 %@";

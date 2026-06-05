@@ -175,3 +175,13 @@
 
 /* Paywall — premium-technique feature row */
 "paywall.techniques.feature" = "8가지 집중 기법(52/17, 울트라디안, 시험 직전 등)";
+
+/* Retention hooks — focus streak, daily goal ring, best-time-of-day heatmap (all free) */
+"streak.days" = "%lld일 연속";
+"Daily goal" = "일일 목표";
+"Daily focus goal" = "일일 집중 목표";
+"Your target focus time each day. Track it on the home screen ring." = "매일 목표로 하는 집중 시간입니다. 홈 화면 링에서 진행 상황을 확인하세요.";
+"minutes.count" = "%lld분";
+"goal.progress.value" = "%2$lld분 중 %1$lld분";
+"Best time of day" = "집중이 잘되는 시간대";
+"heatmap.peak" = "최고 %@";

@@ -32,6 +32,29 @@ struct SettingsView: View {
                     LanguagePicker()
                 }
 
+                Section {
+                    Stepper(
+                        value: Binding(
+                            get: { store.dailyGoalMinutes },
+                            set: { store.dailyGoalMinutes = $0 }
+                        ),
+                        in: SessionStore.dailyGoalRange,
+                        step: 15
+                    ) {
+                        HStack {
+                            Text(LocalizedStringKey("Daily focus goal"))
+                            Spacer()
+                            Text(goalValueFormatted)
+                                .font(.body.monospacedDigit())
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                } header: {
+                    Text(LocalizedStringKey("Daily goal"))
+                } footer: {
+                    Text(LocalizedStringKey("Your target focus time each day. Track it on the home screen ring."))
+                }
+
                 Section(LocalizedStringKey("Focus Filter (iOS 17+)")) {
                     VStack(alignment: .leading, spacing: 8) {
                         HStack(spacing: 8) {
@@ -93,6 +116,12 @@ struct SettingsView: View {
         let hours = Int(totalSeconds) / 3600
         let minutes = (Int(totalSeconds) % 3600) / 60
         return "\(hours)h \(minutes)m"
+    }
+
+    /// "%lld min" with the goal value substituted (e.g. "90 min").
+    private var goalValueFormatted: String {
+        String(format: NSLocalizedString("minutes.count", comment: "minutes count"),
+               store.dailyGoalMinutes)
     }
 
     private var appVersion: String {

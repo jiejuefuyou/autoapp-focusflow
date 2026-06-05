@@ -180,3 +180,13 @@
 
 /* Paywall — premium-technique feature row */
 "paywall.techniques.feature" = "8 focus techniques (52/17, Ultradian, Exam Cram & more)";
+
+/* Retention hooks — focus streak, daily goal ring, best-time-of-day heatmap (all free) */
+"streak.days" = "%lld-day streak";
+"Daily goal" = "Daily goal";
+"Daily focus goal" = "Daily focus goal";
+"Your target focus time each day. Track it on the home screen ring." = "Your target focus time each day. Track it on the home screen ring.";
+"minutes.count" = "%lld min";
+"goal.progress.value" = "%1$lld of %2$lld min";
+"Best time of day" = "Best time of day";
+"heatmap.peak" = "Peak %@";
