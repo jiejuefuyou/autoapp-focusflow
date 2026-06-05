@@ -43,10 +43,12 @@ struct PaywallView: View {
                     // Apple 2.3.1 (Accurate Metadata) reject risk + user 1-star.
                     // All 3 rows below correspond to real gates verified in code:
                     //   * unlimited sessions  -> SessionStore.freeDailySessionLimit
+                    //   * advanced techniques -> FocusPreset premium cases (.requiresPremium)
                     //   * custom durations    -> FocusPreset.custom.requiresPremium
                     //   * unlimited tags      -> ProjectTagPicker addTagButton gate
                     VStack(alignment: .leading, spacing: 14) {
                         feature("infinity",               LocalizedStringKey("Unlimited daily sessions"))
+                        feature("square.stack.3d.up.fill", LocalizedStringKey("paywall.techniques.feature"))
                         feature("slider.horizontal.3",    LocalizedStringKey("Custom session durations (any length)"))
                         feature("tag.fill",               LocalizedStringKey("Unlimited project tags with emoji + color"))
                     }

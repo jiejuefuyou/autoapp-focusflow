@@ -153,3 +153,30 @@
 /* v1.0.12 — i18n fixes: hardcoded "min" + paywall legalese */
 "min" = "min";
 "paywall.legalese" = "Payment will be charged to your Apple ID. This is a one-time purchase that unlocks all premium features for the lifetime of your Apple ID.";
+
+/* Focus technique library — section header (replaces the bare "Duration") */
+"Focus technique" = "Focus technique";
+
+/* Focus technique library — names + one-sentence descriptions.
+   3 free (Classic / Long Focus / Deep Work) keep the original 25/50/90 min
+   durations; 5 premium techniques are the gated "advanced techniques". */
+"preset.classic.name" = "Classic";
+"preset.classic.desc" = "The original Pomodoro rhythm — short, repeatable bursts that beat procrastination.";
+"preset.longFocus.name" = "Long Focus";
+"preset.longFocus.desc" = "A roomy 50-minute block for tasks that need a real warm-up before they flow.";
+"preset.deepWork.name" = "Deep Work";
+"preset.deepWork.desc" = "A 90-minute deep-work block matched to your natural ultradian energy cycle.";
+"preset.deskTime.name" = "52 / 17";
+"preset.deskTime.desc" = "The 52-minutes-on, 17-off cadence linked to the most productive workdays.";
+"preset.studySprint.name" = "Study Sprint";
+"preset.studySprint.desc" = "A 45-minute study block sized to a typical class period, then a short reset.";
+"preset.examCram.name" = "Exam Cram";
+"preset.examCram.desc" = "An intense 60-minute push for revision marathons when the deadline is close.";
+"preset.writingFlow.name" = "Writing Flow";
+"preset.writingFlow.desc" = "Fifty unbroken minutes to draft and edit while your train of thought holds.";
+"preset.quickSprint.name" = "Quick Sprint";
+"preset.quickSprint.desc" = "A 15-minute micro-sprint to clear one small task or break the inertia.";
+"preset.custom.desc" = "Set any focus length you like, from 5 minutes to 4 hours.";
+
+/* Paywall — premium-technique feature row */
+"paywall.techniques.feature" = "8 focus techniques (52/17, Ultradian, Exam Cram & more)";

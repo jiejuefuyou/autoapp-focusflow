@@ -84,30 +84,129 @@ extension ProjectTag {
     ]
 }
 
-/// Hard-coded preset durations + a "custom" affordance (Premium-gated in UI).
+/// Curated library of named focus techniques + a "custom" affordance
+/// (Premium-gated in UI).
+///
+/// **Backward compatibility (v1.0.x):** the four original cases keep their exact
+/// `rawValue`s (`"25"`, `"50"`, `"90"`, `"custom"`) and the same `seconds`, so any
+/// persisted selection or `@SceneStorage`/`UserDefaults` round-trip stays valid.
+/// `FocusSession` only persists `duration` (seconds), never a `FocusPreset`, so
+/// this enrichment cannot corrupt history. The five premium cases are purely
+/// additive.
+///
+/// Each preset exposes `focusMinutes` / `breakMinutes` as descriptive metadata.
+/// The timer continues to run on the focus duration alone (`seconds`); break
+/// minutes are surfaced in the picker subtitle and are not yet consumed by the
+/// countdown — kept as data so a future "auto-break" feature is additive.
 enum FocusPreset: String, CaseIterable, Identifiable, Codable, Hashable {
+    // ── Free tier (original three — rawValues + durations unchanged) ──
     case short25 = "25"
     case medium50 = "50"
     case long90 = "90"
+
+    // ── Premium tier (additive, v1.0.x curated techniques) ──
+    case deskTime5217 = "deskTime5217"
+    case studySprint45 = "studySprint45"
+    case examCram60 = "examCram60"
+    case writingFlow50 = "writingFlow50"
+    case quickSprint15 = "quickSprint15"
+
+    // ── Custom-duration affordance (rawValue unchanged) ──
     case custom = "custom"
 
     var id: String { rawValue }
 
-    /// Default seconds. `.custom` returns 0 — callers must supply an explicit
-    /// duration via `startSession(duration:tagId:)`.
-    var seconds: TimeInterval {
+    /// Focus length in minutes (the work block).
+    var focusMinutes: Int {
         switch self {
-        case .short25:  return 25 * 60
-        case .medium50: return 50 * 60
-        case .long90:   return 90 * 60
-        case .custom:   return 0
+        case .short25:       return 25
+        case .medium50:      return 50
+        case .long90:        return 90
+        case .deskTime5217:  return 52
+        case .studySprint45: return 45
+        case .examCram60:    return 60
+        case .writingFlow50: return 50
+        case .quickSprint15: return 15
+        case .custom:        return 0
+        }
+    }
+
+    /// Suggested break length in minutes (descriptive — not consumed by the
+    /// countdown yet). `.custom` has no prescribed break.
+    var breakMinutes: Int {
+        switch self {
+        case .short25:       return 5
+        case .medium50:      return 10
+        case .long90:        return 20
+        case .deskTime5217:  return 17
+        case .studySprint45: return 10
+        case .examCram60:    return 10
+        case .writingFlow50: return 15
+        case .quickSprint15: return 5
+        case .custom:        return 0
+        }
+    }
+
+    /// Focus-block seconds — the value the timer actually starts with.
+    /// `.custom` returns 0; callers supply an explicit duration via
+    /// `startSession(duration:tagId:)`.
+    ///
+    /// Derived from `focusMinutes` so the original three still resolve to
+    /// 25/50/90 min exactly.
+    var seconds: TimeInterval {
+        TimeInterval(focusMinutes * 60)
+    }
+
+    /// `Localizable.strings` key for the technique's display name.
+    /// `.custom` is rendered by the dedicated custom chip, so it has no key.
+    var nameKey: String {
+        switch self {
+        case .short25:       return "preset.classic.name"
+        case .medium50:      return "preset.longFocus.name"
+        case .long90:        return "preset.deepWork.name"
+        case .deskTime5217:  return "preset.deskTime.name"
+        case .studySprint45: return "preset.studySprint.name"
+        case .examCram60:    return "preset.examCram.name"
+        case .writingFlow50: return "preset.writingFlow.name"
+        case .quickSprint15: return "preset.quickSprint.name"
+        case .custom:        return "Custom"
+        }
+    }
+
+    /// `Localizable.strings` key for the one-sentence technique description
+    /// shown as the chip subtitle.
+    var descriptionKey: String {
+        switch self {
+        case .short25:       return "preset.classic.desc"
+        case .medium50:      return "preset.longFocus.desc"
+        case .long90:        return "preset.deepWork.desc"
+        case .deskTime5217:  return "preset.deskTime.desc"
+        case .studySprint45: return "preset.studySprint.desc"
+        case .examCram60:    return "preset.examCram.desc"
+        case .writingFlow50: return "preset.writingFlow.desc"
+        case .quickSprint15: return "preset.quickSprint.desc"
+        case .custom:        return ""
         }
     }
 
     /// Whether this preset requires Premium entitlement.
+    /// Free = the three original techniques; Premium = the five curated ones
+    /// plus the custom-duration affordance.
     var requiresPremium: Bool {
-        self == .custom
+        switch self {
+        case .short25, .medium50, .long90:
+            return false
+        case .deskTime5217, .studySprint45, .examCram60, .writingFlow50, .quickSprint15, .custom:
+            return true
+        }
     }
+
+    /// The named techniques shown in the picker library (everything except the
+    /// custom-duration affordance, which has its own chip).
+    static let library: [FocusPreset] = [
+        .short25, .medium50, .long90,
+        .deskTime5217, .studySprint45, .examCram60, .writingFlow50, .quickSprint15,
+    ]
 }
 
 // MARK: - Color hex helper

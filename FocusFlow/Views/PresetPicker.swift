@@ -1,9 +1,15 @@
 import SwiftUI
 import UIKit
 
-/// Horizontal row of three preset chips (25 / 50 / 90) plus a Custom chip.
-/// Custom is Premium-gated — taps from free users open the paywall instead of
-/// the custom-duration sheet.
+/// A curated library of named focus techniques rendered as selectable rows,
+/// followed by the Custom-duration affordance.
+///
+/// Each row shows the technique name, a one-line description, and its
+/// focus/break rhythm. Premium techniques (and Custom) show a lock glyph for
+/// free users; tapping a locked row opens the paywall instead of selecting it.
+/// Tapping a free/unlocked row selects the preset exactly as before — the
+/// parent's `plannedDuration` then derives the timer length from
+/// `FocusPreset.seconds`, so timer behavior is unchanged.
 struct PresetPicker: View {
     @Environment(IAPManager.self) private var iap
     @Environment(LocalizationManager.self) private var l10n
@@ -13,8 +19,8 @@ struct PresetPicker: View {
     /// Premium users edit this through the sheet.
     @Binding var customDurationSeconds: TimeInterval
 
-    /// Called when the user taps Custom while *not* entitled, so the parent
-    /// can present `PaywallView`.
+    /// Called when the user taps a locked premium preset (or Custom) while
+    /// *not* entitled, so the parent can present `PaywallView`.
     var onPremiumGated: () -> Void = {}
 
     /// Disable interaction while a session is running.
@@ -23,11 +29,11 @@ struct PresetPicker: View {
     @State private var showCustomSheet = false
 
     var body: some View {
-        HStack(spacing: 10) {   // 10 = chip rhythm, between sm(8)/md(16)
-            chip(for: .short25, label: LocalizedStringKey("25 min"), icon: "bolt.fill")
-            chip(for: .medium50, label: LocalizedStringKey("50 min"), icon: "flame.fill")
-            chip(for: .long90, label: LocalizedStringKey("90 min"), icon: "mountain.2.fill")
-            customChip
+        VStack(spacing: 8) {   // 8 = sm rhythm between technique rows
+            ForEach(FocusPreset.library) { preset in
+                presetRow(for: preset)
+            }
+            customRow
         }
         .opacity(disabled ? 0.45 : 1.0)
         .allowsHitTesting(!disabled)
@@ -45,37 +51,95 @@ struct PresetPicker: View {
         }
     }
 
-    /// Renders one preset chip. The icon serves as a duration-intensity cue
-    /// (bolt = sprint, flame = standard, mountain = deep work) — it isn't
-    /// just decorative.
+    // MARK: - Technique row
+
+    /// Renders one curated-technique row: name + description + focus/break
+    /// rhythm. Locked premium rows show a lock glyph and route to the paywall.
     @ViewBuilder
-    private func chip(for preset: FocusPreset, label: LocalizedStringKey, icon: String) -> some View {
+    private func presetRow(for preset: FocusPreset) -> some View {
         let isSelected = (selection == preset)
+        let isLocked = preset.requiresPremium && !iap.isPremium
+
         Button {
-            UISelectionFeedbackGenerator().selectionChanged()
-            selection = preset
-        } label: {
-            VStack(spacing: 2) {
-                Image(systemName: icon)
-                    .font(.caption.weight(.semibold))
-                Text(label)
-                    .font(.subheadline.weight(.semibold))
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.8)
+            if isLocked {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                onPremiumGated()
+            } else {
+                UISelectionFeedbackGenerator().selectionChanged()
+                selection = preset
             }
-            .frame(maxWidth: .infinity, minHeight: 52)
+        } label: {
+            HStack(spacing: 12) {
+                Image(systemName: icon(for: preset, isSelected: isSelected, isLocked: isLocked))
+                    .font(.body.weight(.semibold))
+                    .frame(width: 26)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(LocalizedStringKey(preset.nameKey))
+                        .font(.subheadline.weight(.semibold))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.85)
+                    Text(LocalizedStringKey(preset.descriptionKey))
+                        .font(.caption)
+                        .foregroundStyle(isSelected ? Color.white.opacity(0.85) : .secondary)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+                }
+
+                Spacer(minLength: 8)
+
+                Text(rhythmLabel(for: preset))
+                    .font(.caption.weight(.semibold).monospacedDigit())
+                    .foregroundStyle(isSelected ? Color.white.opacity(0.9) : .secondary)
+                    .layoutPriority(1)
+            }
+            .padding(.horizontal, 14)
+            .frame(maxWidth: .infinity, minHeight: 56, alignment: .leading)
             .background(
-                Capsule().fill(isSelected ? Color.accentColor : Color.secondary.opacity(0.12))
+                RoundedRectangle(cornerRadius: 14)
+                    .fill(isSelected ? Color.accentColor : Color.secondary.opacity(0.12))
             )
             .foregroundStyle(isSelected ? .white : .primary)
         }
         .buttonStyle(ScaleButtonStyle())
+        .accessibilityLabel(accessibilityLabel(for: preset, isLocked: isLocked))
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 
+    /// SF Symbol per row: a selection checkmark when chosen, a lock when gated,
+    /// otherwise an intensity cue keyed to the focus length
+    /// (bolt = sprint, flame = standard, mountain = deep).
+    private func icon(for preset: FocusPreset, isSelected: Bool, isLocked: Bool) -> String {
+        if isLocked { return "lock.fill" }
+        if isSelected { return "checkmark.circle.fill" }
+        switch preset.focusMinutes {
+        case ..<30:  return "bolt.fill"
+        case ..<60:  return "flame.fill"
+        default:     return "mountain.2.fill"
+        }
+    }
+
+    /// "52 / 17" focus-break rhythm. Locale-neutral digits; the unit is implied
+    /// by the description sentence, so no localized "min" suffix is needed here.
+    private func rhythmLabel(for preset: FocusPreset) -> String {
+        "\(preset.focusMinutes) / \(preset.breakMinutes)"
+    }
+
+    private func accessibilityLabel(for preset: FocusPreset, isLocked: Bool) -> Text {
+        let name = Text(LocalizedStringKey(preset.nameKey))
+        if isLocked {
+            return name + Text(", ") + Text(LocalizedStringKey("Premium"))
+        }
+        return name
+    }
+
+    // MARK: - Custom-duration row
+
     @ViewBuilder
-    private var customChip: some View {
+    private var customRow: some View {
         let isSelected = (selection == .custom)
+        let isLocked = !iap.isPremium
+
         Button {
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
             if iap.isPremium {
@@ -84,17 +148,30 @@ struct PresetPicker: View {
                 onPremiumGated()
             }
         } label: {
-            VStack(spacing: 2) {
-                Image(systemName: iap.isPremium ? "slider.horizontal.3" : "lock.fill")
-                    .font(.caption.weight(.semibold))
-                customLabelView
-                    .font(.subheadline.weight(.semibold))
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.8)
+            HStack(spacing: 12) {
+                Image(systemName: isLocked ? "lock.fill" : (isSelected ? "checkmark.circle.fill" : "slider.horizontal.3"))
+                    .font(.body.weight(.semibold))
+                    .frame(width: 26)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    customTitleView
+                        .font(.subheadline.weight(.semibold))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.85)
+                    Text(LocalizedStringKey("preset.custom.desc"))
+                        .font(.caption)
+                        .foregroundStyle(isSelected ? Color.white.opacity(0.85) : .secondary)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+                }
+
+                Spacer(minLength: 8)
             }
-            .frame(maxWidth: .infinity, minHeight: 52)
+            .padding(.horizontal, 14)
+            .frame(maxWidth: .infinity, minHeight: 56, alignment: .leading)
             .background(
-                Capsule().fill(isSelected ? Color.accentColor : Color.secondary.opacity(0.12))
+                RoundedRectangle(cornerRadius: 14)
+                    .fill(isSelected ? Color.accentColor : Color.secondary.opacity(0.12))
             )
             .foregroundStyle(isSelected ? .white : .primary)
         }
@@ -104,7 +181,7 @@ struct PresetPicker: View {
     }
 
     @ViewBuilder
-    private var customLabelView: some View {
+    private var customTitleView: some View {
         if selection == .custom && customDurationSeconds > 0 {
             let mins = Int(customDurationSeconds / 60)
             // Foundation's Measurement formatter handles locale-correct unit

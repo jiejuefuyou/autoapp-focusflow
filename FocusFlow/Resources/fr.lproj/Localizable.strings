@@ -150,3 +150,28 @@
 /* v1.0.12 — i18n fixes */
 "min" = "min";
 "paywall.legalese" = "Le paiement sera débité de votre identifiant Apple. Il s'agit d'un achat unique débloquant toutes les fonctionnalités premium à vie.";
+
+/* Focus technique library — section header */
+"Focus technique" = "Technique de focus";
+
+/* Focus technique library — names + descriptions */
+"preset.classic.name" = "Classique";
+"preset.classic.desc" = "Le rythme Pomodoro d'origine : de courtes salves répétées qui battent la procrastination.";
+"preset.longFocus.name" = "Focus long";
+"preset.longFocus.desc" = "Un bloc généreux de 50 minutes pour les tâches qui demandent un vrai temps de chauffe.";
+"preset.deepWork.name" = "Travail profond";
+"preset.deepWork.desc" = "Un bloc de travail profond de 90 minutes calé sur votre cycle d'énergie ultradien.";
+"preset.deskTime.name" = "52 / 17";
+"preset.deskTime.desc" = "La cadence 52 minutes de travail, 17 de pause, associée aux journées les plus productives.";
+"preset.studySprint.name" = "Sprint d'étude";
+"preset.studySprint.desc" = "Un bloc d'étude de 45 minutes, de la durée d'un cours, suivi d'une courte pause.";
+"preset.examCram.name" = "Révisions intenses";
+"preset.examCram.desc" = "Un effort intense de 60 minutes pour les révisions marathon quand l'échéance approche.";
+"preset.writingFlow.name" = "Flux d'écriture";
+"preset.writingFlow.desc" = "Cinquante minutes d'affilée pour rédiger et corriger tant que les idées s'enchaînent.";
+"preset.quickSprint.name" = "Sprint éclair";
+"preset.quickSprint.desc" = "Un micro-sprint de 15 minutes pour expédier une petite tâche ou vaincre l'inertie.";
+"preset.custom.desc" = "Réglez la durée que vous voulez, de 5 minutes à 4 heures.";
+
+/* Paywall — premium-technique feature row */
+"paywall.techniques.feature" = "8 techniques de focus (52/17, ultradien, révisions intenses, etc.)";

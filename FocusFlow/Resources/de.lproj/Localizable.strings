@@ -150,3 +150,28 @@
 /* v1.0.12 — i18n fixes */
 "min" = "Min.";
 "paywall.legalese" = "Die Zahlung wird deiner Apple-ID belastet. Dies ist ein Einmalkauf, der alle Premium-Funktionen dauerhaft freischaltet.";
+
+/* Focus technique library — section header */
+"Focus technique" = "Fokus-Technik";
+
+/* Focus technique library — names + descriptions */
+"preset.classic.name" = "Klassisch";
+"preset.classic.desc" = "Der originale Pomodoro-Rhythmus — kurze, wiederholbare Schübe gegen das Aufschieben.";
+"preset.longFocus.name" = "Langer Fokus";
+"preset.longFocus.desc" = "Ein großzügiger 50-Minuten-Block für Aufgaben, die erst richtig in Fahrt kommen müssen.";
+"preset.deepWork.name" = "Deep Work";
+"preset.deepWork.desc" = "Ein 90-minütiger Deep-Work-Block, abgestimmt auf deinen ultradianen Energiezyklus.";
+"preset.deskTime.name" = "52 / 17";
+"preset.deskTime.desc" = "Der Takt aus 52 Minuten Arbeit und 17 Minuten Pause — verknüpft mit den produktivsten Arbeitstagen.";
+"preset.studySprint.name" = "Lern-Sprint";
+"preset.studySprint.desc" = "Ein 45-Minuten-Lernblock in Länge einer Schulstunde, gefolgt von einer kurzen Pause.";
+"preset.examCram.name" = "Prüfungsendspurt";
+"preset.examCram.desc" = "Ein intensiver 60-Minuten-Schub für Lernmarathons, wenn die Frist drängt.";
+"preset.writingFlow.name" = "Schreibfluss";
+"preset.writingFlow.desc" = "Fünfzig Minuten am Stück zum Schreiben und Überarbeiten, solange der Gedanke trägt.";
+"preset.quickSprint.name" = "Kurzer Sprint";
+"preset.quickSprint.desc" = "Ein 15-Minuten-Mikrosprint, um eine kleine Aufgabe zu erledigen oder den Anfang zu schaffen.";
+"preset.custom.desc" = "Stelle jede beliebige Fokusdauer ein, von 5 Minuten bis 4 Stunden.";
+
+/* Paywall — premium-technique feature row */
+"paywall.techniques.feature" = "8 Fokus-Techniken (52/17, Ultradian, Prüfungsendspurt u. a.)";

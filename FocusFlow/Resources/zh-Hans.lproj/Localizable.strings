@@ -150,3 +150,28 @@
 /* v1.0.12 — i18n fixes */
 "min" = "分钟";
 "paywall.legalese" = "付款将从您的 Apple ID 账户扣除。这是一次性购买，可永久解锁所有高级功能。";
+
+/* Focus technique library — section header */
+"Focus technique" = "专注法";
+
+/* Focus technique library — names + descriptions */
+"preset.classic.name" = "经典番茄";
+"preset.classic.desc" = "最经典的番茄钟节奏，用短促可重复的冲刺击退拖延。";
+"preset.longFocus.name" = "长时专注";
+"preset.longFocus.desc" = "为需要慢慢进入状态的任务准备的 50 分钟宽裕时段。";
+"preset.deepWork.name" = "深度工作";
+"preset.deepWork.desc" = "顺应身体超日节律的 90 分钟深度工作时段。";
+"preset.deskTime.name" = "52 / 17";
+"preset.deskTime.desc" = "专注 52 分钟、休息 17 分钟,被认为是效率最高的工作节奏。";
+"preset.studySprint.name" = "学习冲刺";
+"preset.studySprint.desc" = "约一节课长度的 45 分钟学习时段,结束后短暂调整。";
+"preset.examCram.name" = "考前冲刺";
+"preset.examCram.desc" = "截止在即时的高强度 60 分钟突击,适合复习马拉松。";
+"preset.writingFlow.name" = "写作心流";
+"preset.writingFlow.desc" = "趁思路不断,用 50 分钟一气呵成地起草和修改。";
+"preset.quickSprint.name" = "快速冲刺";
+"preset.quickSprint.desc" = "15 分钟的微冲刺,清掉一件小事或打破拖延的惯性。";
+"preset.custom.desc" = "从 5 分钟到 4 小时,随心设定任意专注时长。";
+
+/* Paywall — premium-technique feature row */
+"paywall.techniques.feature" = "8 种专注法(52/17、超日节律、考前冲刺等)";

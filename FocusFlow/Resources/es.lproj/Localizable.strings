@@ -150,3 +150,28 @@
 /* v1.0.12 — i18n fixes */
 "min" = "min";
 "paywall.legalese" = "El pago se cargará a tu Apple ID. Esta es una compra única que desbloquea todas las funciones premium de por vida.";
+
+/* Focus technique library — section header */
+"Focus technique" = "Técnica de enfoque";
+
+/* Focus technique library — names + descriptions */
+"preset.classic.name" = "Clásico";
+"preset.classic.desc" = "El ritmo Pomodoro de siempre: ráfagas cortas y repetibles que vencen la procrastinación.";
+"preset.longFocus.name" = "Enfoque largo";
+"preset.longFocus.desc" = "Un bloque amplio de 50 minutos para tareas que necesitan calentar antes de fluir.";
+"preset.deepWork.name" = "Trabajo profundo";
+"preset.deepWork.desc" = "Un bloque profundo de 90 minutos ajustado a tu ciclo de energía ultradiano.";
+"preset.deskTime.name" = "52 / 17";
+"preset.deskTime.desc" = "El ritmo de 52 minutos de trabajo y 17 de descanso, ligado a las jornadas más productivas.";
+"preset.studySprint.name" = "Sprint de estudio";
+"preset.studySprint.desc" = "Un bloque de estudio de 45 minutos, como una clase, seguido de un breve respiro.";
+"preset.examCram.name" = "Examen intensivo";
+"preset.examCram.desc" = "Un empujón intenso de 60 minutos para los repasos maratón con la fecha encima.";
+"preset.writingFlow.name" = "Flujo de escritura";
+"preset.writingFlow.desc" = "Cincuenta minutos seguidos para redactar y editar mientras mantienes el hilo.";
+"preset.quickSprint.name" = "Sprint rápido";
+"preset.quickSprint.desc" = "Un microsprint de 15 minutos para despachar una tarea pequeña o romper la inercia.";
+"preset.custom.desc" = "Define la duración que quieras, de 5 minutos a 4 horas.";
+
+/* Paywall — premium-technique feature row */
+"paywall.techniques.feature" = "8 técnicas de enfoque (52/17, ultradiano, examen intensivo y más)";

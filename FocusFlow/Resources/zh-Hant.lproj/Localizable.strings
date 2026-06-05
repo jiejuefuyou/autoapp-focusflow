@@ -150,3 +150,28 @@
 /* v1.0.12 — i18n fixes */
 "min" = "分鐘";
 "paywall.legalese" = "款項將從您的 Apple ID 帳戶扣除。這是一次性購買，可永久解鎖所有進階功能。";
+
+/* Focus technique library — section header */
+"Focus technique" = "專注法";
+
+/* Focus technique library — names + descriptions */
+"preset.classic.name" = "經典番茄";
+"preset.classic.desc" = "最經典的番茄鐘節奏,以短促可重複的衝刺擊退拖延。";
+"preset.longFocus.name" = "長時專注";
+"preset.longFocus.desc" = "為需要慢慢進入狀態的任務準備的 50 分鐘寬裕時段。";
+"preset.deepWork.name" = "深度工作";
+"preset.deepWork.desc" = "順應身體超日節律的 90 分鐘深度工作時段。";
+"preset.deskTime.name" = "52 / 17";
+"preset.deskTime.desc" = "專注 52 分鐘、休息 17 分鐘,被認為是效率最高的工作節奏。";
+"preset.studySprint.name" = "學習衝刺";
+"preset.studySprint.desc" = "約一節課長度的 45 分鐘學習時段,結束後短暫調整。";
+"preset.examCram.name" = "考前衝刺";
+"preset.examCram.desc" = "截止在即時的高強度 60 分鐘突擊,適合複習馬拉松。";
+"preset.writingFlow.name" = "寫作心流";
+"preset.writingFlow.desc" = "趁思路不斷,用 50 分鐘一氣呵成地起草與修改。";
+"preset.quickSprint.name" = "快速衝刺";
+"preset.quickSprint.desc" = "15 分鐘的微衝刺,清掉一件小事或打破拖延的慣性。";
+"preset.custom.desc" = "從 5 分鐘到 4 小時,隨心設定任意專注時長。";
+
+/* Paywall — premium-technique feature row */
+"paywall.techniques.feature" = "8 種專注法(52/17、超日節律、考前衝刺等)";

@@ -136,7 +136,7 @@ struct ContentView: View {
 
     private var presetSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(LocalizedStringKey("Duration"))
+            Text(LocalizedStringKey("Focus technique"))
                 .font(.headline)
             PresetPicker(
                 selection: $selectedPreset,

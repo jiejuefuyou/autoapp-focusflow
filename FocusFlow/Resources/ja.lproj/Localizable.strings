@@ -150,3 +150,28 @@
 /* v1.0.12 — i18n fixes */
 "min" = "分";
 "paywall.legalese" = "お支払いは Apple ID に請求されます。これは一度限りの購入で、Apple ID の有効期間中すべてのプレミアム機能が永久に使えます。";
+
+/* Focus technique library — section header */
+"Focus technique" = "集中テクニック";
+
+/* Focus technique library — names + descriptions */
+"preset.classic.name" = "クラシック";
+"preset.classic.desc" = "王道のポモドーロ。短い集中を繰り返して、先延ばしを断ち切ります。";
+"preset.longFocus.name" = "ロングフォーカス";
+"preset.longFocus.desc" = "本調子になるまで時間がかかる作業に。ゆとりある 50 分ブロック。";
+"preset.deepWork.name" = "ディープワーク";
+"preset.deepWork.desc" = "体内のウルトラディアンリズムに合わせた 90 分の深い集中ブロック。";
+"preset.deskTime.name" = "52 / 17";
+"preset.deskTime.desc" = "52 分集中・17 分休憩。最も生産的な働き方として知られるリズム。";
+"preset.studySprint.name" = "スタディスプリント";
+"preset.studySprint.desc" = "授業 1 コマほどの 45 分学習ブロック。終わったら短めにリセット。";
+"preset.examCram.name" = "試験直前モード";
+"preset.examCram.desc" = "締め切り間近の追い込みに。集中力を絞り出す 60 分の猛勉強。";
+"preset.writingFlow.name" = "ライティングフロー";
+"preset.writingFlow.desc" = "思考が途切れないうちに書いて直す、中断なしの 50 分。";
+"preset.quickSprint.name" = "クイックスプリント";
+"preset.quickSprint.desc" = "小さなタスクを片付けたり、重い腰を上げたりする 15 分のミニ集中。";
+"preset.custom.desc" = "5 分から 4 時間まで、好きな集中時間を自由に設定できます。";
+
+/* Paywall — premium-technique feature row */
+"paywall.techniques.feature" = "8 種の集中テクニック(52/17・ウルトラディアン・試験直前ほか)";
