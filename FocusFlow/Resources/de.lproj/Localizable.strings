@@ -185,3 +185,13 @@
 "goal.progress.value" = "%1$lld von %2$lld Min.";
 "Best time of day" = "Beste Tageszeit";
 "heatmap.peak" = "Spitze %@";
+
+/* Cross-promo — More from the developer */
+"More from the developer" = "Mehr vom Entwickler";
+"Spin to decide — random picker" = "Drehen und entscheiden – Zufallsauswahl";
+"Live altimeter & barometer" = "Höhenmesser und Barometer in Echtzeit";
+"Countdowns to what matters" = "Countdowns zu dem, was zählt";
+"Your AI prompt library" = "Deine KI-Prompt-Bibliothek";
+"Build habits, see your streak" = "Gewohnheiten aufbauen, Serie verfolgen";
+"A QR tip jar for creators" = "Eine QR-Trinkgeldkasse für Kreative";
+"Stay hydrated every day" = "Bleib jeden Tag hydriert";

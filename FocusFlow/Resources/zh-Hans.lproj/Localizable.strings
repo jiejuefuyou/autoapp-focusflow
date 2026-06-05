@@ -185,3 +185,13 @@
 "goal.progress.value" = "%2$lld 分钟中已完成 %1$lld 分钟";
 "Best time of day" = "高效时段";
 "heatmap.peak" = "高峰 %@";
+
+/* Cross-promo — More from the developer */
+"More from the developer" = "开发者的其他应用";
+"Spin to decide — random picker" = "转动转盘,随机帮你决定";
+"Live altimeter & barometer" = "实时高度计与气压计";
+"Countdowns to what matters" = "重要日子的倒数计时";
+"Your AI prompt library" = "你的 AI 提示词库";
+"Build habits, see your streak" = "养成习惯,记录连续打卡";
+"A QR tip jar for creators" = "为创作者打造的二维码打赏罐";
+"Stay hydrated every day" = "每天保持充足饮水";

@@ -185,3 +185,13 @@
 "goal.progress.value" = "%2$lld 分中 %1$lld 分";
 "Best time of day" = "集中しやすい時間帯";
 "heatmap.peak" = "ピーク %@";
+
+/* Cross-promo — More from the developer */
+"More from the developer" = "開発者の他のアプリ";
+"Spin to decide — random picker" = "ルーレットを回して決める";
+"Live altimeter & barometer" = "リアルタイムの高度計と気圧計";
+"Countdowns to what matters" = "大切な日へのカウントダウン";
+"Your AI prompt library" = "AI プロンプトのライブラリ";
+"Build habits, see your streak" = "習慣を築き、連続記録を伸ばす";
+"A QR tip jar for creators" = "クリエイター向けの QR チップジャー";
+"Stay hydrated every day" = "毎日しっかり水分補給";

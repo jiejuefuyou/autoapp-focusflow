@@ -190,3 +190,13 @@
 "goal.progress.value" = "%1$lld of %2$lld min";
 "Best time of day" = "Best time of day";
 "heatmap.peak" = "Peak %@";
+
+/* Cross-promo — More from the developer */
+"More from the developer" = "More from the developer";
+"Spin to decide — random picker" = "Spin to decide — random picker";
+"Live altimeter & barometer" = "Live altimeter & barometer";
+"Countdowns to what matters" = "Countdowns to what matters";
+"Your AI prompt library" = "Your AI prompt library";
+"Build habits, see your streak" = "Build habits, see your streak";
+"A QR tip jar for creators" = "A QR tip jar for creators";
+"Stay hydrated every day" = "Stay hydrated every day";

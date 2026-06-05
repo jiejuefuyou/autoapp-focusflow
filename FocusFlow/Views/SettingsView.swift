@@ -86,6 +86,8 @@ struct SettingsView: View {
                     LabeledContent(LocalizedStringKey("Total time"), value: totalTimeFormatted)
                 }
 
+                CrossPromoSection(currentAppStoreID: "6770252811")
+
                 Section(LocalizedStringKey("About")) {
                     LabeledContent(LocalizedStringKey("Version"), value: appVersion)
                     LabeledContent(LocalizedStringKey("Build"),   value: buildNumber)

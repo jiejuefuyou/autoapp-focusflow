@@ -185,3 +185,13 @@
 "goal.progress.value" = "%2$lld분 중 %1$lld분";
 "Best time of day" = "집중이 잘되는 시간대";
 "heatmap.peak" = "최고 %@";
+
+/* Cross-promo — More from the developer */
+"More from the developer" = "개발자의 다른 앱";
+"Spin to decide — random picker" = "룰렛을 돌려 결정하세요";
+"Live altimeter & barometer" = "실시간 고도계와 기압계";
+"Countdowns to what matters" = "소중한 날까지 카운트다운";
+"Your AI prompt library" = "나만의 AI 프롬프트 보관함";
+"Build habits, see your streak" = "습관을 만들고 연속 기록을 확인하세요";
+"A QR tip jar for creators" = "크리에이터를 위한 QR 팁 항아리";
+"Stay hydrated every day" = "매일 수분을 충분히 채우세요";
