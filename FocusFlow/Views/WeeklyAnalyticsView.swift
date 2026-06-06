@@ -1,10 +1,16 @@
 import SwiftUI
 import Charts
+import UIKit
 
 /// Last-7-days analytics: total focus minutes per day (line) + minutes per tag
 /// (bar). Uses native Swift Charts (`import Charts`), iOS 17+ only.
 struct WeeklyAnalyticsView: View {
     @Environment(SessionStore.self) private var store
+    @Environment(LocalizationManager.self) private var l10n
+
+    /// Rendered share card, populated when the user taps Share. Drives the
+    /// preview-and-share sheet (`nil` = no sheet).
+    @State private var shareCard: ShareableImage?
 
     var body: some View {
         ScrollView {
@@ -41,6 +47,64 @@ struct WeeklyAnalyticsView: View {
         }
         .navigationTitle(Text(LocalizedStringKey("This Week")))
         .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    shareCard = renderShareCard()
+                } label: {
+                    Image(systemName: "square.and.arrow.up")
+                }
+                .accessibilityLabel(Text(LocalizedStringKey("Share focus stats")))
+            }
+        }
+        // Preview-and-share sheet (lesson #34 — re-inject l10n).
+        .sheet(item: $shareCard) { card in
+            ShareStatsSheet(card: card)
+                .environment(l10n)
+                .environment(\.locale, l10n.currentLocale)
+                .id(l10n.override)
+        }
+    }
+
+    // MARK: - Shareable stats card
+
+    /// Render the branded `FocusShareCard` to a PNG via `ImageRenderer`.
+    /// Strings are pre-resolved here so the rendered image honors the in-app
+    /// language override (the swizzled `Bundle.main`).
+    @MainActor
+    private func renderShareCard() -> ShareableImage? {
+        let labels = FocusShareCard.Labels(
+            title: String(localized: "FocusFlow"),
+            tagline: String(localized: "share.tagline"),
+            today: String(localized: "Today"),
+            thisWeek: String(localized: "This Week"),
+            streak: String(localized: "share.streak"),
+            footer: String(localized: "share.footer")
+        )
+        let card = FocusShareCard(
+            todayFormatted: todayFormatted,
+            weekFormatted: totalFormatted,
+            streakDays: store.currentStreak,
+            labels: labels
+        )
+        let renderer = ImageRenderer(content: card)
+        renderer.scale = 1   // card is already authored at full pixel size
+        guard let uiImage = renderer.uiImage,
+              let data = uiImage.pngData() else {
+            return nil
+        }
+        return ShareableImage(data: data)
+    }
+
+    /// Total focused time today, formatted as "1h 35m" or "35m". Mirrors the
+    /// Today-card math on the home screen so the share value matches what the
+    /// user sees there.
+    private var todayFormatted: String {
+        let mins = store.todayFocusMinutes()
+        let h = mins / 60
+        let m = mins % 60
+        if h > 0 { return "\(h)h \(m)m" }
+        return "\(m)m"
     }
 
     // MARK: - Header
