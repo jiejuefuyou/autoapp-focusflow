@@ -56,6 +56,11 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.jiejuefuyou.focusflow.tests
         PRODUCT_NAME: FocusFlowTests
+        # Hosted by the app so Bundle.main is FocusFlow.app — required for
+        # LocalizationBundlingTests to see the bundled .lproj (matches every
+        # other app in the portfolio). Pure-logic tests are unaffected.
+        BUNDLE_LOADER: "$(TEST_HOST)"
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/FocusFlow.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FocusFlow"
     dependencies:
       - target: FocusFlow
 
