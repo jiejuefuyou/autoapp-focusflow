@@ -22,7 +22,6 @@
 "Track by project." = "プロジェクト別に記録。";
 "Tag each session — Writing, Coding, Study — and see where your week actually went." = "各セッションにタグを付けて(執筆・開発・学習など)、1 週間の時間の使い道を可視化しましょう。";
 "$3.99 once. No sub." = "買い切り $3.99。サブスクなし。";
-"Pro: unlimited sessions, full history, unlimited project tags, custom durations, CSV export." = "Pro 版:無制限セッション、完全な履歴、無制限プロジェクトタグ、カスタム時間、CSV 書き出し。";
 
 /* Main screen */
 "Ready to focus" = "集中する準備はいい?";
@@ -107,11 +106,8 @@
 
 /* Paywall — feature rows */
 "Unlimited daily sessions" = "1 日のセッション数は無制限";
-"Full history — 7, 30, and 90 days" = "完全な履歴 — 7 日・30 日・90 日表示";
-"Detailed analytics by project tag" = "プロジェクトタグ別の詳細分析";
 "Unlimited project tags with emoji + color" = "無制限のプロジェクトタグ(絵文字・カラー付き)";
 "Custom session durations (any length)" = "自由な時間設定(任意の長さで OK)";
-"Export session data to CSV" = "セッションデータを CSV に書き出し";
 
 /* Focus Filter — Settings section */
 "Focus Filter" = "集中フィルタ";
@@ -124,9 +120,6 @@
 "Auto-start session" = "セッションを自動開始";
 "Project tag" = "プロジェクトタグ";
 "Hide notifications" = "通知を非表示";
-
-/* Focus Filter — Paywall feature row */
-"Focus Filter — auto-start sessions when iOS Focus turns on" = "集中フィルタ — 集中モード開始時にセッションを自動スタート";
 
 /* Paywall — purchase state UI */
 "Purchase Issue" = "購入の問題";

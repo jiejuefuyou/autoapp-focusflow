@@ -22,7 +22,6 @@
 "Track by project." = "按项目追踪时间。";
 "Tag each session — Writing, Coding, Study — and see where your week actually went." = "给每次专注打标签——写作、编程、学习——清晰看到这周的时间去了哪里。";
 "$3.99 once. No sub." = "一次性 $3.99,无订阅。";
-"Pro: unlimited sessions, full history, unlimited project tags, custom durations, CSV export." = "Pro 版:无限专注次数、完整历史、无限项目标签、自定义时长、CSV 导出。";
 
 /* Main screen */
 "Ready to focus" = "准备好专注了吗";
@@ -107,11 +106,8 @@
 
 /* Paywall — feature rows */
 "Unlimited daily sessions" = "无限次每日专注";
-"Full history — 7, 30, and 90 days" = "完整历史记录——7 天、30 天、90 天视图";
-"Detailed analytics by project tag" = "按项目标签细分的详细数据";
 "Unlimited project tags with emoji + color" = "无限项目标签(支持 emoji 和自定义颜色)";
 "Custom session durations (any length)" = "自定义专注时长(随意设定)";
-"Export session data to CSV" = "导出专注数据为 CSV";
 
 /* Focus Filter — Settings section */
 "Focus Filter" = "专注滤镜";
@@ -124,9 +120,6 @@
 "Auto-start session" = "自动开始专注";
 "Project tag" = "项目标签";
 "Hide notifications" = "隐藏通知";
-
-/* Focus Filter — Paywall feature row */
-"Focus Filter — auto-start sessions when iOS Focus turns on" = "专注滤镜 — 开启专注模式时自动开始计时";
 
 /* Paywall — purchase state UI */
 "Purchase Issue" = "购买问题";

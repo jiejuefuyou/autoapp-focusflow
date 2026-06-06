@@ -22,7 +22,6 @@
 "Track by project." = "按專案追蹤時間。";
 "Tag each session — Writing, Coding, Study — and see where your week actually went." = "為每次工作階段加上標籤——寫作、程式、學習——清楚看見這週的時間花在哪裡。";
 "$3.99 once. No sub." = "一次性 $3.99,無訂閱。";
-"Pro: unlimited sessions, full history, unlimited project tags, custom durations, CSV export." = "Pro 版:無限工作階段、完整歷史記錄、無限專案標籤、自訂時長、CSV 匯出。";
 
 /* Main screen */
 "Ready to focus" = "準備好專注了嗎";
@@ -107,11 +106,8 @@
 
 /* Paywall — feature rows */
 "Unlimited daily sessions" = "每日工作階段不限次數";
-"Full history — 7, 30, and 90 days" = "完整歷史記錄——7 天、30 天、90 天視圖";
-"Detailed analytics by project tag" = "依專案標籤細分的詳細分析";
 "Unlimited project tags with emoji + color" = "無限專案標籤(支援 emoji 與自訂顏色)";
 "Custom session durations (any length)" = "自訂工作階段時長(任意長度)";
-"Export session data to CSV" = "將工作階段資料匯出為 CSV";
 
 /* Focus Filter — Settings section */
 "Focus Filter" = "專注濾鏡";
@@ -124,9 +120,6 @@
 "Auto-start session" = "自動開始專注";
 "Project tag" = "專案標籤";
 "Hide notifications" = "隱藏通知";
-
-/* Focus Filter — Paywall feature row */
-"Focus Filter — auto-start sessions when iOS Focus turns on" = "專注濾鏡 — 開啟專注模式時自動開始計時";
 
 /* Paywall — purchase state UI */
 "Purchase Issue" = "購買問題";

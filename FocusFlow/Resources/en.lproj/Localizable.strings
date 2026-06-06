@@ -22,7 +22,6 @@
 "Track by project." = "Track by project.";
 "Tag each session — Writing, Coding, Study — and see where your week actually went." = "Tag each session — Writing, Coding, Study — and see where your week actually went.";
 "$3.99 once. No sub." = "$3.99 once. No sub.";
-"Pro: unlimited sessions, full history, unlimited project tags, custom durations, CSV export." = "Pro: unlimited sessions, full history, unlimited project tags, custom durations, CSV export.";
 
 /* Main screen */
 "Ready to focus" = "Ready to focus";
@@ -107,11 +106,8 @@
 
 /* Paywall — feature rows */
 "Unlimited daily sessions" = "Unlimited daily sessions";
-"Full history — 7, 30, and 90 days" = "Full history — 7, 30, and 90 days";
-"Detailed analytics by project tag" = "Detailed analytics by project tag";
 "Unlimited project tags with emoji + color" = "Unlimited project tags with emoji + color";
 "Custom session durations (any length)" = "Custom session durations (any length)";
-"Export session data to CSV" = "Export session data to CSV";
 
 /* Focus Filter — Settings section */
 "Focus Filter" = "Focus Filter";
@@ -124,9 +120,6 @@
 "Auto-start session" = "Auto-start session";
 "Project tag" = "Project tag";
 "Hide notifications" = "Hide notifications";
-
-/* Focus Filter — Paywall feature row */
-"Focus Filter — auto-start sessions when iOS Focus turns on" = "Focus Filter — auto-start sessions when iOS Focus turns on";
 
 /* Paywall — purchase state UI */
 "Purchase Issue" = "Purchase Issue";

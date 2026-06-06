@@ -22,7 +22,6 @@
 "Track by project." = "프로젝트별로 기록하세요.";
 "Tag each session — Writing, Coding, Study — and see where your week actually went." = "세션마다 태그를 붙여보세요—글쓰기, 코딩, 공부—이번 주 시간이 어디에 쓰였는지 한눈에 확인하세요.";
 "$3.99 once. No sub." = "한 번에 $3.99. 구독 없음.";
-"Pro: unlimited sessions, full history, unlimited project tags, custom durations, CSV export." = "Pro: 무제한 세션, 전체 기록, 무제한 프로젝트 태그, 맞춤 시간, CSV 내보내기.";
 
 /* Main screen */
 "Ready to focus" = "집중할 준비 되셨나요";
@@ -107,11 +106,8 @@
 
 /* Paywall — feature rows */
 "Unlimited daily sessions" = "하루 세션 횟수 무제한";
-"Full history — 7, 30, and 90 days" = "전체 기록 — 7일, 30일, 90일 보기";
-"Detailed analytics by project tag" = "프로젝트 태그별 상세 분석";
 "Unlimited project tags with emoji + color" = "무제한 프로젝트 태그 (이모지 + 색상 포함)";
 "Custom session durations (any length)" = "맞춤 세션 시간 (원하는 길이로 설정)";
-"Export session data to CSV" = "세션 데이터를 CSV로 내보내기";
 
 /* Focus Filter — Settings section */
 "Focus Filter" = "집중 필터";
@@ -124,9 +120,6 @@
 "Auto-start session" = "세션 자동 시작";
 "Project tag" = "프로젝트 태그";
 "Hide notifications" = "알림 숨기기";
-
-/* Focus Filter — Paywall feature row */
-"Focus Filter — auto-start sessions when iOS Focus turns on" = "집중 필터 — iOS 집중 모드 활성화 시 세션 자동 시작";
 
 /* Paywall — purchase state UI */
 "Purchase Issue" = "구매 문제";

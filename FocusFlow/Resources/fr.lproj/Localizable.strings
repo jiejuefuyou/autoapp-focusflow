@@ -22,7 +22,6 @@
 "Track by project." = "Suivez par projet.";
 "Tag each session — Writing, Coding, Study — and see where your week actually went." = "Taguez chaque session — Écriture, Code, Étude — et voyez où est passée votre semaine.";
 "$3.99 once. No sub." = "3,99 $ une fois. Sans abonnement.";
-"Pro: unlimited sessions, full history, unlimited project tags, custom durations, CSV export." = "Pro : sessions illimitées, historique complet, tags de projet illimités, durées personnalisées, export CSV.";
 
 /* Main screen */
 "Ready to focus" = "Prêt à vous concentrer ?";
@@ -107,11 +106,8 @@
 
 /* Paywall — feature rows */
 "Unlimited daily sessions" = "Sessions quotidiennes illimitées";
-"Full history — 7, 30, and 90 days" = "Historique complet — vues 7, 30 et 90 jours";
-"Detailed analytics by project tag" = "Statistiques détaillées par tag de projet";
 "Unlimited project tags with emoji + color" = "Tags de projet illimités (emoji + couleur)";
 "Custom session durations (any length)" = "Durées de session personnalisées (toute longueur)";
-"Export session data to CSV" = "Exporter les données de sessions en CSV";
 
 /* Focus Filter — Settings section */
 "Focus Filter" = "Filtre de Concentration";
@@ -124,9 +120,6 @@
 "Auto-start session" = "Démarrage automatique";
 "Project tag" = "Tag de projet";
 "Hide notifications" = "Masquer les notifications";
-
-/* Focus Filter — Paywall feature row */
-"Focus Filter — auto-start sessions when iOS Focus turns on" = "Filtre de Concentration — démarrage automatique à l'activation de Concentration";
 
 /* Paywall — purchase state UI */
 "Purchase Issue" = "Problème d'achat";
