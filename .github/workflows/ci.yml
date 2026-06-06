@@ -32,6 +32,9 @@ jobs:
       - name: Lint per-modal l10n env-injection (lesson #34)
         run: python3 scripts/lint_modal_env.py FocusFlow
 
+      - name: Verify Localizable.strings 8-locale parity
+        run: python3 scripts/lint_i18n_parity.py
+
       - name: Lint ASC metadata
         run: |
           if [ -f scripts/lint-metadata.sh ]; then

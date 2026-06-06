@@ -195,3 +195,23 @@
 "Build habits, see your streak" = "習慣を築き、連続記録を伸ばす";
 "A QR tip jar for creators" = "クリエイター向けの QR チップジャー";
 "Stay hydrated every day" = "毎日しっかり水分補給";
+
+/* v1.0.13 — free-trial of premium technique + shareable stats card + 2 new techniques */
+"preset.flowState.name" = "フロー";
+"preset.flowState.desc" = "75分間ノンストップ。深い没入が必要なクリエイティブ作業をフロー状態へ。";
+"preset.windDown.name" = "クールダウン";
+"preset.windDown.desc" = "落ち着いた20分。一日の終わりの軽めの作業で、片付けとやり残しの整理に。";
+"Try free" = "無料で試す";
+"Premium technique. Free to try once." = "プレミアムのテクニック。一度だけ無料でお試しいただけます。";
+"Your free premium technique" = "あなたへの無料プレミアム体験";
+"Run it once, on the house. No card, no sign-up." = "一度だけ無料でどうぞ。カード登録も会員登録も不要です。";
+"Start free session" = "無料セッションを開始";
+"Try Premium free" = "プレミアムを無料で試す";
+"Unlock all Premium" = "プレミアムをすべて解除";
+"Unlock all %lld techniques — %@" = "%lld種類のテクニックをすべて解除 — %@";
+"Share" = "シェア";
+"Share focus stats" = "集中記録をシェア";
+"Your focus stats card" = "あなたの集中記録カード";
+"share.tagline" = "深い集中を、まっすぐに。";
+"share.streak" = "連続日数";
+"share.footer" = "FocusFlow で集中を記録しよう";

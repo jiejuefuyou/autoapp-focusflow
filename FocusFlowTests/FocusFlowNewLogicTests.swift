@@ -20,6 +20,7 @@ final class FocusFlowNewLogicTests: XCTestCase {
     private func makeStore() -> SessionStore {
         UserDefaults.standard.removeObject(forKey: "focusflow.history.v2")
         UserDefaults.standard.removeObject(forKey: "focusflow.dailyGoalMinutes.v1")
+        UserDefaults.standard.removeObject(forKey: "focusflow.premiumTechniqueTrialUsed.v1")
         return SessionStore()
     }
 
@@ -74,14 +75,53 @@ final class FocusFlowNewLogicTests: XCTestCase {
         XCTAssertFalse(FocusPreset.long90.requiresPremium)
     }
 
-    func testRequiresPremiumTrueForFivePremiumPlusCustom() {
-        let premium: [FocusPreset] = [.deskTime5217, .studySprint45, .examCram60, .writingFlow50, .quickSprint15, .custom]
+    func testRequiresPremiumTrueForAllPremiumPlusCustom() {
+        let premium: [FocusPreset] = [
+            .deskTime5217, .studySprint45, .examCram60, .writingFlow50,
+            .quickSprint15, .flowState75, .windDown20, .custom,
+        ]
         for preset in premium {
             XCTAssertTrue(preset.requiresPremium, "\(preset) must require premium")
         }
         // Exactly 3 free presets across all cases (custom is premium-gated).
         let free = FocusPreset.allCases.filter { !$0.requiresPremium }
         XCTAssertEqual(free.count, 3, "Exactly three presets are free")
+    }
+
+    // MARK: - FocusPreset: new techniques (content-depth additions)
+
+    func testNewPremiumTechniquesRawValuesAndDurations() {
+        // New curated techniques: stable rawValues + minute-derived seconds.
+        XCTAssertEqual(FocusPreset.flowState75.rawValue, "flowState75")
+        XCTAssertEqual(FocusPreset.windDown20.rawValue, "windDown20")
+        XCTAssertEqual(FocusPreset.flowState75.focusMinutes, 75)
+        XCTAssertEqual(FocusPreset.windDown20.focusMinutes, 20)
+        XCTAssertEqual(FocusPreset.flowState75.seconds, 75 * 60)
+        XCTAssertEqual(FocusPreset.windDown20.seconds, 20 * 60)
+        // Both are premium and both appear in the library.
+        XCTAssertTrue(FocusPreset.flowState75.requiresPremium)
+        XCTAssertTrue(FocusPreset.windDown20.requiresPremium)
+        XCTAssertTrue(FocusPreset.library.contains(.flowState75))
+        XCTAssertTrue(FocusPreset.library.contains(.windDown20))
+    }
+
+    func testEveryLibraryPresetHasNonEmptyNameAndDescriptionKeys() {
+        for preset in FocusPreset.library {
+            XCTAssertFalse(preset.nameKey.isEmpty, "\(preset) needs a name key")
+            XCTAssertFalse(preset.descriptionKey.isEmpty, "\(preset) needs a description key")
+        }
+    }
+
+    func testPremiumLibraryMatchesRequiresPremiumFilter() {
+        // premiumLibrary is the source of truth for "unlock all N" copy + trial
+        // accounting — it must equal the requires-premium subset of the library.
+        XCTAssertEqual(Set(FocusPreset.premiumLibrary),
+                       Set(FocusPreset.library.filter(\.requiresPremium)))
+        XCTAssertFalse(FocusPreset.premiumLibrary.contains(.custom),
+                       "custom has its own chip; never counted in premiumLibrary")
+        XCTAssertEqual(FocusPreset.premiumLibrary.count, 7,
+                       "3 free of 10 library techniques → 7 premium")
+        XCTAssertEqual(FocusPreset.library.count, 10)
     }
 
     // MARK: - FocusPreset: library composition
@@ -142,5 +182,51 @@ final class FocusFlowNewLogicTests: XCTestCase {
         store.dailyGoalMinutes = 1
         XCTAssertEqual(store.dailyGoalMinutes, SessionStore.dailyGoalRange.lowerBound,
                        "Below-min goal must clamp to the range lower bound")
+    }
+
+    // MARK: - Premium-technique free trial (bypass-proof, one-time)
+
+    func testTrialAvailableForFreshFreeUser() {
+        let store = makeStore()
+        XCTAssertFalse(store.usedPremiumTechniqueTrial, "Fresh store has an unspent trial")
+        XCTAssertTrue(store.premiumTrialAvailable(isPremium: false),
+                      "A free user who hasn't spent the trial is eligible")
+    }
+
+    func testTrialNeverOfferedToPremiumUsers() {
+        let store = makeStore()
+        // Even with an unspent flag, a premium user never sees the trial — they
+        // already own every technique.
+        XCTAssertFalse(store.premiumTrialAvailable(isPremium: true),
+                       "Premium users are never offered the trial")
+    }
+
+    func testConsumingTrialMakesItUnavailableAndIsBypassProof() {
+        let store = makeStore()
+        store.consumePremiumTechniqueTrial()
+        XCTAssertTrue(store.usedPremiumTechniqueTrial, "Consuming sets the flag")
+        XCTAssertFalse(store.premiumTrialAvailable(isPremium: false),
+                       "Once spent, a free user is no longer eligible — no bypass loop")
+        // Calling consume again is idempotent (no resurrection, no crash).
+        store.consumePremiumTechniqueTrial()
+        XCTAssertTrue(store.usedPremiumTechniqueTrial)
+        XCTAssertFalse(store.premiumTrialAvailable(isPremium: false))
+    }
+
+    func testTrialFlagPersistsAcrossStoreInstances() {
+        // Burn the trial, then build a NEW store from the same UserDefaults
+        // (no clear) — the spent state must survive an app relaunch, otherwise
+        // the trial could be re-taken by killing the app (a bypass loop).
+        let first = makeStore()
+        first.consumePremiumTechniqueTrial()
+
+        let reopened = SessionStore()   // reads persisted flag, no key removal
+        XCTAssertTrue(reopened.usedPremiumTechniqueTrial,
+                      "Spent trial must persist across launches")
+        XCTAssertFalse(reopened.premiumTrialAvailable(isPremium: false),
+                       "A relaunch must not resurrect the one-time trial")
+
+        // Cleanup so the persisted flag doesn't leak into other tests.
+        UserDefaults.standard.removeObject(forKey: "focusflow.premiumTechniqueTrialUsed.v1")
     }
 }

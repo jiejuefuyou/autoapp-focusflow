@@ -200,3 +200,23 @@
 "Build habits, see your streak" = "Build habits, see your streak";
 "A QR tip jar for creators" = "A QR tip jar for creators";
 "Stay hydrated every day" = "Stay hydrated every day";
+
+/* v1.0.13 — free-trial of premium technique + shareable stats card + 2 new techniques */
+"preset.flowState.name" = "Flow State";
+"preset.flowState.desc" = "Seventy-five unbroken minutes for creative work that needs deep immersion to truly flow.";
+"preset.windDown.name" = "Wind-down";
+"preset.windDown.desc" = "A calm 20-minute block for low-energy end-of-day tasks — tidy up and close loops.";
+"Try free" = "Try free";
+"Premium technique. Free to try once." = "Premium technique. Free to try once.";
+"Your free premium technique" = "Your free premium technique";
+"Run it once, on the house. No card, no sign-up." = "Run it once, on the house. No card, no sign-up.";
+"Start free session" = "Start free session";
+"Try Premium free" = "Try Premium free";
+"Unlock all Premium" = "Unlock all Premium";
+"Unlock all %lld techniques — %@" = "Unlock all %lld techniques — %@";
+"Share" = "Share";
+"Share focus stats" = "Share focus stats";
+"Your focus stats card" = "Your focus stats card";
+"share.tagline" = "Deep focus, unblocked.";
+"share.streak" = "Day streak";
+"share.footer" = "Track your focus with FocusFlow";

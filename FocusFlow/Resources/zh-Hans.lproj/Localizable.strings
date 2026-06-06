@@ -195,3 +195,23 @@
 "Build habits, see your streak" = "养成习惯,记录连续打卡";
 "A QR tip jar for creators" = "为创作者打造的二维码打赏罐";
 "Stay hydrated every day" = "每天保持充足饮水";
+
+/* v1.0.13 — free-trial of premium technique + shareable stats card + 2 new techniques */
+"preset.flowState.name" = "心流时刻";
+"preset.flowState.desc" = "75 分钟不间断，专为需要深度沉浸才能进入心流的创作而设。";
+"preset.windDown.name" = "收尾时段";
+"preset.windDown.desc" = "舒缓的 20 分钟，适合一天结束时的轻量任务——收拾整理、收尾归档。";
+"Try free" = "免费试用";
+"Premium technique. Free to try once." = "高级专注法，可免费试用一次。";
+"Your free premium technique" = "送你一次高级专注法体验";
+"Run it once, on the house. No card, no sign-up." = "免费体验一次，无需绑卡，无需注册。";
+"Start free session" = "开始免费专注";
+"Try Premium free" = "免费试用高级版";
+"Unlock all Premium" = "解锁全部高级功能";
+"Unlock all %lld techniques — %@" = "解锁全部 %lld 种专注法 — %@";
+"Share" = "分享";
+"Share focus stats" = "分享专注数据";
+"Your focus stats card" = "你的专注数据卡片";
+"share.tagline" = "深度专注，毫无阻碍。";
+"share.streak" = "连续天数";
+"share.footer" = "用 FocusFlow 记录你的专注";
