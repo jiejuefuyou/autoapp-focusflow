@@ -14,6 +14,15 @@ struct ContentView: View {
     @State private var showPaywall = false
     @State private var showAnalytics = false
 
+    /// The premium technique whose one-time free-trial offer sheet is showing.
+    /// Non-nil drives the `TrialOfferSheet`; cleared on dismiss.
+    @State private var trialOfferPreset: FocusPreset?
+
+    /// Set when the user taps "Unlock" inside the trial sheet; the paywall is
+    /// then presented from the trial sheet's `onDismiss` so the sheets don't
+    /// swap mid-transition.
+    @State private var pendingPaywallAfterTrial = false
+
     /// Drives the "Nice focus!" celebration overlay that fires when a session
     /// completes. Auto-clears 1.6s after appearing.
     @State private var showCompletionCelebration = false
@@ -89,6 +98,29 @@ struct ContentView: View {
                     .environment(\.locale, l10n.currentLocale)
                     .id(l10n.override)
                     .onAppear { triggerCompletionFeedback() }
+            }
+            // One-time free-trial offer for a premium technique. `onDismiss`
+            // opens the paywall only when the user chose "Unlock", so the two
+            // sheets never swap mid-transition (which would silently drop the
+            // paywall presentation — AutoChoice PresetGalleryView lesson).
+            .sheet(item: $trialOfferPreset, onDismiss: {
+                if pendingPaywallAfterTrial {
+                    pendingPaywallAfterTrial = false
+                    showPaywall = true
+                }
+            }) { preset in
+                TrialOfferSheet(
+                    preset: preset,
+                    onStartFreeSession: { startTrialSession(preset) },
+                    onUnlock: {
+                        pendingPaywallAfterTrial = true
+                        trialOfferPreset = nil
+                    }
+                )
+                .environment(iap)
+                .environment(l10n)
+                .environment(\.locale, l10n.currentLocale)
+                .id(l10n.override)
             }
         }
     }
@@ -183,6 +215,7 @@ struct ContentView: View {
                 selection: $selectedPreset,
                 customDurationSeconds: $customDurationSeconds,
                 onPremiumGated: { showPaywall = true },
+                onTrialOffer: { trialOfferPreset = $0 },
                 disabled: store.currentSession != nil
             )
 
@@ -293,13 +326,38 @@ struct ContentView: View {
     }
 
     private func handleStart() {
-        // Free tier daily limit check.
+        startSession(duration: plannedDuration)
+    }
+
+    /// Accept the one-time premium-technique trial: select the technique, burn
+    /// the trial (persisted, irrevocable), dismiss the offer sheet, then start.
+    /// The free daily-session cap still applies — if it's hit we route to the
+    /// paywall and leave the trial *unspent* (so it can't be wasted on a blocked
+    /// start), exactly mirroring AutoChoice's "burn only on successful grant".
+    private func startTrialSession(_ preset: FocusPreset) {
+        if !iap.isPremium && store.sessionsToday() >= SessionStore.freeDailySessionLimit {
+            pendingPaywallAfterTrial = true
+            trialOfferPreset = nil
+            return
+        }
+        selectedPreset = preset
+        store.consumePremiumTechniqueTrial()
+        trialOfferPreset = nil
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        store.startSession(duration: preset.seconds)
+    }
+
+    /// Single start funnel: enforces the free daily-session cap, then starts a
+    /// session of the given duration. Premium gating of the *technique* happens
+    /// upstream in the picker (locked rows never reach here for free users
+    /// except via the consumed trial path).
+    private func startSession(duration: TimeInterval) {
         if !iap.isPremium && store.sessionsToday() >= SessionStore.freeDailySessionLimit {
             showPaywall = true
             return
         }
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        store.startSession(duration: plannedDuration)
+        store.startSession(duration: duration)
     }
 
     private func durationLabel(seconds: TimeInterval) -> String {

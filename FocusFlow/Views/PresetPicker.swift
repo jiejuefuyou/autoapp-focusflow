@@ -12,6 +12,7 @@ import UIKit
 /// `FocusPreset.seconds`, so timer behavior is unchanged.
 struct PresetPicker: View {
     @Environment(IAPManager.self) private var iap
+    @Environment(SessionStore.self) private var store
     @Environment(LocalizationManager.self) private var l10n
 
     @Binding var selection: FocusPreset
@@ -20,13 +21,24 @@ struct PresetPicker: View {
     @Binding var customDurationSeconds: TimeInterval
 
     /// Called when the user taps a locked premium preset (or Custom) while
-    /// *not* entitled, so the parent can present `PaywallView`.
+    /// *not* entitled and the one-time premium trial is already spent, so the
+    /// parent can present `PaywallView`.
     var onPremiumGated: () -> Void = {}
+
+    /// Called when a free user taps a locked premium technique while the
+    /// one-time free trial is still available, so the parent can present the
+    /// trial-offer sheet for that technique.
+    var onTrialOffer: (FocusPreset) -> Void = { _ in }
 
     /// Disable interaction while a session is running.
     var disabled: Bool = false
 
     @State private var showCustomSheet = false
+
+    /// True while the free user still has their one-time premium-technique trial.
+    private var trialAvailable: Bool {
+        store.premiumTrialAvailable(isPremium: iap.isPremium)
+    }
 
     var body: some View {
         VStack(spacing: 8) {   // 8 = sm rhythm between technique rows
@@ -58,10 +70,18 @@ struct PresetPicker: View {
     @ViewBuilder
     private func presetRow(for preset: FocusPreset) -> some View {
         let isSelected = (selection == preset)
-        let isLocked = preset.requiresPremium && !iap.isPremium
+        let isPremiumGated = preset.requiresPremium && !iap.isPremium
+        // A premium row that the free user can still *taste* once: shown as an
+        // invitation ("Try free"), not a wall. After the trial is spent it
+        // becomes a normal locked row that routes to the paywall.
+        let isTrialOffer = isPremiumGated && trialAvailable
+        let isLocked = isPremiumGated && !trialAvailable
 
         Button {
-            if isLocked {
+            if isTrialOffer {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                onTrialOffer(preset)
+            } else if isLocked {
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 onPremiumGated()
             } else {
@@ -88,6 +108,11 @@ struct PresetPicker: View {
 
                 Spacer(minLength: 8)
 
+                if isTrialOffer {
+                    tryFreePill
+                        .layoutPriority(1)
+                }
+
                 Text(rhythmLabel(for: preset))
                     .font(.caption.weight(.semibold).monospacedDigit())
                     .foregroundStyle(isSelected ? Color.white.opacity(0.9) : .secondary)
@@ -102,8 +127,19 @@ struct PresetPicker: View {
             .foregroundStyle(isSelected ? .white : .primary)
         }
         .buttonStyle(ScaleButtonStyle())
-        .accessibilityLabel(accessibilityLabel(for: preset, isLocked: isLocked))
+        .accessibilityLabel(accessibilityLabel(for: preset, isLocked: isLocked, isTrialOffer: isTrialOffer))
         .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
+
+    /// Small "Try free" capsule shown on premium technique rows while the user's
+    /// one-time trial is still available — turns the lock into an invitation.
+    private var tryFreePill: some View {
+        Text(LocalizedStringKey("Try free"))
+            .font(.caption2.weight(.semibold))
+            .padding(.horizontal, 8)
+            .padding(.vertical, 3)
+            .background(Color.accentColor.opacity(0.15), in: Capsule())
+            .foregroundStyle(Color.accentColor)
     }
 
     /// SF Symbol per row: a selection checkmark when chosen, a lock when gated,
@@ -125,8 +161,11 @@ struct PresetPicker: View {
         "\(preset.focusMinutes) / \(preset.breakMinutes)"
     }
 
-    private func accessibilityLabel(for preset: FocusPreset, isLocked: Bool) -> Text {
+    private func accessibilityLabel(for preset: FocusPreset, isLocked: Bool, isTrialOffer: Bool) -> Text {
         let name = Text(LocalizedStringKey(preset.nameKey))
+        if isTrialOffer {
+            return name + Text(", ") + Text(LocalizedStringKey("Premium technique. Free to try once."))
+        }
         if isLocked {
             return name + Text(", ") + Text(LocalizedStringKey("Premium"))
         }

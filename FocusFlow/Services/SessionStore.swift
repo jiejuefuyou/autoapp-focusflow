@@ -34,6 +34,13 @@ final class SessionStore {
     private(set) var history: [FocusSession] = []
     private(set) var tags: [ProjectTag] = []
 
+    /// One-time free trial of a Premium focus technique. Persisted so a free
+    /// user can run exactly ONE premium technique session, ever. Once consumed
+    /// it is never reset by the app, so every later premium technique routes to
+    /// the paywall — no bypass loop. Letting a user *feel* a premium technique
+    /// once is the strongest desire-builder (mirrors AutoChoice's template trial).
+    private(set) var usedPremiumTechniqueTrial: Bool = false
+
     /// User's daily focus-minutes goal, surfaced as a progress ring on the
     /// Today card and editable from Settings. Persisted to `UserDefaults`
     /// (additive — no migration of the history/tags blobs). Reads clamp to a
@@ -82,6 +89,7 @@ final class SessionStore {
     private let historyKey = "focusflow.history.v2"
     private let tagsKey = "focusflow.tags.v1"
     private let dailyGoalKey = "focusflow.dailyGoalMinutes.v1"
+    private let premiumTrialUsedKey = "focusflow.premiumTechniqueTrialUsed.v1"
 
     init() {
         // Seed the daily goal before the didSet observer can fire on a real
@@ -90,6 +98,7 @@ final class SessionStore {
         dailyGoalMinutes = storedGoal == 0
             ? Self.defaultDailyGoalMinutes
             : min(max(storedGoal, Self.dailyGoalRange.lowerBound), Self.dailyGoalRange.upperBound)
+        usedPremiumTechniqueTrial = UserDefaults.standard.bool(forKey: premiumTrialUsedKey)
         loadTags()
         loadHistory()
         installForegroundObserver()
@@ -114,6 +123,26 @@ final class SessionStore {
     func availableTags(isPremium: Bool) -> [ProjectTag] {
         if isPremium { return tags }
         return Array(tags.prefix(Self.freeTagLimit))
+    }
+
+    // MARK: - Premium-technique free trial
+
+    /// Whether this user may still take the one-time free trial of a Premium
+    /// focus technique: a non-premium user who hasn't yet spent it. Premium
+    /// users never see the trial (they own everything); once spent it stays
+    /// `false` forever (no bypass loop).
+    func premiumTrialAvailable(isPremium: Bool) -> Bool {
+        !isPremium && !usedPremiumTechniqueTrial
+    }
+
+    /// Irrevocably burns the one-time premium-technique trial. Idempotent —
+    /// calling it again is a no-op (no extra persistence write). Persists
+    /// immediately so a crash or kill right after the trial session starts can
+    /// never resurrect the trial.
+    func consumePremiumTechniqueTrial() {
+        guard !usedPremiumTechniqueTrial else { return }
+        usedPremiumTechniqueTrial = true
+        UserDefaults.standard.set(true, forKey: premiumTrialUsedKey)
     }
 
     // MARK: - Timer control
