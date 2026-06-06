@@ -161,7 +161,7 @@ struct WeeklyAnalyticsView: View {
         }
         .chartXAxis {
             AxisMarks(values: .stride(by: .day)) { value in
-                AxisValueLabel(format: .dateTime.weekday(.abbreviated))
+                AxisValueLabel(format: .dateTime.weekday(.abbreviated).locale(l10n.currentLocale))
                 AxisGridLine()
             }
         }
@@ -321,7 +321,11 @@ struct WeeklyAnalyticsView: View {
         guard let date = cal.date(from: comps) ?? cal.date(bySettingHour: hour, minute: 0, second: 0, of: Date()) else {
             return "\(hour)"
         }
-        return date.formatted(.dateTime.hour())
+        // `.formatted()` defaults to Locale.autoupdatingCurrent (the SYSTEM
+        // language), so on a Japanese device it leaks Japanese hour labels
+        // ("6時") into an app the user switched to Chinese. Pin every Date
+        // format style to the in-app override locale so nothing leaks.
+        return date.formatted(.dateTime.hour().locale(l10n.currentLocale))
     }
 
     /// "Peak: 9 AM" style annotation for the user's single busiest focus hour,
