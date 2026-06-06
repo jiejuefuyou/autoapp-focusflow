@@ -110,6 +110,8 @@ enum FocusPreset: String, CaseIterable, Identifiable, Codable, Hashable {
     case examCram60 = "examCram60"
     case writingFlow50 = "writingFlow50"
     case quickSprint15 = "quickSprint15"
+    case flowState75 = "flowState75"
+    case windDown20 = "windDown20"
 
     // ── Custom-duration affordance (rawValue unchanged) ──
     case custom = "custom"
@@ -127,6 +129,8 @@ enum FocusPreset: String, CaseIterable, Identifiable, Codable, Hashable {
         case .examCram60:    return 60
         case .writingFlow50: return 50
         case .quickSprint15: return 15
+        case .flowState75:   return 75
+        case .windDown20:    return 20
         case .custom:        return 0
         }
     }
@@ -143,6 +147,8 @@ enum FocusPreset: String, CaseIterable, Identifiable, Codable, Hashable {
         case .examCram60:    return 10
         case .writingFlow50: return 15
         case .quickSprint15: return 5
+        case .flowState75:   return 15
+        case .windDown20:    return 10
         case .custom:        return 0
         }
     }
@@ -169,6 +175,8 @@ enum FocusPreset: String, CaseIterable, Identifiable, Codable, Hashable {
         case .examCram60:    return "preset.examCram.name"
         case .writingFlow50: return "preset.writingFlow.name"
         case .quickSprint15: return "preset.quickSprint.name"
+        case .flowState75:   return "preset.flowState.name"
+        case .windDown20:    return "preset.windDown.name"
         case .custom:        return "Custom"
         }
     }
@@ -185,6 +193,8 @@ enum FocusPreset: String, CaseIterable, Identifiable, Codable, Hashable {
         case .examCram60:    return "preset.examCram.desc"
         case .writingFlow50: return "preset.writingFlow.desc"
         case .quickSprint15: return "preset.quickSprint.desc"
+        case .flowState75:   return "preset.flowState.desc"
+        case .windDown20:    return "preset.windDown.desc"
         case .custom:        return ""
         }
     }
@@ -196,7 +206,8 @@ enum FocusPreset: String, CaseIterable, Identifiable, Codable, Hashable {
         switch self {
         case .short25, .medium50, .long90:
             return false
-        case .deskTime5217, .studySprint45, .examCram60, .writingFlow50, .quickSprint15, .custom:
+        case .deskTime5217, .studySprint45, .examCram60, .writingFlow50,
+             .quickSprint15, .flowState75, .windDown20, .custom:
             return true
         }
     }
@@ -205,8 +216,16 @@ enum FocusPreset: String, CaseIterable, Identifiable, Codable, Hashable {
     /// custom-duration affordance, which has its own chip).
     static let library: [FocusPreset] = [
         .short25, .medium50, .long90,
-        .deskTime5217, .studySprint45, .examCram60, .writingFlow50, .quickSprint15,
+        .deskTime5217, .studySprint45, .examCram60, .writingFlow50,
+        .quickSprint15, .flowState75, .windDown20,
     ]
+
+    /// The premium techniques in the library, computed (never hardcoded) so the
+    /// "unlock all N" copy and the trial accounting stay in sync as the catalog
+    /// grows. Excludes `.custom`, which has its own dedicated chip.
+    static var premiumLibrary: [FocusPreset] {
+        library.filter(\.requiresPremium)
+    }
 }
 
 // MARK: - Color hex helper
