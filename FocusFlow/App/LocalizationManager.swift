@@ -1,3 +1,14 @@
+//  LocalizationManager.swift — PORTFOLIO CANONICAL (orchestrator/ios-core)
+//
+//  Single source of truth for all autoapp iOS apps. DO NOT edit per-app copies.
+//  Edit orchestrator/ios-core/swift/LocalizationManager.swift, then run:
+//      python dashboard/sync_ios_core.py --apply
+//  Drift is gated by dashboard/audit_portfolio.py (core-sync check).
+//
+//  This file is the surface behind the recurring lessons #33 / #34 / #63
+//  ("in-app language switch silently does nothing"). Unifying it makes that
+//  whole regression class structurally impossible to reintroduce per-app.
+//
 import Foundation
 import SwiftUI
 import ObjectiveC.runtime
@@ -24,21 +35,35 @@ private final class OverrideBundle: Bundle, @unchecked Sendable {
 }
 
 /// Centralized language override for the in-app language picker.
+///
+/// The picker is fully in-process: switching language re-renders all SwiftUI
+/// views with the chosen `.lproj` instantly (no app restart). We do this by
+/// reclassing `Bundle.main` to `OverrideBundle` at first init so every
+/// localized lookup checks the override before falling back to system locale.
+///
+/// `AppleLanguages` is also written so any UIKit-bridged code (alerts, system
+/// pickers, share sheet titles) matches on the *next* launch as well.
 @Observable
 final class LocalizationManager {
 
     static let shared = LocalizationManager()
 
+    /// Supported BCP-47 codes shipped with the app, in display order.
     static let supportedLanguages: [String] = [
         "en", "ja", "zh-Hans", "zh-Hant", "ko", "es", "fr", "de"
     ]
 
+    /// Empty string ("") means "follow system default".
     private let storageKey = "appLanguageOverride"
 
+    /// Current override; "" follows system.
     var override: String {
         didSet { persist() }
     }
 
+    /// The `Locale` that should be passed into `.environment(\.locale, ...)`.
+    /// Drives date/number/currency formatting (Bundle resource lookup is
+    /// handled separately by the `OverrideBundle` swap above).
     var currentLocale: Locale {
         if override.isEmpty {
             return .current
@@ -52,6 +77,7 @@ final class LocalizationManager {
         applyAppleLanguages(override)
     }
 
+    /// Sets a new override. Pass "" to revert to system default.
     func setOverride(_ code: String) {
         let normalized = Self.supportedLanguages.contains(code) ? code : ""
         override = normalized
@@ -62,11 +88,17 @@ final class LocalizationManager {
         UserDefaults.standard.set(override, forKey: storageKey)
     }
 
+    /// One-time class swap on `Bundle.main` so localized lookup checks override
+    /// first. Safe to call multiple times: the `is OverrideBundle` guard makes
+    /// it a no-op on second call.
     private static func installBundleOverride() {
         guard !(Bundle.main is OverrideBundle) else { return }
         object_setClass(Bundle.main, OverrideBundle.self)
     }
 
+    /// Writes (or clears) the AppleLanguages preference. iOS reads this on
+    /// next launch for UIKit-side localization. SwiftUI strings update in
+    /// real time within the running process via the `OverrideBundle` swap.
     private func applyAppleLanguages(_ code: String) {
         let defaults = UserDefaults.standard
         if code.isEmpty {
@@ -76,6 +108,10 @@ final class LocalizationManager {
         }
     }
 
+    /// Native-script display names. Hardcoded because Apple's
+    /// `localizedString(forLanguageCode:)` drops the script tag and collapses
+    /// "zh-Hans" + "zh-Hant" into a single "中文" label, which makes the two
+    /// Chinese options indistinguishable in the picker (user report 2026-05-13).
     static let displayNames: [String: String] = [
         "en":      "English",
         "ja":      "日本語",
@@ -87,6 +123,7 @@ final class LocalizationManager {
         "de":      "Deutsch",
     ]
 
+    /// Display name for a language code, rendered in that language's own script.
     static func displayName(for code: String) -> String {
         if code.isEmpty {
             return String(localized: "System default")

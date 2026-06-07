@@ -1,12 +1,23 @@
+//  Theme.swift — PORTFOLIO CANONICAL (orchestrator/ios-core)
+//
+//  Single source of truth for all autoapp iOS apps. DO NOT edit per-app copies.
+//  Edit orchestrator/ios-core/swift/Theme.swift, then run:
+//      python dashboard/sync_ios_core.py --apply
+//  Drift is gated by dashboard/audit_portfolio.py (core-sync check).
+//
+//  SYNC MODE: brand_inject. Everything below the brand block is identical across
+//  the portfolio and enforced. The three `brand*` lines + the hex/name comments
+//  are per-app: sync_ios_core.py reads each app's CURRENT brand values and
+//  re-injects them, so the design-token system stays unified while each app
+//  keeps its own palette. (Supersedes orchestrator/templates/Theme.swift.)
+//
 import SwiftUI
 
 // MARK: - Brand colors (FocusFlow)
 //
-// Vendored from orchestrator/templates/Theme.swift on 2026-05-23.
 // Per-app brand colors are app-specific; shared semantic colors are identical
-// across the 8-app portfolio. Replace the three `brand*` lines below with your
-// app's palette. The hex comments must match (`(red: r, green: g, blue: b)`
-// values translate to the noted hex code) so an art audit can grep them.
+// across the portfolio. The hex comments must match the (red:r, green:g, blue:b)
+// values (so an art audit can grep them) and the AccentColor asset.
 //
 // FocusFlow palette:
 //   brandPrimary:   #FF6B35
@@ -111,6 +122,8 @@ enum Radius {
     static let sm:   CGFloat = 6
     /// 12pt — card corners, sheet content
     static let md:   CGFloat = 12
+    /// 16pt — card content / feature-list container (most-used inset radius)
+    static let card: CGFloat = 16
     /// 20pt — large feature card corners, prominent CTA
     static let lg:   CGFloat = 20
     /// 999 — full pill (use over `Capsule()` for type-consistency)
