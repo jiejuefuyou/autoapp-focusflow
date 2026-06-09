@@ -344,20 +344,58 @@ struct ContentView: View {
         store.consumePremiumTechniqueTrial()
         trialOfferPreset = nil
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        store.startSession(duration: preset.seconds)
+        // Honor the auto-break toggle for the trial too: a free trial user is
+        // clamped to a single focus+break (clampedAutoCycleCount), so they get
+        // to *feel* the auto-break rhythm without unlocking multi-cycle.
+        let breakSeconds = TimeInterval(preset.breakMinutes * 60)
+        if store.autoStartBreaks && breakSeconds > 0 {
+            store.startSessionWithAutoBreak(
+                focusSeconds: preset.seconds,
+                breakSeconds: breakSeconds,
+                cycleCount: store.clampedAutoCycleCount(isPremium: iap.isPremium)
+            )
+        } else {
+            store.startSession(duration: preset.seconds)
+        }
     }
 
     /// Single start funnel: enforces the free daily-session cap, then starts a
     /// session of the given duration. Premium gating of the *technique* happens
     /// upstream in the picker (locked rows never reach here for free users
     /// except via the consumed trial path).
+    ///
+    /// When "Auto-start breaks" is on and the chosen technique prescribes a
+    /// break, the session is armed with the auto-break plan so the break runs
+    /// automatically on completion (and loops per the clamped cycle count).
+    /// A custom duration has no prescribed break, so it always runs as a plain
+    /// single focus block regardless of the toggle.
     private func startSession(duration: TimeInterval) {
         if !iap.isPremium && store.sessionsToday() >= SessionStore.freeDailySessionLimit {
             showPaywall = true
             return
         }
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        store.startSession(duration: duration)
+        let breakSeconds = autoBreakSeconds(for: duration)
+        if store.autoStartBreaks && breakSeconds > 0 {
+            store.startSessionWithAutoBreak(
+                focusSeconds: duration,
+                breakSeconds: breakSeconds,
+                cycleCount: store.clampedAutoCycleCount(isPremium: iap.isPremium)
+            )
+        } else {
+            store.startSession(duration: duration)
+        }
+    }
+
+    /// Break length (seconds) prescribed by the *currently selected* technique,
+    /// or `0` for `.custom` (no prescribed break) / a duration that doesn't map
+    /// to the selected preset. Reads `selectedPreset` rather than re-deriving
+    /// from `duration` so two presets that happen to share a focus length keep
+    /// their distinct break lengths.
+    private func autoBreakSeconds(for duration: TimeInterval) -> TimeInterval {
+        guard selectedPreset != .custom,
+              abs(selectedPreset.seconds - duration) < 0.5 else { return 0 }
+        return TimeInterval(selectedPreset.breakMinutes * 60)
     }
 
     private func durationLabel(seconds: TimeInterval) -> String {

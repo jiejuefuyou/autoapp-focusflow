@@ -46,11 +46,13 @@ struct TimerView: View {
                     .rotationEffect(.degrees(angle))
             }
 
-            // Progress arc.
+            // Progress arc — tinted by phase so FOCUS vs BREAK is legible at a
+            // glance even without reading the label (focus = brand accent,
+            // break = a calmer teal).
             Circle()
                 .trim(from: 0, to: progress)
                 .stroke(
-                    Color.accentColor,
+                    phaseColor,
                     style: StrokeStyle(lineWidth: 14, lineCap: .round)
                 )
                 .rotationEffect(.degrees(-90))
@@ -64,10 +66,21 @@ struct TimerView: View {
                     .accessibilityLabel(formattedRemainingAccessibility)
 
                 if store.currentSession != nil {
-                    Text(LocalizedStringKey(store.isRunning ? "Focusing" : "Paused"))
-                        .font(.caption.weight(.medium))
-                        .foregroundStyle(.secondary)
+                    // FOCUS / BREAK phase chip — color-coded label that also
+                    // reflects the paused state. The most important running-state
+                    // cue (which leg of the cycle am I in?).
+                    Text(phaseStatusKey)
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(store.isRunning ? phaseColor : .secondary)
                         .textCase(.uppercase)
+
+                    if let cyclesKey = cyclesRemainingKey {
+                        Text(cyclesKey)
+                            .font(.caption2.weight(.medium))
+                            .foregroundStyle(.secondary)
+                            .textCase(.uppercase)
+                            .accessibilityLabel(cyclesAccessibilityLabel ?? Text(""))
+                    }
                 } else {
                     // Idle state — without an entry hint, the ring looks tappable
                     // but its onTapGesture is guarded (line 81) and noops. Users
@@ -149,6 +162,56 @@ struct TimerView: View {
         }
         .buttonStyle(.borderedProminent)
         .accessibilityLabel(Text(LocalizedStringKey(store.isRunning ? "Pause" : "Resume")))
+    }
+
+    // MARK: - Phase presentation
+
+    /// Ring + label color for the active phase. Break uses a calm teal that's
+    /// clearly distinct from the brand accent so the user reads "rest, not work"
+    /// without parsing text. Idle/focus stay on the accent.
+    private var phaseColor: Color {
+        switch store.currentPhase {
+        case .focus: return .accentColor
+        case .break: return .teal
+        }
+    }
+
+    /// The FOCUS/BREAK status chip key, accounting for the paused state. When
+    /// paused we keep showing the phase so the user knows what they'll resume
+    /// into, but the color drops to secondary (handled at the call site).
+    private var phaseStatusKey: LocalizedStringKey {
+        switch store.currentPhase {
+        case .break:
+            return LocalizedStringKey(store.isRunning ? "Break" : "Break paused")
+        case .focus:
+            return LocalizedStringKey(store.isRunning ? "Focusing" : "Paused")
+        }
+    }
+
+    /// Secondary line under the phase chip describing the auto-cycle plan:
+    /// "Looping" for an open-ended run, "%lld more blocks" while focus blocks
+    /// remain queued. `nil` (hidden) for a plain single focus+break or the last
+    /// block of a run — no clutter when there's nothing more to chain.
+    private var cyclesRemainingKey: LocalizedStringKey? {
+        let remaining = store.cyclesRemaining
+        guard remaining > 0 else { return nil }
+        if remaining == Int.max {
+            return LocalizedStringKey("Looping")
+        }
+        return LocalizedStringKey("\(remaining) more blocks")
+    }
+
+    /// VoiceOver phrasing for the cycle line (the visible "%lld more blocks"
+    /// reads awkwardly to a screen reader, so we spell it out).
+    private var cyclesAccessibilityLabel: Text? {
+        let remaining = store.cyclesRemaining
+        guard remaining > 0 else { return nil }
+        if remaining == Int.max {
+            return Text(LocalizedStringKey("Looping until you stop"))
+        }
+        return Text(String(format: NSLocalizedString("cycles.remaining.value",
+                                                     comment: "N focus blocks remaining in the auto-cycle run"),
+                           remaining))
     }
 
     // MARK: - Derived

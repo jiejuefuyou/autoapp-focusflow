@@ -218,3 +218,26 @@
 "Try again" = "Try again";
 "Continue without subscription" = "Continue without subscription";
 "Products are temporarily unavailable. You can continue using FocusFlow for free, or try again later." = "Products are temporarily unavailable. You can continue using FocusFlow for free, or try again later.";
+
+/* Auto-break cycles — Settings toggle + cycle picker (single focus+break is
+   free; multi-cycle / loop-forever is a Pro lever). */
+"Breaks" = "Breaks";
+"Auto-start breaks" = "Auto-start breaks";
+"When a focus block ends, automatically run its break. Each technique has its own break length." = "When a focus block ends, automatically run its break. Each technique has its own break length.";
+"Focus blocks" = "Focus blocks";
+"cycle.single" = "1 focus + break";
+"cycle.blocks" = "%lld focus blocks";
+"cycle.forever" = "Loop until I stop";
+"cycle.pro_suffix" = "(Pro)";
+
+/* Auto-break cycles — running timer phase display */
+"Break" = "Break";
+"Break paused" = "Break paused";
+"Looping" = "Looping";
+"%lld more blocks" = "%lld more blocks";
+"Looping until you stop" = "Looping until you stop";
+"cycles.remaining.value" = "%lld more focus blocks";
+
+/* Auto-break cycles — break-over local notification */
+"notification.break_over.title" = "Break's over";
+"notification.break_over.body" = "Time to refocus — your next block is ready.";

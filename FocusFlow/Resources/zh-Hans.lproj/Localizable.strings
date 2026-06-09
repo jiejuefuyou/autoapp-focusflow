@@ -213,3 +213,25 @@
 "Try again" = "重试";
 "Continue without subscription" = "不购买,继续使用";
 "Products are temporarily unavailable. You can continue using FocusFlow for free, or try again later." = "暂时无法获取商品信息。你可以继续免费使用 FocusFlow,稍后再试。";
+
+/* Auto-break cycles — Settings toggle + cycle picker */
+"Breaks" = "休息";
+"Auto-start breaks" = "自动开始休息";
+"When a focus block ends, automatically run its break. Each technique has its own break length." = "专注时段结束后,自动开始对应的休息。每种专注法都有各自的休息时长。";
+"Focus blocks" = "专注时段数";
+"cycle.single" = "1 段专注 + 休息";
+"cycle.blocks" = "%lld 段专注";
+"cycle.forever" = "循环到我停止";
+"cycle.pro_suffix" = "(Pro)";
+
+/* Auto-break cycles — running timer phase display */
+"Break" = "休息中";
+"Break paused" = "休息已暂停";
+"Looping" = "循环中";
+"%lld more blocks" = "还剩 %lld 段";
+"Looping until you stop" = "循环直到你停止";
+"cycles.remaining.value" = "还剩 %lld 段专注";
+
+/* Auto-break cycles — break-over local notification */
+"notification.break_over.title" = "休息结束";
+"notification.break_over.body" = "该重新专注了——下一段已准备好。";

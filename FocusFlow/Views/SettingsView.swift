@@ -55,6 +55,23 @@ struct SettingsView: View {
                     Text(LocalizedStringKey("Your target focus time each day. Track it on the home screen ring."))
                 }
 
+                Section {
+                    Toggle(isOn: Binding(
+                        get: { store.autoStartBreaks },
+                        set: { store.autoStartBreaks = $0 }
+                    )) {
+                        Text(LocalizedStringKey("Auto-start breaks"))
+                    }
+
+                    if store.autoStartBreaks {
+                        autoCyclePicker
+                    }
+                } header: {
+                    Text(LocalizedStringKey("Breaks"))
+                } footer: {
+                    Text(LocalizedStringKey("When a focus block ends, automatically run its break. Each technique has its own break length."))
+                }
+
                 Section(LocalizedStringKey("Focus Filter (iOS 17+)")) {
                     VStack(alignment: .leading, spacing: 8) {
                         HStack(spacing: 8) {
@@ -110,6 +127,54 @@ struct SettingsView: View {
                     .environment(\.locale, l10n.currentLocale)
                     .id(l10n.override)
             }
+        }
+    }
+
+    /// Picker for how many focus blocks an auto-cycle run chains together.
+    /// Free tier may pick a single focus+break (count `1`); the multi-cycle and
+    /// loop-forever rungs are a Premium lever. A free user tapping a locked rung
+    /// is bounced to the paywall and the stored count stays at the free clamp,
+    /// so the picker can never persist an entitlement the user doesn't own.
+    private var autoCyclePicker: some View {
+        Picker(selection: Binding(
+            get: { store.clampedAutoCycleCount(isPremium: iap.isPremium) },
+            set: { newValue in
+                if !iap.isPremium && newValue > SessionStore.freeAutoCycleCount {
+                    showPaywall = true
+                } else {
+                    store.autoCycleCount = newValue
+                }
+            }
+        )) {
+            ForEach(SessionStore.autoCycleOptions, id: \.self) { count in
+                cycleLabel(for: count).tag(count)
+            }
+        } label: {
+            Text(LocalizedStringKey("Focus blocks"))
+        }
+        .pickerStyle(.menu)
+    }
+
+    /// Localized label for one auto-cycle rung. `1` = a single focus + break;
+    /// `Int.max` = loop until stopped; everything else = "%lld blocks". Premium
+    /// rungs carry a "(Pro)" suffix for free users so the lock is legible
+    /// in-line without a separate badge column.
+    @ViewBuilder
+    private func cycleLabel(for count: Int) -> some View {
+        let locked = !iap.isPremium && count > SessionStore.freeAutoCycleCount
+        let base: String = {
+            if count == 1 {
+                return String(localized: "cycle.single")
+            } else if count == Int.max {
+                return String(localized: "cycle.forever")
+            } else {
+                return String(format: String(localized: "cycle.blocks"), count)
+            }
+        }()
+        if locked {
+            Text("\(base) \(String(localized: "cycle.pro_suffix"))")
+        } else {
+            Text(base)
         }
     }
 

@@ -33,6 +33,17 @@ struct FocusSession: Identifiable, Codable, Hashable {
     }
 }
 
+/// Which leg of an auto-cycle run the timer is currently running.
+///
+/// A focus block records to history + prompts for a tag; a break is transient
+/// (never recorded, never tag-prompted) so streak / goal / analytics stay pure.
+/// `SessionStore.currentPhase` is `.focus` whenever idle. Lives in the model
+/// layer because it's a property of a session, not of the store's plumbing.
+enum SessionPhase: String, Codable, Hashable {
+    case focus
+    case `break`
+}
+
 /// A user-assignable project tag.
 ///
 /// The 4 defaults (Work / Writing / Learning / Personal) ship pre-seeded so a

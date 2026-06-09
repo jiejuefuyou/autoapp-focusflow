@@ -213,3 +213,25 @@
 "Try again" = "Erneut versuchen";
 "Continue without subscription" = "Ohne Abo fortfahren";
 "Products are temporarily unavailable. You can continue using FocusFlow for free, or try again later." = "Produkte sind vorübergehend nicht verfügbar. Du kannst FocusFlow weiterhin kostenlos nutzen oder es später erneut versuchen.";
+
+/* Auto-break cycles — Settings toggle + cycle picker */
+"Breaks" = "Pausen";
+"Auto-start breaks" = "Pausen automatisch starten";
+"When a focus block ends, automatically run its break. Each technique has its own break length." = "Wenn ein Fokusblock endet, startet automatisch dessen Pause. Jede Technik hat ihre eigene Pausenlänge.";
+"Focus blocks" = "Fokusblöcke";
+"cycle.single" = "1 Fokus + Pause";
+"cycle.blocks" = "%lld Fokusblöcke";
+"cycle.forever" = "Wiederholen, bis ich stoppe";
+"cycle.pro_suffix" = "(Pro)";
+
+/* Auto-break cycles — running timer phase display */
+"Break" = "Pause";
+"Break paused" = "Pause angehalten";
+"Looping" = "Wiederholung";
+"%lld more blocks" = "Noch %lld Blöcke";
+"Looping until you stop" = "Wiederholung, bis du stoppst";
+"cycles.remaining.value" = "Noch %lld Fokusblöcke";
+
+/* Auto-break cycles — break-over local notification */
+"notification.break_over.title" = "Pause vorbei";
+"notification.break_over.body" = "Zeit, sich wieder zu fokussieren — dein nächster Block ist bereit.";
