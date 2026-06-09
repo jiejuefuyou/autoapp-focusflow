@@ -23,6 +23,22 @@ enum PurchaseState: Equatable {
 final class IAPManager {
     static let premiumProductID = "com.jiejuefuyou.focusflow.premium"
 
+    /// Hard ceiling for product lookup. Sandbox StoreKit can stall silently;
+    /// beyond this we surface a graceful empty state instead of an indefinite
+    /// spinner (Apple Review 2.1(b), paywall "loading indefinitely").
+    static let productsLoadTimeout: Duration = .seconds(5)
+
+    /// Product-LOAD lifecycle — distinct from PurchaseState (the purchase path).
+    /// Drives a non-spinner fallback in PaywallView once the bounded load
+    /// resolves, so the paywall never shows an indefinite ProgressView (#64).
+    enum LoadingState: Equatable {
+        case loading
+        case loaded
+        case empty   // query returned, list empty (sandbox region w/ no IAP record)
+        case timedOut
+        case failed
+    }
+
     /// UserDefaults key for cached premium state — avoids the "Unlock" CTA
     /// flash on cold start while StoreKit refreshes the live entitlement
     /// (parity with AutoChoice/WaterNow/DaysUntil IAPManager).
@@ -30,6 +46,7 @@ final class IAPManager {
 
     var isPremium:     Bool         = UserDefaults.standard.bool(forKey: IAPManager.cachedIsPremiumKey)
     var products:      [Product]    = []
+    var loadingState:  LoadingState = .loading
     var purchaseState: PurchaseState = .idle
 
     // Legacy accessor kept for backward compat — computed from state
@@ -50,16 +67,51 @@ final class IAPManager {
     deinit { listenerTask?.cancel() }
 
     func refresh() async {
+        await drainUnfinishedTransactions()
         await loadProducts()
         await refreshEntitlements()
     }
 
-    func loadProducts() async {
-        do {
-            products = try await Product.products(for: [Self.premiumProductID])
-        } catch {
-            purchaseState = .failed(error.localizedDescription)
+    /// StoreKit 2 best practice: drain unfinished transactions at launch so a
+    /// stale pending purchase from a prior session can't block the next
+    /// `product.purchase()` call.
+    private func drainUnfinishedTransactions() async {
+        for await result in Transaction.unfinished {
+            guard case .verified(let t) = result else { continue }
+            await t.finish()
         }
+    }
+
+    func loadProducts() async {
+        loadingState = .loading
+        do {
+            let fetched = try await withThrowingTaskGroup(of: [Product].self) { group in
+                group.addTask {
+                    try await Product.products(for: [Self.premiumProductID])
+                }
+                group.addTask {
+                    try await Task.sleep(for: Self.productsLoadTimeout)
+                    throw IAPLoadError.timedOut
+                }
+                guard let first = try await group.next() else {
+                    throw IAPLoadError.timedOut
+                }
+                group.cancelAll()
+                return first
+            }
+            products = fetched
+            loadingState = fetched.isEmpty ? .empty : .loaded
+        } catch is CancellationError {
+            loadingState = .empty
+        } catch IAPLoadError.timedOut {
+            loadingState = .timedOut
+        } catch {
+            loadingState = .failed
+        }
+    }
+
+    private enum IAPLoadError: Error {
+        case timedOut
     }
 
     func purchase() async {

@@ -21,7 +21,7 @@
 "Pomodoro 25, deep 45, marathon 90. Pick your length and start." = "Pomodoro 25, Deep 45, Marathon 90. Wähle deine Dauer und starte.";
 "Track by project." = "Nach Projekt erfassen.";
 "Tag each session — Writing, Coding, Study — and see where your week actually went." = "Versehe jede Session mit einem Tag — Schreiben, Coding, Lernen — und sieh, wo deine Woche wirklich geblieben ist.";
-"$3.99 once. No sub." = "3,99 $ einmalig. Kein Abo.";
+"One-time unlock. No subscription." = "Einmalig freischalten. Kein Abo.";
 
 /* Main screen */
 "Ready to focus" = "Bereit, dich zu konzentrieren?";
@@ -167,7 +167,7 @@
 "preset.custom.desc" = "Stelle jede beliebige Fokusdauer ein, von 5 Minuten bis 4 Stunden.";
 
 /* Paywall — premium-technique feature row */
-"paywall.techniques.feature" = "8 Fokus-Techniken (52/17, Ultradian, Prüfungsendspurt u. a.)";
+"paywall.techniques.feature" = "%lld Fokus-Techniken (52/17, Ultradian, Prüfungsendspurt u. a.)";
 
 /* Retention hooks — focus streak, daily goal ring, best-time-of-day heatmap (all free) */
 "streak.days" = "%lld Tage in Folge";
@@ -208,3 +208,8 @@
 "share.tagline" = "Tiefer Fokus, ohne Hürden.";
 "share.streak" = "Tage in Folge";
 "share.footer" = "Verfolge deinen Fokus mit FocusFlow";
+/* Paywall product-load fallback (lesson #64 — no indefinite 2.1b spinner) */
+"Loading products…" = "Produkte werden geladen…";
+"Try again" = "Erneut versuchen";
+"Continue without subscription" = "Ohne Abo fortfahren";
+"Products are temporarily unavailable. You can continue using FocusFlow for free, or try again later." = "Produkte sind vorübergehend nicht verfügbar. Du kannst FocusFlow weiterhin kostenlos nutzen oder es später erneut versuchen.";

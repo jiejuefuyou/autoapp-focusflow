@@ -21,7 +21,7 @@
 "Pomodoro 25, deep 45, marathon 90. Pick your length and start." = "ポモドーロ 25 分、ディープ 45 分、マラソン 90 分。お好みの長さを選んで開始。";
 "Track by project." = "プロジェクト別に記録。";
 "Tag each session — Writing, Coding, Study — and see where your week actually went." = "各セッションにタグを付けて(執筆・開発・学習など)、1 週間の時間の使い道を可視化しましょう。";
-"$3.99 once. No sub." = "買い切り $3.99。サブスクなし。";
+"One-time unlock. No subscription." = "買い切りで解除。サブスクなし。";
 
 /* Main screen */
 "Ready to focus" = "集中する準備はいい?";
@@ -167,7 +167,7 @@
 "preset.custom.desc" = "5 分から 4 時間まで、好きな集中時間を自由に設定できます。";
 
 /* Paywall — premium-technique feature row */
-"paywall.techniques.feature" = "8 種の集中テクニック(52/17・ウルトラディアン・試験直前ほか)";
+"paywall.techniques.feature" = "%lld 種の集中テクニック(52/17・ウルトラディアン・試験直前ほか)";
 
 /* Retention hooks — focus streak, daily goal ring, best-time-of-day heatmap (all free) */
 "streak.days" = "%lld 日連続";
@@ -208,3 +208,8 @@
 "share.tagline" = "深い集中を、まっすぐに。";
 "share.streak" = "連続日数";
 "share.footer" = "FocusFlow で集中を記録しよう";
+/* Paywall product-load fallback (lesson #64 — no indefinite 2.1b spinner) */
+"Loading products…" = "商品を読み込み中…";
+"Try again" = "もう一度試す";
+"Continue without subscription" = "購入せずに続ける";
+"Products are temporarily unavailable. You can continue using FocusFlow for free, or try again later." = "商品を一時的に取得できません。無料版のままでも FocusFlow をお使いいただけます。後ほど再度お試しください。";

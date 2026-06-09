@@ -31,6 +31,8 @@ jobs:
 
       - name: Lint per-modal l10n env-injection (lesson #34)
         run: python3 scripts/lint_modal_env.py FocusFlow
+      - name: Lint paywall load-state (lessons #5/#64 — no indefinite 2.1b spinner)
+        run: python3 scripts/lint_paywall_loadstate.py FocusFlow
 
       - name: Verify Localizable.strings 8-locale parity
         run: python3 scripts/lint_i18n_parity.py

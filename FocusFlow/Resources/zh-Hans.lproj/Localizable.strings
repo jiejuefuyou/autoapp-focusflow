@@ -21,7 +21,7 @@
 "Pomodoro 25, deep 45, marathon 90. Pick your length and start." = "番茄 25 分钟、深度 45 分钟、马拉松 90 分钟。选好时长就开始。";
 "Track by project." = "按项目追踪时间。";
 "Tag each session — Writing, Coding, Study — and see where your week actually went." = "给每次专注打标签——写作、编程、学习——清晰看到这周的时间去了哪里。";
-"$3.99 once. No sub." = "一次性 $3.99,无订阅。";
+"One-time unlock. No subscription." = "一次性解锁,无订阅。";
 
 /* Main screen */
 "Ready to focus" = "准备好专注了吗";
@@ -167,7 +167,7 @@
 "preset.custom.desc" = "从 5 分钟到 4 小时,随心设定任意专注时长。";
 
 /* Paywall — premium-technique feature row */
-"paywall.techniques.feature" = "8 种专注法(52/17、超日节律、考前冲刺等)";
+"paywall.techniques.feature" = "%lld 种专注法(52/17、超日节律、考前冲刺等)";
 
 /* Retention hooks — focus streak, daily goal ring, best-time-of-day heatmap (all free) */
 "streak.days" = "连续专注 %lld 天";
@@ -208,3 +208,8 @@
 "share.tagline" = "深度专注，毫无阻碍。";
 "share.streak" = "连续天数";
 "share.footer" = "用 FocusFlow 记录你的专注";
+/* Paywall product-load fallback (lesson #64 — no indefinite 2.1b spinner) */
+"Loading products…" = "正在加载商品…";
+"Try again" = "重试";
+"Continue without subscription" = "不购买,继续使用";
+"Products are temporarily unavailable. You can continue using FocusFlow for free, or try again later." = "暂时无法获取商品信息。你可以继续免费使用 FocusFlow,稍后再试。";

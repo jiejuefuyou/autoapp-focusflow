@@ -21,7 +21,7 @@
 "Pomodoro 25, deep 45, marathon 90. Pick your length and start." = "Pomodoro 25, deep 45, marathon 90. Pick your length and start.";
 "Track by project." = "Track by project.";
 "Tag each session — Writing, Coding, Study — and see where your week actually went." = "Tag each session — Writing, Coding, Study — and see where your week actually went.";
-"$3.99 once. No sub." = "$3.99 once. No sub.";
+"One-time unlock. No subscription." = "One-time unlock. No subscription.";
 
 /* Main screen */
 "Ready to focus" = "Ready to focus";
@@ -172,7 +172,7 @@
 "preset.custom.desc" = "Set any focus length you like, from 5 minutes to 4 hours.";
 
 /* Paywall — premium-technique feature row */
-"paywall.techniques.feature" = "8 focus techniques (52/17, Ultradian, Exam Cram & more)";
+"paywall.techniques.feature" = "%lld focus techniques (52/17, Ultradian, Exam Cram & more)";
 
 /* Retention hooks — focus streak, daily goal ring, best-time-of-day heatmap (all free) */
 "streak.days" = "%lld-day streak";
@@ -213,3 +213,8 @@
 "share.tagline" = "Deep focus, unblocked.";
 "share.streak" = "Day streak";
 "share.footer" = "Track your focus with FocusFlow";
+/* Paywall product-load fallback (lesson #64 — no indefinite 2.1b spinner) */
+"Loading products…" = "Loading products…";
+"Try again" = "Try again";
+"Continue without subscription" = "Continue without subscription";
+"Products are temporarily unavailable. You can continue using FocusFlow for free, or try again later." = "Products are temporarily unavailable. You can continue using FocusFlow for free, or try again later.";

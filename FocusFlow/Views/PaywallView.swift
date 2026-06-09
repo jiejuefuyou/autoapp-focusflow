@@ -48,7 +48,7 @@ struct PaywallView: View {
                     //   * unlimited tags      -> ProjectTagPicker addTagButton gate
                     VStack(alignment: .leading, spacing: 14) {
                         feature("infinity",               LocalizedStringKey("Unlimited daily sessions"))
-                        feature("square.stack.3d.up.fill", LocalizedStringKey("paywall.techniques.feature"))
+                        techniquesFeatureRow
                         feature("slider.horizontal.3",    LocalizedStringKey("Custom session durations (any length)"))
                         feature("tag.fill",               LocalizedStringKey("Unlimited project tags with emoji + color"))
                     }
@@ -190,9 +190,72 @@ struct PaywallView: View {
             .disabled(iap.purchaseInProgress)
             .accessibilityIdentifier("paywall.cta.unlock")
         } else {
-            ProgressView()
-                .frame(maxWidth: .infinity)
-                .padding()
+            // Apple 2.1(b): never an indefinite spinner. IAPManager bounds the
+            // product load (productsLoadTimeout); once it resolves we surface a
+            // retry + "keep using free" escape instead of a phantom ProgressView.
+            unavailableFallback
+        }
+    }
+
+    /// Graceful, user-actionable fallback that REPLACES a bare indefinite
+    /// ProgressView (Apple 2.1(b) "loading forever"). After
+    /// IAPManager.productsLoadTimeout the load resolves, so the reviewer/user
+    /// always sees a retry + a "continue free" path.
+    @ViewBuilder
+    private var unavailableFallback: some View {
+        switch iap.loadingState {
+        case .loading:
+            HStack(spacing: 12) {
+                ProgressView()
+                Text(LocalizedStringKey("Loading products…"))
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+            .frame(maxWidth: .infinity)
+            .padding()
+        case .loaded, .empty, .timedOut, .failed:
+            VStack(spacing: 12) {
+                Text(LocalizedStringKey("Products are temporarily unavailable. You can continue using FocusFlow for free, or try again later."))
+                    .font(.footnote)
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.secondary)
+                Button {
+                    Task { await iap.loadProducts() }
+                } label: {
+                    Label(LocalizedStringKey("Try again"), systemImage: "arrow.clockwise")
+                        .font(.subheadline.weight(.semibold))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                        .background(.tint.opacity(0.15), in: RoundedRectangle(cornerRadius: 12))
+                }
+                Button {
+                    dismiss()
+                } label: {
+                    Text(LocalizedStringKey("Continue without subscription"))
+                        .font(.subheadline.weight(.semibold))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 12))
+                        .foregroundStyle(.white)
+                }
+            }
+            .frame(maxWidth: .infinity)
+        }
+    }
+
+    /// Technique-count feature row with a DYNAMIC count (premiumLibrary.count)
+    /// so the paywall can never drift from the catalog the way the old static
+    /// "8 techniques" string did (audit P0: paywall said 8; 7 premium exist).
+    private var techniquesFeatureRow: some View {
+        HStack(spacing: 14) {
+            Image(systemName: "square.stack.3d.up.fill")
+                .font(.body.weight(.semibold))
+                .foregroundStyle(Color.accentColor)
+                .frame(width: 32, height: 32)
+                .background(Color.accentColor.opacity(0.12), in: Circle())
+            Text(String(format: String(localized: "paywall.techniques.feature"),
+                        FocusPreset.premiumLibrary.count))
+            Spacer()
         }
     }
 

@@ -48,7 +48,7 @@ struct OnboardingView: View {
                 screen(
                     index: 2,
                     icon: "chart.bar.fill",
-                    titleKey: "$3.99 once. No sub.",
+                    titleKey: "One-time unlock. No subscription.",
                     subtitleKey: "Pro: unlimited sessions, custom durations, unlimited project tags.",
                     color: .green,
                     showCTA: true
