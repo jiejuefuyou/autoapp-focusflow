@@ -33,6 +33,14 @@ struct PaywallView: View {
                         .foregroundStyle(.secondary)
                         .padding(.horizontal)
 
+                    // ── Honest price-anchor (Pattern D) ──
+                    // Generic, undated, no fabricated counts (lessons #44/#53).
+                    // The buying emotion in the focus-timer category is
+                    // subscription fatigue; framing "pay once vs the field" turns
+                    // the price from a cost into the obvious value pick — at zero
+                    // gating cost and with nothing to verify/age.
+                    priceAnchor
+
                     // ── State banners (visible, non-buried) ──
                     stateBanner
 
@@ -41,14 +49,18 @@ struct PaywallView: View {
                     // ("Full history 7/30/90", "Export CSV", "Focus Filter gate")
                     // that were advertised but never implemented or never gated.
                     // Apple 2.3.1 (Accurate Metadata) reject risk + user 1-star.
-                    // All 3 rows below correspond to real gates verified in code:
+                    // All rows below correspond to real gates verified in code:
                     //   * unlimited sessions  -> SessionStore.freeDailySessionLimit
                     //   * advanced techniques -> FocusPreset premium cases (.requiresPremium)
                     //   * custom durations    -> FocusPreset.custom.requiresPremium
                     //   * unlimited tags      -> ProjectTagPicker addTagButton gate
+                    //   * Pomodoro autopilot  -> SessionStore.freeAutoCycleCount (free
+                    //     gets ONE focus+break; multi-loop / loop-forever is Pro, via
+                    //     clampedAutoCycleCount(isPremium:) + the Settings cycle picker)
                     VStack(alignment: .leading, spacing: 14) {
                         feature("infinity",               LocalizedStringKey("Unlimited daily sessions"))
                         techniquesFeatureRow
+                        feature("repeat.circle.fill",     LocalizedStringKey("Pomodoro autopilot — chain multiple focus + break cycles automatically"))
                         feature("slider.horizontal.3",    LocalizedStringKey("Custom session durations (any length)"))
                         feature("tag.fill",               LocalizedStringKey("Unlimited project tags with emoji + color"))
                     }
@@ -106,6 +118,28 @@ struct PaywallView: View {
                 Text(failureMessage)
             }
         }
+    }
+
+    // MARK: - Honest price anchor (Pattern D)
+
+    /// A single honest, generic, undated value-anchor line. No "launch pricing"
+    /// (perishable + false once past launch), no fabricated install/rating
+    /// counts (lessons #44/#53) — just the true pay-once-vs-subscription wedge
+    /// that is the buying emotion in this category.
+    private var priceAnchor: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "checkmark.seal.fill")
+                .foregroundStyle(.tint)
+            Text(LocalizedStringKey("Most focus apps subscribe. This is one payment — forever. No subscription, no ads, ever."))
+                .font(.footnote.weight(.medium))
+                .multilineTextAlignment(.leading)
+                .foregroundStyle(.primary)
+            Spacer(minLength: 0)
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.accentColor.opacity(0.10), in: RoundedRectangle(cornerRadius: 12))
+        .padding(.horizontal)
     }
 
     // MARK: - State banner (non-failed inline states)

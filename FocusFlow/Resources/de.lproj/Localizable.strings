@@ -235,3 +235,10 @@
 /* Auto-break cycles — break-over local notification */
 "notification.break_over.title" = "Pause vorbei";
 "notification.break_over.body" = "Zeit, sich wieder zu fokussieren — dein nächster Block ist bereit.";
+/* Round-6 paywall polish — honest anchors + surfaced gated power */
+"Pomodoro autopilot — chain multiple focus + break cycles automatically" = "Pomodoro-Autopilot – mehrere Fokus- und Pausenzyklen automatisch hintereinander";
+"Most focus apps subscribe. This is one payment — forever. No subscription, no ads, ever." = "Die meisten Fokus-Apps setzen auf Abos. Hier zahlst du einmal – für immer. Kein Abo, keine Werbung.";
+"You've hit today's free sessions" = "Deine kostenlosen Sessions für heute sind aufgebraucht";
+"Unlock unlimited" = "Unbegrenzt freischalten";
+"Not now" = "Jetzt nicht";
+"Free includes %lld focus sessions a day. Unlock FocusFlow Pro for unlimited sessions — one payment, no subscription." = "Kostenlos sind %lld Sessions pro Tag enthalten. Schalte FocusFlow Pro für unbegrenzte Sessions frei – einmal zahlen, kein Abo.";

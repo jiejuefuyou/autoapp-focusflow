@@ -108,6 +108,16 @@
 "Unlimited daily sessions" = "Unlimited daily sessions";
 "Unlimited project tags with emoji + color" = "Unlimited project tags with emoji + color";
 "Custom session durations (any length)" = "Custom session durations (any length)";
+"Pomodoro autopilot — chain multiple focus + break cycles automatically" = "Pomodoro autopilot — chain multiple focus + break cycles automatically";
+
+/* Paywall — honest price anchor (Pattern D; generic, undated, no fabricated counts) */
+"Most focus apps subscribe. This is one payment — forever. No subscription, no ads, ever." = "Most focus apps subscribe. This is one payment — forever. No subscription, no ads, ever.";
+
+/* Contextual upsell at the free daily-session wall (round-6) */
+"You've hit today's free sessions" = "You've hit today's free sessions";
+"Unlock unlimited" = "Unlock unlimited";
+"Not now" = "Not now";
+"Free includes %lld focus sessions a day. Unlock FocusFlow Pro for unlimited sessions — one payment, no subscription." = "Free includes %lld focus sessions a day. Unlock FocusFlow Pro for unlimited sessions — one payment, no subscription.";
 
 /* Focus Filter — Settings section */
 "Focus Filter" = "Focus Filter";

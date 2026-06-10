@@ -27,6 +27,13 @@ struct ContentView: View {
     /// completes. Auto-clears 1.6s after appearing.
     @State private var showCompletionCelebration = false
 
+    /// Drives the contextual "you've hit the free daily limit" upsell alert. A
+    /// free user who taps Start after 5 sessions sees this tasteful prompt (with
+    /// the reason) instead of a silent stop or a cold full-screen paywall; tapping
+    /// "Unlock unlimited" then opens the paywall. (Round-6 greenlit contextual
+    /// upsell at the 5-sessions/day wall.)
+    @State private var showDailyLimitUpsell = false
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -121,6 +128,18 @@ struct ContentView: View {
                 .environment(l10n)
                 .environment(\.locale, l10n.currentLocale)
                 .id(l10n.override)
+            }
+            // Contextual upsell at the free daily-session wall (round-6 greenlit).
+            // Explains the limit at the moment of intent and offers the unlock,
+            // rather than silently refusing the start or jumping cold to the paywall.
+            .alert(
+                LocalizedStringKey("You've hit today's free sessions"),
+                isPresented: $showDailyLimitUpsell
+            ) {
+                Button(LocalizedStringKey("Unlock unlimited")) { showPaywall = true }
+                Button(LocalizedStringKey("Not now"), role: .cancel) { }
+            } message: {
+                Text(LocalizedStringKey("Free includes \(SessionStore.freeDailySessionLimit) focus sessions a day. Unlock FocusFlow Pro for unlimited sessions — one payment, no subscription."))
             }
         }
     }
@@ -371,7 +390,7 @@ struct ContentView: View {
     /// single focus block regardless of the toggle.
     private func startSession(duration: TimeInterval) {
         if !iap.isPremium && store.sessionsToday() >= SessionStore.freeDailySessionLimit {
-            showPaywall = true
+            showDailyLimitUpsell = true
             return
         }
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
@@ -425,6 +444,14 @@ struct ContentView: View {
     private func triggerCompletionFeedback() {
         AudioServicesPlaySystemSound(1025)
         UINotificationFeedbackGenerator().notificationOccurred(.success)
+        // Genuine success moment: the user just completed a focus session (this
+        // runs as the post-completion tag picker appears). ReviewService
+        // self-throttles (≥5 actions, ≥3 days in, ≥122 days between asks) so this
+        // never nags — Apple's native prompt surfaces only for an established,
+        // satisfied user, which is what eventually accrues honest ratings. NOT on
+        // the paywall, NOT on every completion.
+        ReviewService.recordSuccess()
+        ReviewService.maybeRequestReview()
         withAnimation(.spring(response: 0.45, dampingFraction: 0.7)) {
             showCompletionCelebration = true
         }

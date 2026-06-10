@@ -235,3 +235,10 @@
 /* Auto-break cycles — break-over local notification */
 "notification.break_over.title" = "休憩終了";
 "notification.break_over.body" = "そろそろ再開しましょう。次のブロックの準備ができています。";
+/* Round-6 paywall polish — honest anchors + surfaced gated power */
+"Pomodoro autopilot — chain multiple focus + break cycles automatically" = "ポモドーロ自動運転 — 集中と休憩のサイクルを自動で連続実行";
+"Most focus apps subscribe. This is one payment — forever. No subscription, no ads, ever." = "集中系アプリの多くはサブスク制。これは一度きりの支払いで、ずっと使えます。サブスクも広告も一切なし。";
+"You've hit today's free sessions" = "今日の無料セッションを使い切りました";
+"Unlock unlimited" = "無制限にする";
+"Not now" = "今はしない";
+"Free includes %lld focus sessions a day. Unlock FocusFlow Pro for unlimited sessions — one payment, no subscription." = "無料版は1日 %lld 回まで。FocusFlow Pro なら回数無制限 — 買い切りで、サブスクなし。";
