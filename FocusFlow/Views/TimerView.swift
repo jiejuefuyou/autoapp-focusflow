@@ -8,16 +8,23 @@ import UIKit
 ///    out and an inert ring so the user has a visual anchor.
 /// 2. **Active** — counts down, animating the ring stroke from full → empty.
 ///
-/// The whole card is tap-friendly: tapping the ring toggles play/pause when a
-/// session is active (the explicit buttons stay for accessibility). On
-/// completion the parent observes `store.pendingTagAssignmentSessionId` and
-/// presents the ProjectTagPicker.
+/// The whole card is tap-friendly: tapping the ring starts a session when
+/// idle (via `onIdleTap`, routed through the parent's gated start funnel) and
+/// toggles play/pause when a session is active (the explicit buttons stay for
+/// accessibility). On completion the parent observes
+/// `store.pendingTagAssignmentSessionId` and presents the ProjectTagPicker.
 struct TimerView: View {
     @Environment(SessionStore.self) private var store
 
     /// Preview / placeholder duration to render when no session is active.
     /// ContentView passes the user's last-selected preset here.
     let placeholderDuration: TimeInterval
+
+    /// Invoked when the user taps the idle ring. The parent wires this to the
+    /// same gated start funnel as the Start button (free daily-session cap,
+    /// auto-break arming), so the ring is a true primary CTA — not a dead
+    /// tappable-looking circle (round-1 audit [NAV] P2).
+    var onIdleTap: () -> Void = {}
 
     var body: some View {
         VStack(spacing: Spacing.lg) {
@@ -82,20 +89,24 @@ struct TimerView: View {
                             .accessibilityLabel(cyclesAccessibilityLabel ?? Text(""))
                     }
                 } else {
-                    // Idle state — without an entry hint, the ring looks tappable
-                    // but its onTapGesture is guarded (line 81) and noops. Users
-                    // tap the ring and nothing happens, breaking the model. Show
-                    // an explicit affordance pointing at the Start button below
-                    // (art-audit 2026-05-23 P0-2).
+                    // Idle state — the ring is now a real CTA: tapping it starts
+                    // a session through `onIdleTap`, so the big inviting circle
+                    // no longer advertises interactivity it doesn't have
+                    // (round-1 audit [NAV] P2; supersedes the arrow-at-Start
+                    // mitigation from art-audit 2026-05-23 P0-2). The tinted
+                    // hint names the affordance explicitly.
                     VStack(spacing: 4) {
                         Text(LocalizedStringKey("Ready to focus"))
                             .font(.caption.weight(.medium))
                             .foregroundStyle(.secondary)
                             .textCase(.uppercase)
-                        Image(systemName: "arrow.down")
-                            .font(.caption2)
-                            .foregroundStyle(.tertiary)
-                            .accessibilityHidden(true)
+                        HStack(spacing: 4) {
+                            Image(systemName: "play.fill")
+                                .accessibilityHidden(true)
+                            Text(LocalizedStringKey("Tap to start"))
+                        }
+                        .font(.caption2.weight(.semibold))
+                        .foregroundStyle(.tint)
                     }
                 }
             }
@@ -103,7 +114,13 @@ struct TimerView: View {
         .frame(width: 260, height: 260)
         .contentShape(Circle())
         .onTapGesture {
-            guard store.currentSession != nil else { return }
+            guard store.currentSession != nil else {
+                // Idle ring tap = Start. No haptic here — the start funnel
+                // fires its own .medium impact on a successful start, and the
+                // daily-limit upsell alert is the feedback when gated.
+                onIdleTap()
+                return
+            }
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
             if store.isRunning {
                 store.pause()

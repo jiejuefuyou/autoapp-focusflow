@@ -40,7 +40,7 @@ struct ContentView: View {
                 VStack(spacing: Spacing.lg) {
                     todaySummary
                     presetSection
-                    TimerView(placeholderDuration: plannedDuration)
+                    TimerView(placeholderDuration: plannedDuration, onIdleTap: handleStart)
                     startButton
                     if !store.history.isEmpty {
                         recentSessions
@@ -345,6 +345,10 @@ struct ContentView: View {
     }
 
     private func handleStart() {
+        // The Start button disables itself via `canStart`; the idle-ring tap
+        // (TimerView.onIdleTap) has no disabled state, so guard here once for
+        // both entry points.
+        guard canStart else { return }
         startSession(duration: plannedDuration)
     }
 

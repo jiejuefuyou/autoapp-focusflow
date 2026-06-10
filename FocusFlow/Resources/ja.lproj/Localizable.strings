@@ -25,6 +25,7 @@
 
 /* Main screen */
 "Ready to focus" = "集中する準備はいい?";
+"Tap to start" = "タップで開始";
 "Start Session" = "セッションを開始";
 "Today" = "今日";
 "Duration" = "時間";
