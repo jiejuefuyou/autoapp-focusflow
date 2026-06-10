@@ -218,7 +218,7 @@
 /* Auto-break cycles — Settings toggle + cycle picker */
 "Breaks" = "休憩";
 "Auto-start breaks" = "休憩を自動で開始";
-"When a focus block ends, automatically run its break. Each technique has its own break length." = "集中ブロックが終わると、その休憩を自動で始めます。休憩の長さはテクニックごとに異なります。";
+"When a focus block ends, automatically run its break. Each technique has its own break length." = "集中ブロックが終わると、休憩を自動で開始します。休憩の長さはテクニックごとに異なります。";
 "Focus blocks" = "集中ブロック数";
 "cycle.single" = "集中 1 回 + 休憩";
 "cycle.blocks" = "集中 %lld ブロック";
@@ -227,18 +227,18 @@
 
 /* Auto-break cycles — running timer phase display */
 "Break" = "休憩中";
-"Break paused" = "休憩を一時停止";
+"Break paused" = "休憩を一時停止中";
 "Looping" = "繰り返し中";
 "%lld more blocks" = "あと %lld ブロック";
 "Looping until you stop" = "停止するまで繰り返します";
-"cycles.remaining.value" = "残り %lld 集中ブロック";
+"cycles.remaining.value" = "あと %lld 集中ブロック";
 
 /* Auto-break cycles — break-over local notification */
 "notification.break_over.title" = "休憩終了";
 "notification.break_over.body" = "そろそろ再開しましょう。次のブロックの準備ができています。";
 /* Round-6 paywall polish — honest anchors + surfaced gated power */
-"Pomodoro autopilot — chain multiple focus + break cycles automatically" = "ポモドーロ自動運転 — 集中と休憩のサイクルを自動で連続実行";
-"Most focus apps subscribe. This is one payment — forever. No subscription, no ads, ever." = "集中系アプリの多くはサブスク制。これは一度きりの支払いで、ずっと使えます。サブスクも広告も一切なし。";
+"Pomodoro autopilot — chain multiple focus + break cycles automatically" = "ポモドーロ・オートパイロット — 集中と休憩のサイクルを自動で連続実行";
+"Most focus apps subscribe. This is one payment — forever. No subscription, no ads, ever." = "集中系アプリの多くはサブスク制。これは買い切りで、ずっと使えます。サブスクも広告も一切なし。";
 "You've hit today's free sessions" = "今日の無料セッションを使い切りました";
 "Unlock unlimited" = "無制限にする";
 "Not now" = "今はしない";

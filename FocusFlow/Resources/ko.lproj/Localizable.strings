@@ -235,11 +235,11 @@
 
 /* Auto-break cycles — break-over local notification */
 "notification.break_over.title" = "휴식 종료";
-"notification.break_over.body" = "다시 집중할 시간이에요 — 다음 블록이 준비됐습니다.";
+"notification.break_over.body" = "다시 집중할 시간이에요 — 다음 블록이 준비됐어요.";
 /* Round-6 paywall polish — honest anchors + surfaced gated power */
 "Pomodoro autopilot — chain multiple focus + break cycles automatically" = "뽀모도로 오토파일럿 — 집중과 휴식 사이클을 자동으로 연속 실행";
 "Most focus apps subscribe. This is one payment — forever. No subscription, no ads, ever." = "집중 앱 대부분은 구독제입니다. 이 앱은 한 번 결제로 평생 사용. 구독도 광고도 없습니다.";
 "You've hit today's free sessions" = "오늘의 무료 세션을 모두 사용했어요";
 "Unlock unlimited" = "무제한으로 잠금 해제";
 "Not now" = "나중에";
-"Free includes %lld focus sessions a day. Unlock FocusFlow Pro for unlimited sessions — one payment, no subscription." = "무료 버전은 하루 %lld회까지입니다. FocusFlow Pro를 잠금 해제하면 무제한 — 한 번 결제, 구독 없음.";
+"Free includes %lld focus sessions a day. Unlock FocusFlow Pro for unlimited sessions — one payment, no subscription." = "무료 버전은 하루 집중 세션 %lld회까지입니다. FocusFlow Pro를 잠금 해제하면 무제한 — 한 번 결제, 구독 없음.";

@@ -230,12 +230,12 @@
 "Break paused" = "Pause angehalten";
 "Looping" = "Wiederholung";
 "%lld more blocks" = "Noch %lld Blöcke";
-"Looping until you stop" = "Wiederholung, bis du stoppst";
+"Looping until you stop" = "Läuft, bis du stoppst";
 "cycles.remaining.value" = "Noch %lld Fokusblöcke";
 
 /* Auto-break cycles — break-over local notification */
 "notification.break_over.title" = "Pause vorbei";
-"notification.break_over.body" = "Zeit, sich wieder zu fokussieren — dein nächster Block ist bereit.";
+"notification.break_over.body" = "Zeit, dich wieder zu fokussieren – dein nächster Block ist bereit.";
 /* Round-6 paywall polish — honest anchors + surfaced gated power */
 "Pomodoro autopilot — chain multiple focus + break cycles automatically" = "Pomodoro-Autopilot – mehrere Fokus- und Pausenzyklen automatisch hintereinander";
 "Most focus apps subscribe. This is one payment — forever. No subscription, no ads, ever." = "Die meisten Fokus-Apps setzen auf Abos. Hier zahlst du einmal – für immer. Kein Abo, keine Werbung.";

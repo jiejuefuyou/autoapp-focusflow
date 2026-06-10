@@ -25,7 +25,7 @@
 
 /* Main screen */
 "Ready to focus" = "准备好专注了吗";
-"Tap to start" = "点按开始";
+"Tap to start" = "轻点开始";
 "Start Session" = "开始会话";
 "Today" = "今天";
 "Duration" = "时长";
@@ -218,11 +218,11 @@
 /* Auto-break cycles — Settings toggle + cycle picker */
 "Breaks" = "休息";
 "Auto-start breaks" = "自动开始休息";
-"When a focus block ends, automatically run its break. Each technique has its own break length." = "专注时段结束后,自动开始对应的休息。每种专注法都有各自的休息时长。";
+"When a focus block ends, automatically run its break. Each technique has its own break length." = "专注时段结束后，自动开始对应的休息。每种专注法都有各自的休息时长。";
 "Focus blocks" = "专注时段数";
 "cycle.single" = "1 段专注 + 休息";
 "cycle.blocks" = "%lld 段专注";
-"cycle.forever" = "循环到我停止";
+"cycle.forever" = "一直循环";
 "cycle.pro_suffix" = "(Pro)";
 
 /* Auto-break cycles — running timer phase display */
@@ -237,9 +237,9 @@
 "notification.break_over.title" = "休息结束";
 "notification.break_over.body" = "该重新专注了——下一段已准备好。";
 /* Round-6 paywall polish — honest anchors + surfaced gated power */
-"Pomodoro autopilot — chain multiple focus + break cycles automatically" = "番茄钟自动循环 — 自动连续运行多个专注 + 休息周期";
-"Most focus apps subscribe. This is one payment — forever. No subscription, no ads, ever." = "专注类应用多数要订阅。这款一次付费,永久使用。无订阅、无广告。";
+"Pomodoro autopilot — chain multiple focus + break cycles automatically" = "番茄钟自动循环 — 自动接续多个专注与休息周期";
+"Most focus apps subscribe. This is one payment — forever. No subscription, no ads, ever." = "专注类应用多数要订阅。这款一次付费，永久使用。无订阅、无广告。";
 "You've hit today's free sessions" = "今天的免费专注次数已用完";
 "Unlock unlimited" = "解锁无限次";
 "Not now" = "暂不";
-"Free includes %lld focus sessions a day. Unlock FocusFlow Pro for unlimited sessions — one payment, no subscription." = "免费版每天可专注 %lld 次。解锁 FocusFlow Pro 即可不限次数 — 一次买断,无订阅。";
+"Free includes %lld focus sessions a day. Unlock FocusFlow Pro for unlimited sessions — one payment, no subscription." = "免费版每天可专注 %lld 次。解锁 FocusFlow Pro 即可不限次数 — 一次买断，无订阅。";
