@@ -64,11 +64,25 @@ targets:
     dependencies:
       - target: FocusFlow
 
+  FocusFlowUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: FocusFlowUITests
+    dependencies:
+      - target: FocusFlow
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jiejuefuyou.focusflow.uitests
+        TEST_TARGET_NAME: FocusFlow
+
 schemes:
   FocusFlow:
     build:
       targets:
         FocusFlow: all
+        FocusFlowTests: [test]
+        FocusFlowUITests: [test]
     run:
       config: Debug
     archive:
@@ -77,3 +91,4 @@ schemes:
       config: Debug
       targets:
         - FocusFlowTests
+        - FocusFlowUITests

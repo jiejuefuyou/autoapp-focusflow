@@ -17,13 +17,22 @@ permissions:
   contents: write
 
 jobs:
+  # Shard screenshot capture by language: each language gets its own runner
+  # so 8 lang × 3 devices stays under the 1h GitHub Actions per-job cap.
+  # Previous monolithic run hit 1h0m48s and was cancelled (2026-05-22).
   shots:
-    name: Capture App Store screenshots
+    name: Capture ${{ matrix.lang }}
     runs-on: macos-15
-    timeout-minutes: 60
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        lang: [en-US, ja, zh-Hans, zh-Hant, ko, es-ES, fr-FR, de-DE]
     env:
       LC_ALL: en_US.UTF-8
       LANG: en_US.UTF-8
+      SNAPSHOT_LANG: ${{ matrix.lang }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -37,24 +46,52 @@ jobs:
         with:
           ruby-version: "3.3"
           bundler-cache: true
-      - name: Capture screenshots
+      - name: Capture screenshots (1 lang × 3 devices)
         run: bundle exec fastlane screenshots
-      - name: Upload screenshots as artifact
+      - name: Upload per-lang artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-${{ matrix.lang }}
+          path: fastlane/screenshots/**/*.png
+          if-no-files-found: error
+
+  # Merge all 8 per-lang artifacts into a single `screenshots` artifact so
+  # the rest of the pipeline (asc upload, commit-back) sees one zip.
+  merge:
+    name: Merge per-lang artifacts
+    needs: shots
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download all lang artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: screenshots-*
+          path: fastlane/screenshots/
+          merge-multiple: true
+      - name: Inspect downloaded layout
+        run: |
+          echo "::group::screenshots tree"
+          find fastlane/screenshots -type f -name '*.png' | head -50
+          echo "total files: $(find fastlane/screenshots -type f -name '*.png' | wc -l)"
+          echo "::endgroup::"
+      - name: Upload combined artifact
         uses: actions/upload-artifact@v4
         with:
           name: screenshots
           path: fastlane/screenshots/**/*.png
           if-no-files-found: error
-      - name: Commit screenshots + app icon back to repo
+      - name: Commit screenshots back to repo
         if: ${{ github.event.inputs.commit == 'true' }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add fastlane/screenshots
-          git add FocusFlow/Resources/Assets.xcassets/AppIcon.appiconset/icon.png
           if ! git diff --cached --quiet; then
-            git commit -m "chore(ci): refresh App Store screenshots + icon"
+            git commit -m "chore(ci): refresh App Store screenshots (8 lang sharded capture)"
             git push
           else
-            echo "No screenshot/icon changes to commit."
+            echo "No screenshot changes to commit."
           fi

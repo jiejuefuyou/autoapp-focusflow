@@ -163,12 +163,69 @@ final class SessionStore {
         loadTags()
         loadHistory()
         installForegroundObserver()
+
+        // Snapshot mode (fastlane screenshots): seed realistic in-memory state
+        // so every captured screen shows the actual app in use (lesson #44 /
+        // Apple 2.3.3). Never runs in production.
+        if ProcessInfo.processInfo.arguments.contains("-FASTLANE_SNAPSHOT") {
+            injectSnapshotData()
+        }
     }
 
     deinit {
         if let token = foregroundObserver {
             NotificationCenter.default.removeObserver(token)
         }
+    }
+
+    // MARK: - Snapshot seeding (fastlane screenshots only)
+
+    /// Populates realistic IN-MEMORY state for App Store screenshot capture so
+    /// the hero/analytics screens show the app genuinely in use (lesson #44 —
+    /// Apple 2.3.3 rejects splash/empty/synthetic shots). Strictly gated on
+    /// -FASTLANE_SNAPSHOT. Nothing is persisted: `history` is assigned without
+    /// calling saveHistory(), and the in-progress session sets state directly —
+    /// no Timer tick and no UNNotification is scheduled. `timeRemaining` stays
+    /// wall-clock-consistent with `startedAt` so a foreground recompute lands
+    /// on the same value.
+    private func injectSnapshotData() {
+        let now = Date()
+        let cal = Calendar.current
+        var seeded: [FocusSession] = []
+        // ~15 completed sessions across the last 7 days, varied technique
+        // lengths + tags, denser recently so the weekly chart reads as a habit.
+        let plan: [(daysAgo: Int, minutes: [Int])] = [
+            (0, [25, 50]), (1, [25, 25, 90]), (2, [50, 25]), (3, [25]),
+            (4, [52, 25]), (5, [25, 45]), (6, [25, 50]),
+        ]
+        for (daysAgo, minutesList) in plan {
+            guard let day = cal.date(byAdding: .day, value: -daysAgo, to: now) else { continue }
+            for (i, minutes) in minutesList.enumerated() {
+                let start = cal.date(bySettingHour: min(9 + i * 3, 20), minute: 12, second: 0, of: day) ?? day
+                let dur = TimeInterval(minutes * 60)
+                let tagId = tags.isEmpty ? nil : tags[seeded.count % tags.count].id
+                seeded.append(FocusSession(
+                    startedAt: start,
+                    completedAt: start.addingTimeInterval(dur),
+                    duration: dur,
+                    actualDuration: dur,
+                    tagId: tagId,
+                    completed: true
+                ))
+            }
+        }
+        history = seeded.sorted { $0.startedAt > $1.startedAt }
+        // In-progress 25-min focus at ~60% elapsed: the hero shot shows the
+        // ring mid-session. The 1-Hz tick isn't running, which is fine — the
+        // capture is a still frame.
+        currentSession = FocusSession(
+            startedAt: now.addingTimeInterval(-15 * 60),
+            duration: 25 * 60,
+            tagId: tags.first?.id
+        )
+        timeRemaining = 10 * 60
+        isRunning = true
+        currentPhase = .focus
     }
 
     // MARK: - Free tier helpers

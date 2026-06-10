@@ -1,16 +1,25 @@
 # App Store Connect screenshot devices (one per required size class):
-#   - 6.9" iPhone (iPhone 17 Pro Max)              — required for iPhone
-#   - 6.5" iPhone (iPhone 16 Plus)                 — fallback display class
-#   - 12.9" iPad (iPad Pro (12.9-inch) (3rd gen))  — required when app supports iPad
+#   - 6.9" iPhone (iPhone 17 Pro Max)        — required for iPhone
+#   - 6.5" iPhone (iPhone 16 Plus)           — fallback display class
+#   - 13" iPad (iPad Pro 13-inch (M4))       — required when app supports iPad
+#
+# Xcode 16.3 (macos-15 runner) no longer ships iPad Pro 12.9" (3rd gen) simulator.
+# Use iPad Pro 13-inch (M4), which is the current 13" class device.
 devices([
   "iPhone 17 Pro Max",
   "iPhone 16 Plus",
-  "iPad Pro (12.9-inch) (3rd generation)"
+  "iPad Pro 13-inch (M4)"
 ])
 
 # 8 languages — one folder per locale under fastlane/screenshots/
 # Locale codes match App Store Connect localization slugs.
-languages([
+#
+# Sharding (2026-05-23): GitHub Actions macos-15 has a 1h hard timeout per job.
+# 8 lang × 3 device × 2-3 min ≈ 60+ min, hitting the cap and getting cancelled.
+# Workflow now shards by language via matrix.lang and sets SNAPSHOT_LANG; each
+# job captures one locale × 3 devices in ~8 min, well under the cap. When run
+# locally without SNAPSHOT_LANG set, capture all 8.
+default_langs = [
   "en-US",
   "ja",
   "zh-Hans",
@@ -19,7 +28,13 @@ languages([
   "es-ES",
   "fr-FR",
   "de-DE"
-])
+]
+override_langs = ENV['SNAPSHOT_LANG']
+if override_langs && !override_langs.strip.empty?
+  languages(override_langs.split(',').map(&:strip))
+else
+  languages(default_langs)
+end
 
 scheme("FocusFlow")
 
