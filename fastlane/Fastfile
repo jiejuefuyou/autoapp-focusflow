@@ -18,9 +18,12 @@ platform :ios do
     sh("cd .. && xcodegen generate")
   end
 
-  desc "Run unit tests on a simulator (UI tests live in the screenshots lane)"
+  desc "Run unit + UI tests on a simulator (LanguageSwitchTests etc.)"
   lane :test do
     generate
+    # IMPORTANT: include UITests so LanguageSwitchTests runs in CI. Without
+    # this, lesson #34 regression slips through static lint but is never
+    # exercised at runtime (pattern copied from autoapp-days-until).
     run_tests(
       project:       PROJECT,
       scheme:        SCHEME,
@@ -28,7 +31,7 @@ platform :ios do
       deployment_target_version: "17.0",
       clean:         true,
       code_coverage: true,
-      only_testing:  ["#{SCHEME}Tests"]
+      only_testing:  ["#{SCHEME}Tests", "#{SCHEME}UITests"]
     )
   end
 

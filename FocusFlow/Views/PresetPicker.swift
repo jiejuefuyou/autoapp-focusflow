@@ -235,6 +235,10 @@ struct PresetPicker: View {
     private static func formatMinutes(_ mins: Int) -> String {
         let measurement = Measurement(value: Double(mins), unit: UnitDuration.minutes)
         let formatter = MeasurementFormatter()
+        // Pin to the in-app override locale: MeasurementFormatter defaults to
+        // the SYSTEM locale, which would leak system-language unit names
+        // ("分" vs "min") after an in-app language switch (lesson #63 sibling).
+        formatter.locale = LocalizationManager.shared.currentLocale
         formatter.unitOptions = .providedUnit
         formatter.unitStyle = .medium
         formatter.numberFormatter.maximumFractionDigits = 0
